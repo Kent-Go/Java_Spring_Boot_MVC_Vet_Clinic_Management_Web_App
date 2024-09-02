@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class RegistrationController {
 
-    @GetMapping("/register")
+    @GetMapping("/userRegister")
     public String showRegistrationPage(Model model) {
         model.addAttribute("selected", "");
         return "register";

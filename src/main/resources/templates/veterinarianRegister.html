@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Veterinarian Registration</title>
@@ -34,6 +34,9 @@
                     localStorage.setItem(key, value);
                 });
 
+                // Save profile type as VETERINARIAN
+                localStorage.setItem('profileType', 'VETERINARIAN');
+
                 // Redirect to vetDashboard.html
                 window.location.href = 'vetDashboard.html';
             }
@@ -51,13 +54,12 @@
     </a>
 </div>
 
-
-
 <div class="registration-form">
     <h1>Veterinarian Registration</h1>
 
     <form id="vetForm" enctype="multipart/form-data" onsubmit="return false;">
         <div class="section-divider"></div>
+
         <!-- Personal Information Section -->
         <h2>Personal Information</h2>
         <label for="title">Title: <span style="color:red">*</span></label>
