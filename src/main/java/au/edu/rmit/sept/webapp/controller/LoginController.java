@@ -61,12 +61,7 @@ public class LoginController {
         }
         return null;
     }
-
-    @GetMapping("/vetDashboard")
-    public String showVetDashboardPage(Model model) {
-        return "vetDashboard";  // this should point to your veterinarian dashboard HTML/Thymeleaf template
-    }
-
+    
     @GetMapping("/userDashboard")
     public String showUserDashboardPage(Model model) {
         return "userDashboard";  // this should point to your user dashboard HTML/Thymeleaf template

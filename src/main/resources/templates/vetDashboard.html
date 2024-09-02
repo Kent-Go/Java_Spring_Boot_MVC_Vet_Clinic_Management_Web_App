@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vet Dashboard</title>
+    <link rel="stylesheet" href="/css/vetDashboard.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve the first name and last name from localStorage
+            var firstName = localStorage.getItem("firstname");
+            var lastName = localStorage.getItem("lastname");
+
+            // Set the welcome message with the fetched name
+            if (firstName && lastName) {
+                document.getElementById("welcomeName").textContent = "Welcome, Dr " + firstName + " " + lastName;
+            } else {
+                document.getElementById("welcomeName").textContent = "Welcome, Doctor";
+            }
+        });
+    </script>
+</head>
+<body>
+
+<div class="header">
+    <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo">
+    </a>
+    <a href="profile" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon">
+    </a>
+</div>
+
+<div class="nav-bar">
+    <a href="vetDashboard" class="active">Home</a>
+    <a href="patients">Patients</a>
+    <a href="schedule">Schedule</a>
+    <a href="availability">Availability</a>
+    <a href="vetFaq">FAQ</a>
+</div>
+
+<div class="container">
+    <h1 id="welcomeName">Welcome, Doctor</h1> <!-- Placeholder text, will be replaced by JS -->
+    <h2>Your Appointments Today</h2>
+    <div class="appointment">
+        <h3>Monday, 11 January 2024</h3>
+        <div class="appointment-card">
+            <h4>1. General Clinical Consultation at 10:30</h4>
+            <p><strong>Patient:</strong> Donny</p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Species:</strong> Dog</p>
+            <p><strong>Breed:</strong> Chihuahua</p>
+            <p><strong>Owner:</strong> John Johnny</p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Email:</strong> littejohn@gmail.com</p>
+            <p><strong>Number:</strong> +61162745127</p>
+            <button>Pet Details</button>
+            <button>Owner Details</button>
+        </div>
+
+        <div class="appointment-card">
+            <h4>2. Surgery at 13:00</h4>
+            <p><strong>Patient:</strong> Snowy</p>
+            <p><strong>Gender:</strong> Female</p>
+            <p><strong>Species:</strong> Rabbit</p>
+            <p><strong>Breed:</strong> Lionhead</p>
+            <p><strong>Owner:</strong> John Johnny</p>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Email:</strong> littejohn@gmail.com</p>
+            <p><strong>Number:</strong> +61162745127</p>
+            <button>Pet Details</button>
+            <button>Owner Details</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
