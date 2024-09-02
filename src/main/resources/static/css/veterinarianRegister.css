@@ -1,4 +1,3 @@
-/* Base styling for html, body, and header */
 html, body {
     height: 100%;
     margin: 0;
@@ -9,7 +8,6 @@ html, body {
     flex-direction: column;
 }
 
-/* Header styling */
 .header {
     width: 100%;
     background-color: #007bff;

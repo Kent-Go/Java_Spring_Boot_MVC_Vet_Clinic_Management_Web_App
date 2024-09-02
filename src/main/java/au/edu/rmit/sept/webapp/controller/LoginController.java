@@ -71,4 +71,9 @@ public class LoginController {
     public String showUserDashboardPage(Model model) {
         return "userDashboard";  // this should point to your user dashboard HTML/Thymeleaf template
     }
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        return "register";
+    }
 }

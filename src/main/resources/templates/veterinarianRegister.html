@@ -26,10 +26,14 @@
 
         function saveForm() {
             if (validateForm()) {
-                // Collect form data
+                // Collect form data excluding confirmEmail and confirmPassword
                 var formData = new FormData(document.querySelector('form'));
 
-                // Save data to localStorage (as an example of saving locally)
+                // Remove confirmEmail and confirmPassword from the FormData before saving
+                formData.delete('confirmEmail');
+                formData.delete('confirmPassword');
+
+                // Save remaining data to localStorage
                 formData.forEach((value, key) => {
                     localStorage.setItem(key, value);
                 });
