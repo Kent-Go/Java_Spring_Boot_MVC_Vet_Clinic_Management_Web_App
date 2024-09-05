@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing</title>
+</head>
+<body>
+    <h2>Vets List:</h2>
+    <ul>
+        <li th:each="vet : ${vets}">
+            <span th:text="'ID: ' + ${vet.id}">ID</span> - 
+            <span th:text="'Title: ' + ${vet.title}">Title</span> - 
+            <span th:text="'Languages Spoken: ' + ${vet.languagesSpoken}">Languages Spoken</span> - 
+            <span th:text="'selfDescription: ' + ${vet.selfDescription}">Self Description</span> - 
+            <span th:text="'UserID: ' + ${vet.userID}">UserID</span> - 
+            <img th:src="'data:image/jpeg;base64,' + ${vet.profilePicture}" alt="Profile Picture"/>
+        </li>
+    </ul>
+</body>
+</html>
