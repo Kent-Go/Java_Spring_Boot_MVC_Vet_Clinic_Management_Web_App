@@ -69,7 +69,7 @@ public class Vet {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    } 
+    }
 
     public String getSelfDescription() {
         return selfDescription;
