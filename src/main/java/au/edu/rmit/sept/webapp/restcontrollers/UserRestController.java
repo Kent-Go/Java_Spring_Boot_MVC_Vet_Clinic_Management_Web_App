@@ -11,12 +11,12 @@ import au.edu.rmit.sept.webapp.models.User;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-public class UserAPIController {
+@RequestMapping("/api/users")
+public class UserRestController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> getUsers() {
         return userRepository.findAll();
     }
