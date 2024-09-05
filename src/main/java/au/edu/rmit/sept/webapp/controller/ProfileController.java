@@ -1,14 +1,15 @@
 package au.edu.rmit.sept.webapp.controller;
 
-import org.springframework.stereotype.Controller;
+import java.util.Map;
+import java.io.IOException;
+
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Map;
 
 @Controller
 public class ProfileController {
@@ -16,13 +17,13 @@ public class ProfileController {
     @GetMapping("/profile")
     public String showProfilePage(Model model) {
         // Load user profile data from the database or other sources
-        return "profile";  // Returns the profile.html view
+        return "profile"; // Returns the profile.html view
     }
 
     @PostMapping("/profile")
     public String updateProfile(@RequestParam Map<String, String> formData,
-                                @RequestParam("profilePicture") MultipartFile profilePicture,
-                                Model model) throws IOException {
+            @RequestParam("profilePicture") MultipartFile profilePicture,
+            Model model) throws IOException {
         // Process the updated form data and save it to the database
         // Example: userService.updateUserProfile(formData);
 
@@ -35,6 +36,6 @@ public class ProfileController {
         // Reload the updated profile data into the model
         model.addAttribute("profileData", formData);
 
-        return "profile";  // Reloads the profile page with the updated data
+        return "profile"; // Reloads the profile page with the updated data
     }
 }

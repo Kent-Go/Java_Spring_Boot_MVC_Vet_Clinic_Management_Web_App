@@ -1,13 +1,24 @@
 package au.edu.rmit.sept.webapp.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.ui.Model;
+import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.VetService;
 
 @Controller
 public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private VetService vetService;
 
     @GetMapping("/login")
     public String showLoginPage(Model model) {
@@ -20,51 +31,26 @@ public class LoginController {
             @RequestParam("password") String password,
             Model model) {
 
-        System.out.println("Processing login for email: " + email);
+        // Get the user by email
+        User user = userService.getUserByEmail(email);
 
-        // Simulated user authentication logic
-        // This would be replaced with actual logic that checks the database or session
-        if (authenticateUser(email, password)) {
-            // Determine user profile type
-            String userProfileType = getUserProfileType(email);
-
-            if ("VETERINARIAN".equals(userProfileType)) {
+        if (user != null && user.getPassword().equals(password)) {
+            // If the user is a vet, redirect to vet dashboard
+            if (vetService.getVetByUserID(user.getId()) != null) {
                 return "redirect:/vetDashboard";
-            } else if ("USER".equals(userProfileType)) {
-                return "redirect:/userDashboard";
             } else {
-                model.addAttribute("error", "Unknown user profile.");
-                return "login";
+                return "redirect:/userDashboard";
             }
         } else {
-            model.addAttribute("error", "Invalid email or password.");
+            // If authentication fails, show error on login page
+            model.addAttribute("error", "Email and/or password is incorrect!");
             return "login";
         }
     }
 
-    // Mock method to authenticate a user
-    private boolean authenticateUser(String email, String password) {
-        // Replace this with actual logic to check against your database
-        String storedEmail = "vet@example.com"; // Simulate stored email
-        String storedPassword = "password"; // Simulate stored password
-
-        return storedEmail.equals(email) && storedPassword.equals(password);
-    }
-
-    // Mock method to get the user profile type
-    private String getUserProfileType(String email) {
-        // Replace this with logic to retrieve the user profile type
-        if ("vet@example.com".equals(email)) {
-            return "VETERINARIAN";
-        } else if ("user@example.com".equals(email)) {
-            return "USER";
-        }
-        return null;
-    }
-
     @GetMapping("/userDashboard")
     public String showUserDashboardPage(Model model) {
-        return "userDashboard";  // this should point to your user dashboard HTML/Thymeleaf template
+        return "userDashboard";
     }
 
     @GetMapping("/register")
