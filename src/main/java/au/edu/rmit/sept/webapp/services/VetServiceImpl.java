@@ -25,7 +25,7 @@ public class VetServiceImpl implements VetService {
 
   @Override
   public Vet getVetByUserID(int userID) {
-    return vetRepository.findById(userID).orElseThrow(() -> new RuntimeException("User not found"));
+    return vetRepository.findByUserID(userID).orElse(null);
   }
 
   @Override
