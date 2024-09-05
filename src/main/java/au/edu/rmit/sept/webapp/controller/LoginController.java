@@ -43,7 +43,7 @@ public class LoginController {
             }
         } else {
             // If authentication fails, show error on login page
-            model.addAttribute("error", "Invalid email or password.");
+            model.addAttribute("error", "Email and/or password is incorrect!");
             return "login";
         }
     }

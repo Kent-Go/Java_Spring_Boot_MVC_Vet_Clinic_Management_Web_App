@@ -14,7 +14,6 @@
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
-
     <div class="container">
       <h1>Login</h1>
       <div class="form-container">
@@ -27,7 +26,6 @@
             autocomplete="email"
             required
           />
-
           <label for="password">Password<span>*</span></label>
           <input
             type="password"
@@ -36,18 +34,19 @@
             autocomplete="current-password"
             required
           />
-
+          <!-- Display error message if it exists -->
+          <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+          </div>
           <div class="forgot-password">
             <a href="resetPassword">Forgot password?</a>
           </div>
-
           <button type="submit">Login</button>
-
           <div class="register-link">
-            <span
-              >Not registered yet?
-              <a href="register">Create an account!</a></span
-            >
+            <span>
+              Not registered yet?
+              <a href="register">Create an account!</a>
+            </span>
           </div>
         </form>
       </div>
