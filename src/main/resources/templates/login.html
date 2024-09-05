@@ -4,30 +4,6 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="/css/login.css">
-    <script>
-        function processLogin(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            // Retrieve user data from localStorage
-            const storedEmail = localStorage.getItem("email");
-            const storedPassword = localStorage.getItem("password");
-
-            if (email === storedEmail && password === storedPassword) {
-                // If the credentials match, check the profile type
-                const profileType = localStorage.getItem("profileType");
-                if (profileType === "VETERINARIAN") {
-                    window.location.href = "/vetDashboard";
-                } else if (profileType === "USER") {
-                    window.location.href = "/userDashboard";
-                }
-            } else {
-                alert("Invalid email or password.");
-            }
-        }
-    </script>
 </head>
 <body>
 
@@ -43,7 +19,7 @@
 <div class="container">
     <h1>Login</h1>
     <div class="form-container">
-        <form onsubmit="processLogin(event);">
+        <form th:action="@{/login}" method="POST">
             <label for="email">Email<span>*</span></label>
             <input type="text" id="email" name="email" autocomplete="email" required>
 
