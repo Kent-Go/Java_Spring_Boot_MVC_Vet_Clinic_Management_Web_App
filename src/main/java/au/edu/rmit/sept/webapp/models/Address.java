@@ -38,7 +38,7 @@ public class Address {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     public String getStreet() {
         return street;
     }
@@ -76,6 +76,19 @@ public class Address {
     }
 
     public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    // Default no-argument constructor required by JPA
+    public Address() {
+    }
+
+    // Constructor without ID because it is auto-generated
+    public Address(String street, String suburb, String state, String postcode, int userID) {
+        this.street = street;
+        this.suburb = suburb;
+        this.state = state;
+        this.postcode = postcode;
         this.userID = userID;
     }
 }
