@@ -11,7 +11,7 @@ import au.edu.rmit.sept.webapp.repositories.MedicineRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/medicine")
+@RequestMapping("/api/medicines")
 public class MedicineRestController {
     @Autowired
     private MedicineRepository medicineRepository;
