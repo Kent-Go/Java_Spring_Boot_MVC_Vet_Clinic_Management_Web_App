@@ -28,6 +28,16 @@
           }
         }
 
+        // If postal code is not a number or is more than 4 digits
+        if (isNaN(document.getElementById("postcode").value)) {
+          alert("Postal code must be a number.");
+          return false;
+        }
+        else if (document.getElementById("postcode").value.length !== 4) {
+          alert("Postal code must be 4 digits.");
+          return false;
+        }
+
         if (email !== confirmEmail) {
           alert("Email and Confirm Email do not match.");
           return false;
