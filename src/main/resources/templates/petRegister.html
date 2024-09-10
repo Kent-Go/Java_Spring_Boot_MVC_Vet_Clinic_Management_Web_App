@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register Pets</title>
+    <link rel="stylesheet" href="/css/veterinarianRegister.css" />
+  </head>
+  <body>
+    <div class="header">
+      <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+      </a>
+    </div>
+
+    <div class="registration-form">
+      <h1>Pet Owner Registration</h1>
+      <h2>Add Pet</h2>
+
+      <!-- Back and Continue Buttons -->
+      <div class="button-container">
+        <button type="button" onclick="window.location.href='petOwnerRegister';">
+          Back
+        </button>
+        <!-- Direct to Pet Register page -->
+        <button type="button" onclick="saveForm();">Continue</button>
+      </div>
+    </div>
+  </body>
+</html>
