@@ -1,5 +1,6 @@
 package au.edu.rmit.sept.webapp.models;
 
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class User {
     private String lastName;
 
     @Column(name = "birth_date")
-    private String birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "gender")
     private String gender;
@@ -55,11 +56,11 @@ public class User {
         this.lastName = parts[1];
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -92,6 +93,21 @@ public class User {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Default no-argument constructor required by JPA
+    public User() {
+    }
+
+    // Constructor without ID because it is auto-generated
+    public User(String firstName, String lastName, LocalDate birthDate, String gender, String phoneNumber, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
         this.password = password;
     }
 }
