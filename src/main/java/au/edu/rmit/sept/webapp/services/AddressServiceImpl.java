@@ -1,7 +1,9 @@
 package au.edu.rmit.sept.webapp.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collection;
+
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.repositories.AddressRepository;
@@ -17,8 +19,13 @@ public class AddressServiceImpl implements AddressService {
   }
 
   @Override
+  public Collection<Address> getAllAddresses() {
+    return addressRepository.findAll();
+  }
+
+  @Override
   public Address getAddressByUserID(int userID) {
-    return addressRepository.findByUserID(userID).orElse(null);
+    return addressRepository.findById(userID).orElseThrow(() -> new RuntimeException("Address not found"));
   }
 
   @Override

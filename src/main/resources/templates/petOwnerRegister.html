@@ -5,6 +5,12 @@
     <title>Pet Owner Registration</title>
     <link rel="stylesheet" href="/css/veterinarianRegister.css" />
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Clear localStorage data related to user registration when the page loads (as a precaution when the user navigates back to the registration page from the pet registration page)
+        localStorage.removeItem("email");
+        localStorage.removeItem("profileType");
+      });
+
       function validateForm() {
         var email = document.getElementById("email").value;
         var confirmEmail = document.getElementById("confirmEmail").value;
@@ -20,6 +26,16 @@
             alert("Please fill in all required fields.");
             return false;
           }
+        }
+
+        // If postal code is not a number or is more than 4 digits
+        if (isNaN(document.getElementById("postcode").value)) {
+          alert("Postal code must be a number.");
+          return false;
+        }
+        else if (document.getElementById("postcode").value.length !== 4) {
+          alert("Postal code must be 4 digits.");
+          return false;
         }
 
         if (email !== confirmEmail) {
@@ -44,16 +60,15 @@
           formData.delete("confirmEmail");
           formData.delete("confirmPassword");
 
-          // Save remaining data to localStorage
+          // Save only the user's email to localStorage
           formData.forEach((value, key) => {
-            localStorage.setItem(key, value);
+            if (key === "email") {
+              localStorage.setItem(key, value);
+            }
           });
 
-          // Save profile type as PETOWNET
+          // Save profile type as PETOWNER
           localStorage.setItem("profileType", "PET_OWNER");
-
-          // Redirect to petRegister.html
-          window.location.href = "petRegister";
         }
       }
     </script>
@@ -68,18 +83,23 @@
     <div class="registration-form">
       <h1>Pet Owner Registration</h1>
 
-      <form id="vetForm" enctype="multipart/form-data" onsubmit="return false;">
+      <form
+        id="petOwnerForm"
+        th:action="@{/petOwnerRegister}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
         <h2>Personal Information</h2>
-        <label for="firstname"
+        <label for="firstName"
           >First Name<span style="color: red">*</span></label
         >
-        <input type="text" id="firstname" name="firstname" required />
+        <input type="text" id="firstName" name="firstName" required />
 
         <label for="lastname">Last Name<span style="color: red">*</span></label>
-        <input type="text" id="lastname" name="lastname" required />
+        <input type="text" id="lastName" name="lastName" required />
 
         <label for="dob">Date of Birth<span style="color: red">*</span></label>
         <input type="date" id="dob" name="dob" required />
@@ -114,9 +134,6 @@
         <label for="postcode">Postcode<span style="color: red">*</span></label>
         <input type="text" id="postcode" name="postcode" required />
 
-        <label for="country">Country<span style="color: red">*</span></label>
-        <input type="text" id="country" name="country" required />
-
         <div class="section-divider"></div>
 
         <!-- Account Information Section -->
@@ -148,7 +165,7 @@
             Back
           </button>
           <!-- Direct to Pet Register page -->
-          <button type="button" onclick="saveForm();">Continue</button>
+          <button type="submit" onclick="saveForm();">Continue</button>
         </div>
       </form>
     </div>
