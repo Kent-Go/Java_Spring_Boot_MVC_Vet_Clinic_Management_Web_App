@@ -50,7 +50,7 @@
       <div class="section-divider"></div>
 
       <h2>Add Pet</h2>
-      <form id="petForm" enctype="multipart/form-data" onsubmit="return false;">
+      <form id="petForm" th:action="@{/petRegister}" method="POST" enctype="multipart/form-data" onsubmit="return false;">
         <!-- Pet Information Section -->
         <label for="petName">Full Name<span style="color: red">*</span></label>
         <input type="text" id="petName" name="petName" required />
@@ -58,8 +58,11 @@
         <label for="dob">Date of Birth<span style="color: red">*</span></label>
         <input type="date" id="dob" name="dob" required />
 
-        <label for="dob">Gender<span style="color: red">*</span></label>
-        <input type="date" id="gender" name="gender" required />
+        <label for="gender">Gender<span style="color: red">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
 
         <label for="petType">Pet Type<span style="color: red">*</span></label>
         <select id="petType" name="petType" required>
@@ -91,8 +94,6 @@
           accept="image/*"
         />
 
-        <div class="section-divider"></div>
-
         <!-- Health Concern Section -->
         <h2>Health Concerns</h2>
         <label for="allergies">Allergies</label>
@@ -104,7 +105,10 @@
 
       <!-- Back and Continue Buttons -->
       <div class="button-container">
-        <button type="button" onclick="window.location.href='petOwnerRegister';">
+        <button
+          type="button"
+          onclick="window.location.href='petOwnerRegister';"
+        >
           Back
         </button>
         <!-- Direct to Pet Register page -->

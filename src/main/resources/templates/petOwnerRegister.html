@@ -68,7 +68,7 @@
     <div class="registration-form">
       <h1>Pet Owner Registration</h1>
 
-      <form id="petOwnerForm" enctype="multipart/form-data" onsubmit="return false;">
+      <form id="petOwnerForm" th:action="@{/petOwnerRegister}" method="POST" enctype="multipart/form-data" onsubmit="return false;">
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
