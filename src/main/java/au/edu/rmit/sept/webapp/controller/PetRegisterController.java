@@ -10,12 +10,12 @@ public class PetRegisterController {
 
     @GetMapping("/petRegister")
     public String showPetRegister(Model model) {
-        return "petRegister"; // Corresponds to petOwnerRegister.html
+        return "petRegister"; // Corresponds to petRegister.html
     }
 
     @PostMapping("/petRegister")
-    public String registerPet(/* Add form parameters here */) {
-        // Handle the form submission, save the pet owner details
+    public String registerPet() {
+        // Handle the form submission, save the pet details
         return "redirect:/petRegister"; // Redirect to the same page or to a success page
     }
 }
