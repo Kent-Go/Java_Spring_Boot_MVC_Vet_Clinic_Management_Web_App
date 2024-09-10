@@ -4,6 +4,36 @@
     <meta charset="UTF-8" />
     <title>Register Pets</title>
     <link rel="stylesheet" href="/css/veterinarianRegister.css" />
+    <script>
+      function validateForm() {
+        // Collect all required fields
+        var requiredFields = document.querySelectorAll("[required]");
+
+        // Loop through required fields to check if any are empty
+        for (var i = 0; i < requiredFields.length; i++) {
+          if (!requiredFields[i].value) {
+            alert("Please fill in all required fields.");
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function saveForm() {
+        if (validateForm()) {
+          // Collect form data excluding confirmEmail and confirmPassword
+          var formData = new FormData(document.querySelector("form"));
+
+          // Save remaining data to localStorage
+          formData.forEach((value, key) => {
+            localStorage.setItem(key, value);
+          });
+
+          // Submit the form programmatically
+          document.querySelector("form").submit();
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="header">
@@ -14,15 +44,77 @@
 
     <div class="registration-form">
       <h1>Pet Owner Registration</h1>
+
+      <div class="section-divider"></div>
+
       <h2>Add Pet</h2>
+      <form
+        id="petForm"
+        th:action="@{/petRegister}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <!-- Pet Information Section -->
+        <label for="petName">Full Name<span style="color: red">*</span></label>
+        <input type="text" id="petName" name="petName" required />
+
+        <label for="dob">Date of Birth<span style="color: red">*</span></label>
+        <input type="date" id="dob" name="dob" required />
+
+        <label for="gender">Gender<span style="color: red">*</span></label>
+        <select id="gender" name="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
+        <label for="petType">Pet Type<span style="color: red">*</span></label>
+        <select id="petType" name="petType" required>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="rabbit">Rabbit</option>
+          <option value="bird">Bird</option>
+          <option value="fish">Fish</option>
+          <option value="hamster">Hamster</option>
+          <option value="horse">Horse</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="breed">Breed<span style="color: red">*</span></label>
+        <input type="text" id="breed" name="breed" required />
+
+        <label for="color">Color<span style="color: red">*</span></label>
+        <input type="text" id="color" name="color" required />
+
+        <label for="weight">Weight (kg)<span style="color: red">*</span></label>
+        <input type="number" id="weight" name="weight" required />
+
+        <label for="profilePicture">Profile Picture</label>
+        <input
+          type="file"
+          id="profilePicture"
+          name="profilePicture"
+          accept="image/*"
+        />
+
+        <!-- Health Concern Section -->
+        <h2>Health Concerns</h2>
+        <label for="allergies">Allergies</label>
+        <input type="text" id="allergies" name="allergies" />
+
+        <label for="existingCondition">Existing Condition</label>
+        <input type="text" id="existingCondition" name="existingCondition" />
+      </form>
 
       <!-- Back and Continue Buttons -->
       <div class="button-container">
-        <button type="button" onclick="window.location.href='petOwnerRegister';">
+        <button
+          type="button"
+          onclick="window.location.href='petOwnerRegister?deleteUser=true';"
+        >
           Back
         </button>
-        <!-- Direct to Pet Register page -->
-        <button type="button" onclick="saveForm();">Continue</button>
+        <!-- Direct to Profile page -->
+        <button type="submit" onclick="saveForm();">Submit</button>
       </div>
     </div>
   </body>

@@ -16,4 +16,7 @@ public interface UserService {
   
   // Get a user by their email
   public User getUserByEmail(String email);
+
+  // Delete a user by their ID
+  public void deleteUserByUserID(int userID);
 }

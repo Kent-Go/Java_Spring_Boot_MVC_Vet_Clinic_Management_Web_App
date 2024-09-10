@@ -50,10 +50,12 @@ public class User {
         return firstName + " " + lastName;
     }
 
-    public void setName(String name) {
-        String[] parts = name.split(" ");
-        this.firstName = parts[0];
-        this.lastName = parts[1];
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDate getBirthDate() {
