@@ -49,9 +49,15 @@ body {
   margin: 20px auto;
 }
 
-.registration-form h1,
-.registration-form h2 {
+.registration-form h1{
   font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.registration-form h2 {
+  font-size: 24px;
   color: #333;
   margin-bottom: 20px;
   text-align: left;
