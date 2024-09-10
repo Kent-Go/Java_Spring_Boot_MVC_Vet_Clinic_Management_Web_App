@@ -48,7 +48,12 @@
       <div class="section-divider"></div>
 
       <h2>Add Pet</h2>
-      <form id="petForm" th:action="@{/petRegister}" method="POST" enctype="multipart/form-data">
+      <form
+        id="petForm"
+        th:action="@{/petRegister}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <!-- Pet Information Section -->
         <label for="petName">Full Name<span style="color: red">*</span></label>
         <input type="text" id="petName" name="petName" required />
@@ -104,7 +109,7 @@
       <div class="button-container">
         <button
           type="button"
-          onclick="window.location.href='petOwnerRegister';"
+          onclick="window.location.href='petOwnerRegister?deleteUser=true';"
         >
           Back
         </button>
