@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Profile Details</title>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <script>
+      function loadProfile() {
+        document.getElementById("title").innerText =
+          localStorage.getItem("title") || "";
+        document.getElementById("firstname").innerText =
+          localStorage.getItem("firstname") || "";
+        document.getElementById("lastname").innerText =
+          localStorage.getItem("lastname") || "";
+        document.getElementById("dob").innerText =
+          localStorage.getItem("dob") || "";
+        document.getElementById("gender").innerText =
+          localStorage.getItem("gender") || "";
+        document.getElementById("phone").innerText =
+          localStorage.getItem("phone") || "";
+        document.getElementById("email").innerText =
+          localStorage.getItem("email") || "";
+        document.getElementById("languages").innerText =
+          localStorage.getItem("language") || "";
+        document.getElementById("streetAddress").innerText =
+          localStorage.getItem("streetAddress") || "";
+        document.getElementById("suburb").innerText =
+          localStorage.getItem("suburb") || "";
+        document.getElementById("state").innerText =
+          localStorage.getItem("state") || "";
+        document.getElementById("postcode").innerText =
+          localStorage.getItem("postcode") || "";
+        document.getElementById("country").innerText =
+          localStorage.getItem("country") || "";
+        document.getElementById("qualification").innerText =
+          localStorage.getItem("qualification") || "";
+        document.getElementById("university").innerText =
+          localStorage.getItem("university") || "";
+        document.getElementById("yearAwarded").innerText =
+          localStorage.getItem("yearAwarded") || "";
+
+        var profilePicture = localStorage.getItem("profilePicture");
+        if (profilePicture) {
+          document.getElementById("profile-picture").src = profilePicture;
+          document.getElementById("edit-profilePicturePlaceholder").innerText =
+            "Change file";
+        }
+      }
+
+      function editProfile() {
+        document.getElementById("viewMode").style.display = "none";
+        document.getElementById("editMode").style.display = "block";
+
+        document.getElementById("edit-title").value =
+          localStorage.getItem("title") || "";
+        document.getElementById("edit-firstname").value =
+          localStorage.getItem("firstname") || "";
+        document.getElementById("edit-lastname").value =
+          localStorage.getItem("lastname") || "";
+        document.getElementById("edit-dob").value =
+          localStorage.getItem("dob") || "";
+        document.getElementById("edit-gender").value =
+          localStorage.getItem("gender") || "male";
+        document.getElementById("edit-phone").value =
+          localStorage.getItem("phone") || "";
+        document.getElementById("edit-email").value =
+          localStorage.getItem("email") || "";
+        document.getElementById("edit-languages").value =
+          localStorage.getItem("language") || "";
+        document.getElementById("edit-streetAddress").value =
+          localStorage.getItem("streetAddress") || "";
+        document.getElementById("edit-suburb").value =
+          localStorage.getItem("suburb") || "";
+        document.getElementById("edit-state").value =
+          localStorage.getItem("state") || "";
+        document.getElementById("edit-postcode").value =
+          localStorage.getItem("postcode") || "";
+        document.getElementById("edit-country").value =
+          localStorage.getItem("country") || "";
+        document.getElementById("edit-qualification").value =
+          localStorage.getItem("qualification") || "";
+        document.getElementById("edit-university").value =
+          localStorage.getItem("university") || "";
+        document.getElementById("edit-yearAwarded").value =
+          localStorage.getItem("yearAwarded") || "";
+
+        var profilePicture = localStorage.getItem("profilePicture");
+        if (profilePicture) {
+          document.getElementById("edit-profilePicturePreview").src =
+            profilePicture;
+          document.getElementById("edit-profilePicturePlaceholder").innerText =
+            "Change file";
+        }
+      }
+
+      function saveProfile() {
+        var formData = new FormData(document.querySelector("form"));
+        formData.forEach((value, key) => {
+          localStorage.setItem(key, value);
+        });
+
+        var profilePictureFile = document.getElementById("edit-profilePicture")
+          .files[0];
+
+        if (profilePictureFile) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            localStorage.setItem("profilePicture", e.target.result);
+            document.getElementById("profile-picture").src = e.target.result;
+            document.getElementById(
+              "edit-profilePicturePlaceholder"
+            ).innerText = "Change file";
+          };
+          reader.readAsDataURL(profilePictureFile);
+        }
+
+        alert("Profile updated successfully!");
+        window.location.reload();
+      }
+
+      function cancelEdit() {
+        document.getElementById("editMode").style.display = "none";
+        document.getElementById("viewMode").style.display = "block";
+      }
+
+      function logout() {
+        // Redirect to the login page without affecting local storage
+        window.location.href = "/login";
+      }
+
+      window.onload = loadProfile;
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+      </a>
+      <a href="login" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+      </a>
+    </div>
+
+    <div class="nav-bar">
+      <a href="vetDashboard">Home</a>
+      <a href="patients">Patients</a>
+      <a href="schedule">Schedule</a>
+      <a href="availability">Availability</a>
+      <a href="vetFaq">FAQ</a>
+    </div>
+
+    <div class="profile-container">
+      <h1>Profile Details</h1>
+      <div class="profile-card">
+        <div id="viewMode">
+          <div class="profile-picture">
+            <img
+              id="profile-picture"
+              src="/images/profile-placeholder.png"
+              alt="Profile Picture"
+            />
+          </div>
+          <div class="profile-info">
+            <p><strong>Title:</strong> <span id="title"></span></p>
+            <p><strong>First Name:</strong> <span id="firstname"></span></p>
+            <p><strong>Last Name:</strong> <span id="lastname"></span></p>
+            <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
+            <p><strong>Gender:</strong> <span id="gender"></span></p>
+            <p><strong>Phone Number:</strong> <span id="phone"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p>
+              <strong>Languages Spoken:</strong> <span id="languages"></span>
+            </p>
+
+            <h3>Current Residential Address:</h3>
+            <p>
+              <strong>Street Address:</strong> <span id="streetAddress"></span>
+            </p>
+            <p><strong>Suburb:</strong> <span id="suburb"></span></p>
+            <p><strong>State:</strong> <span id="state"></span></p>
+            <p><strong>Postcode:</strong> <span id="postcode"></span></p>
+            <p><strong>Country:</strong> <span id="country"></span></p>
+
+            <h3>Qualification</h3>
+            <p>
+              <strong>Qualification:</strong> <span id="qualification"></span>
+            </p>
+            <p>
+              <strong>University/College:</strong> <span id="university"></span>
+            </p>
+            <p><strong>Year Awarded:</strong> <span id="yearAwarded"></span></p>
+
+            <div class="profile-actions">
+              <button type="button" class="edit-button" onclick="editProfile()">
+                Edit Profile
+              </button>
+              <button type="button" class="logout-button" onclick="logout()">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="editMode" style="display: none">
+          <form
+            id="profileForm"
+            enctype="multipart/form-data"
+            onsubmit="saveProfile(); return false;"
+          >
+            <div class="profile-picture">
+              <img
+                id="edit-profilePicturePreview"
+                src="/images/profile-placeholder.png"
+                alt="Profile Picture"
+              />
+              <input
+                type="file"
+                id="edit-profilePicture"
+                name="profilePicture"
+                accept="image/*"
+              />
+              <label id="edit-profilePicturePlaceholder">No file chosen</label>
+            </div>
+            <div class="profile-info">
+              <p>
+                <strong>Title:</strong>
+                <select id="edit-title" name="title">
+                  <option value="Dr.">Dr.</option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Ms.">Ms.</option>
+                  <option value="Mrs.">Mrs.</option>
+                </select>
+              </p>
+              <p>
+                <strong>First Name:</strong>
+                <input
+                  type="text"
+                  id="edit-firstname"
+                  name="firstname"
+                  placeholder="First Name"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Last Name:</strong>
+                <input
+                  type="text"
+                  id="edit-lastname"
+                  name="lastname"
+                  placeholder="Last Name"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Date of Birth:</strong>
+                <input type="date" id="edit-dob" name="dob" required />
+              </p>
+              <p>
+                <strong>Gender:</strong>
+                <select id="edit-gender" name="gender">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </p>
+              <p>
+                <strong>Phone Number:</strong>
+                <input
+                  type="tel"
+                  id="edit-phone"
+                  name="phone"
+                  placeholder="Phone Number"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Email:</strong>
+                <input
+                  type="email"
+                  id="edit-email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Languages Spoken:</strong>
+                <input
+                  type="text"
+                  id="edit-languages"
+                  name="language"
+                  placeholder="Languages Spoken"
+                  required
+                />
+              </p>
+
+              <h3>Current Residential Address:</h3>
+              <p>
+                <strong>Street Address:</strong>
+                <input
+                  type="text"
+                  id="edit-streetAddress"
+                  name="streetAddress"
+                  placeholder="Street Address"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Suburb:</strong>
+                <input
+                  type="text"
+                  id="edit-suburb"
+                  name="suburb"
+                  placeholder="Suburb"
+                  required
+                />
+              </p>
+              <p>
+                <strong>State:</strong>
+                <input
+                  type="text"
+                  id="edit-state"
+                  name="state"
+                  placeholder="State/Territory"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Postcode:</strong>
+                <input
+                  type="text"
+                  id="edit-postcode"
+                  name="postcode"
+                  placeholder="Postcode"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Country:</strong>
+                <input
+                  type="text"
+                  id="edit-country"
+                  name="country"
+                  placeholder="Country"
+                  required
+                />
+              </p>
+
+              <h3>Qualification</h3>
+              <p>
+                <strong>Qualification:</strong>
+                <input
+                  type="text"
+                  id="edit-qualification"
+                  name="qualification"
+                  placeholder="Qualification"
+                  required
+                />
+              </p>
+              <p>
+                <strong>University/College:</strong>
+                <input
+                  type="text"
+                  id="edit-university"
+                  name="university"
+                  placeholder="University/College"
+                  required
+                />
+              </p>
+              <p>
+                <strong>Year Awarded:</strong>
+                <input
+                  type="text"
+                  id="edit-yearAwarded"
+                  name="yearAwarded"
+                  placeholder="Year Awarded"
+                  required
+                />
+              </p>
+
+              <div class="profile-actions">
+                <button
+                  type="button"
+                  class="cancel-button"
+                  onclick="cancelEdit()"
+                >
+                  Cancel
+                </button>
+                <button type="submit" class="save-button">Save Changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

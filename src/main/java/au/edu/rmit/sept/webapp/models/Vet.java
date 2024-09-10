@@ -27,7 +27,7 @@ public class Vet {
     @Column(name = "profile_picture")
     private byte[] profilePicture;
 
-    @Column(name = "userID")
+    @Column(name = "user_id")
     private int userID;
 
     // Getters and Setters
@@ -69,7 +69,7 @@ public class Vet {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    } 
+    }
 
     public String getSelfDescription() {
         return selfDescription;
