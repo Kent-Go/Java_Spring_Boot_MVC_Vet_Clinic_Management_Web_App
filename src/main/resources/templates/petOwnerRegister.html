@@ -5,6 +5,12 @@
     <title>Pet Owner Registration</title>
     <link rel="stylesheet" href="/css/veterinarianRegister.css" />
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Clear localStorage data related to user registration when the page loads (as a precaution when the user navigates back to the registration page from the pet registration page)
+        localStorage.removeItem("email");
+        localStorage.removeItem("profileType");
+      });
+
       function validateForm() {
         var email = document.getElementById("email").value;
         var confirmEmail = document.getElementById("confirmEmail").value;
@@ -44,9 +50,11 @@
           formData.delete("confirmEmail");
           formData.delete("confirmPassword");
 
-          // Save remaining data to localStorage
+          // Save only the user's email to localStorage
           formData.forEach((value, key) => {
-            localStorage.setItem(key, value);
+            if (key === "email") {
+              localStorage.setItem(key, value);
+            }
           });
 
           // Save profile type as PETOWNER
@@ -65,7 +73,12 @@
     <div class="registration-form">
       <h1>Pet Owner Registration</h1>
 
-      <form id="petOwnerForm" th:action="@{/petOwnerRegister}" method="POST" enctype="multipart/form-data">
+      <form
+        id="petOwnerForm"
+        th:action="@{/petOwnerRegister}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
