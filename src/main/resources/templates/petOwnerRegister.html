@@ -11,6 +11,17 @@
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
 
+        // Collect all required fields
+        var requiredFields = document.querySelectorAll("[required]");
+
+        // Loop through required fields to check if any are empty
+        for (var i = 0; i < requiredFields.length; i++) {
+          if (!requiredFields[i].value) {
+            alert("Please fill in all required fields.");
+            return false;
+          }
+        }
+
         if (email !== confirmEmail) {
           alert("Email and Confirm Email do not match.");
           return false;
