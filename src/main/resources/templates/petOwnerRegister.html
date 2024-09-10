@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Veterinarian Registration</title>
+    <title>Pet Owner Registration</title>
     <link rel="stylesheet" href="/css/veterinarianRegister.css" />
     <script>
       function validateForm() {
@@ -49,11 +49,11 @@
             localStorage.setItem(key, value);
           });
 
-          // Save profile type as VETERINARIAN
-          localStorage.setItem("profileType", "VETERINARIAN");
+          // Save profile type as PETOWNET
+          localStorage.setItem("profileType", "PET_OWNER");
 
-          // Redirect to vetDashboard.html
-          window.location.href = "vetDashboard";
+          // Redirect to petRegister.html
+          window.location.href = "petRegister";
         }
       }
     </script>
@@ -63,27 +63,16 @@
       <a href="/">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="login" class="profile-link">
-        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
-      </a>
     </div>
 
     <div class="registration-form">
-      <h1>Veterinarian Registration</h1>
+      <h1>Pet Owner Registration</h1>
 
       <form id="vetForm" enctype="multipart/form-data" onsubmit="return false;">
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
         <h2>Personal Information</h2>
-        <label for="title">Title<span style="color: red">*</span></label>
-        <select id="title" name="title" required>
-          <option value="Dr.">Dr.</option>
-          <option value="Mr.">Mr.</option>
-          <option value="Ms.">Ms.</option>
-          <option value="Mrs.">Mrs.</option>
-        </select>
-
         <label for="firstname"
           >First Name<span style="color: red">*</span></label
         >
@@ -99,34 +88,11 @@
         <select id="gender" name="gender" required>
           <option value="male">Male</option>
           <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option value="other">Others</option>
         </select>
 
         <label for="phone">Phone Number<span style="color: red">*</span></label>
         <input type="tel" id="phone" name="phone" required />
-
-        <label for="language"
-          >Language Spoken<span style="color: red">*</span></label
-        >
-        <input type="text" id="language" name="language" required />
-
-        <label for="profilePicture">Profile Picture</label>
-        <input
-          type="file"
-          id="profilePicture"
-          name="profilePicture"
-          accept="image/*"
-        />
-
-        <label for="description"
-          >Description About Yourself<span style="color: red">*</span></label
-        >
-        <textarea
-          id="description"
-          name="description"
-          rows="4"
-          required
-        ></textarea>
 
         <div class="section-divider"></div>
 
@@ -150,43 +116,6 @@
 
         <label for="country">Country<span style="color: red">*</span></label>
         <input type="text" id="country" name="country" required />
-
-        <div class="section-divider"></div>
-
-        <!-- Veterinarian Qualifications Section -->
-        <h2>Veterinarian Qualifications</h2>
-        <label for="qualification"
-          >Qualification<span style="color: red">*</span></label
-        >
-        <input type="text" id="qualification" name="qualification" required />
-
-        <label for="university"
-          >University/College<span style="color: red">*</span></label
-        >
-        <input type="text" id="university" name="university" required />
-
-        <label for="countryQualification"
-          >Country<span style="color: red">*</span></label
-        >
-        <input
-          type="text"
-          id="countryQualification"
-          name="countryQualification"
-          required
-        />
-
-        <label for="yearAwarded"
-          >Year Awarded<span style="color: red">*</span></label
-        >
-        <input type="text" id="yearAwarded" name="yearAwarded" required />
-
-        <label for="document">Document (Upload File)</label>
-        <input
-          type="file"
-          id="document"
-          name="document"
-          accept=".pdf,.doc,.docx"
-        />
 
         <div class="section-divider"></div>
 
@@ -218,6 +147,7 @@
           <button type="button" onclick="window.location.href='register';">
             Back
           </button>
+          <!-- Direct to Pet Register page -->
           <button type="button" onclick="saveForm();">Continue</button>
         </div>
       </form>
