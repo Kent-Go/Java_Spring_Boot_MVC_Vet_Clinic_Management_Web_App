@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PetOwnerRegisterController {
 
     @GetMapping("/petOwnerRegister")
-    public String showVeterinarianRegister(Model model) {
+    public String showPetOwnerRegister(Model model) {
         return "petOwnerRegister"; // Corresponds to petOwnerRegister.html
     }
 
     @PostMapping("/petOwnerRegister")
-    public String registerVeterinarian(/* Add form parameters here */) {
+    public String registerPetOwner() {
         // Handle the form submission, save the pet owner details
         return "redirect:/petOwnerRegister"; // Redirect to the same page or to a success page
     }
