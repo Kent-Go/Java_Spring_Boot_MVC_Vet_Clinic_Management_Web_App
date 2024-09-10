@@ -38,11 +38,11 @@
             localStorage.setItem(key, value);
           });
 
-          // Save profile type as VETERINARIAN
-          localStorage.setItem("profileType", "VETERINARIAN");
+          // Save profile type as PETOWNET
+          localStorage.setItem("profileType", "PET_OWNER");
 
-          // Redirect to vetDashboard.html
-          window.location.href = "vetDashboard";
+          // Redirect to petRegister.html
+          window.location.href = "petRegister";
         }
       }
     </script>
@@ -51,9 +51,6 @@
     <div class="header">
       <a href="/">
         <img src="/images/logo.png" alt="Logo" class="logo" />
-      </a>
-      <a href="login" class="profile-link">
-        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
 
@@ -139,6 +136,7 @@
           <button type="button" onclick="window.location.href='register';">
             Back
           </button>
+          <!-- Direct to Pet Register page -->
           <button type="button" onclick="saveForm();">Continue</button>
         </div>
       </form>
