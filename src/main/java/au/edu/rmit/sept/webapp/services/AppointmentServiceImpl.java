@@ -24,13 +24,13 @@ public class AppointmentServiceImpl implements AppointmentService {
   }
 
   @Override
-  public Appointment getAppointmentByVetID(int vetID) {
-    return appointmentRepository.findById(vetID).orElseThrow(() -> new RuntimeException("Appointment not found"));
+  public Collection<Appointment> getAppointmentByVetID(int vetID) {
+    return appointmentRepository.findByVetID(vetID);
   }
 
   @Override
-  public Appointment getAppointmentByPetID(int petID) {
-    return appointmentRepository.findById(petID).orElseThrow(() -> new RuntimeException("Appointment not found"));
+  public Collection<Appointment> getAppointmentByPetID(int petID) {
+    return appointmentRepository.findByPetID(petID);
   }
 
   @Override
