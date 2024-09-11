@@ -98,8 +98,10 @@ h1, h2 {
 }
 
 .recent-article img {
-    width: 80px;
-    height: 80px;
+    width: 150px;  /* Maintain original aspect ratio */
+    height: 100px;  /* Set a fixed height, increase as needed */
+    border-radius: 8px;  /* Keep the border radius for rounded corners */
+    object-fit: cover;  /* Ensures that the image covers the area without stretching */
     margin-right: 15px;
 }
 
@@ -149,7 +151,8 @@ h1, h2 {
 }
 
 .video-card img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
+    width: 100%;  /* Fill the entire container width */
+    height: 150px;  /* Fill the entire container height */
+    object-fit: cover;  /* Ensures the image covers the container without distortion */
+    border-radius: 8px;  /* Apply rounded corners for the thumbnails */
 }
