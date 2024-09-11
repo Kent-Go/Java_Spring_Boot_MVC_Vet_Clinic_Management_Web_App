@@ -37,6 +37,8 @@ public class Appointment {
     @Column(name = "appointment_type_id")
     private int appointmentTypeID;
 
+    private String dayOfWeek;
+
     // Getters and Setters
     public Integer getId() {
         return id;
@@ -92,6 +94,14 @@ public class Appointment {
 
     public void setAppointmentTypeID(int appointmentTypeID) {
         this.appointmentTypeID = appointmentTypeID;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     // Default no-argument constructor required by JPA
