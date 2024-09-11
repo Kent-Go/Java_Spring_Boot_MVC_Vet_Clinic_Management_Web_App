@@ -77,7 +77,6 @@ h3 {
 }
 
 .container {
-  flex-grow: 1;
   padding: 2rem 10rem;
   text-align: center;
 }
@@ -85,9 +84,14 @@ h3 {
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: 50px repeat(6, 1fr);
-  gap: 1px;
-  border: 1px solid #ccc;
-  border-radius: 10px; 
-  background-color: #F9F9F9;
+  background-color: whitesmoke;
+  border: black 1px solid;
+  border-radius: 20px;
+}
+
+.appointment-card {
+  border-radius: 10px;
+  border: black 1px solid;
+  min-width: min-content;
+  margin: 20px;
 }
