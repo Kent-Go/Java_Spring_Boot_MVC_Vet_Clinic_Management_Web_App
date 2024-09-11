@@ -6,24 +6,28 @@
     <link rel="stylesheet" href="/css/vetDashboard.css" />
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Get the userID from URL
+        // Fetch the userId from the URL
         const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get("userId");
+        const urlUserID = urlParams.get("userId");
 
-        // Save the userId to localStorage
-        localStorage.setItem("userId", userId);
+        // Check if userId is not already stored
+        if (urlUserID && !localStorage.getItem("userId")) {
+          localStorage.setItem("userId", urlUserID);
+        }
 
-        if (userId) {
+        // Fetch the vet ID from the API
+        const userID = localStorage.getItem("userId");
+        if (userID) {
           // Fetch vet details based on userId through the API
-          fetch(`/api/vets/${userId}`)
+          fetch(`/api/vets/${userID}`)
             .then((response) => response.json())
             .then((data) => {
-              const vetId = data.id;
+              const vetID = data.id;
               const scheduleLink = document.querySelector(".schedule-link");
 
-              if (vetId) {
+              if (vetID) {
                 // Set the schedule link with the vetId
-                const newHref = `schedule?vetId=${vetId}`;
+                const newHref = `schedule?vetId=${vetID}`;
                 console.log("Setting schedule link href to:", newHref); // Log the new href
                 scheduleLink.href = newHref;
               } else {
