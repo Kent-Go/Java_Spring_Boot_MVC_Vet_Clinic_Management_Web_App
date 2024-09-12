@@ -35,12 +35,15 @@ public class LoginController {
         User user = userService.getUserByEmail(email);
 
         if (user != null && user.getPassword().equals(password)) {
+            // Store the user ID in session or pass it as a query parameter
+            String redirectUrl = "/userDashboard?userId=" + user.getId();
+            
             // If the user is a vet, redirect to vet dashboard
             if (vetService.getVetByUserID(user.getId()) != null) {
-                return "redirect:/vetDashboard";
-            } else {
-                return "redirect:/userDashboard";
+                redirectUrl = "/vetDashboard?userId=" + user.getId();
             }
+            
+            return "redirect:" + redirectUrl;
         } else {
             // If authentication fails, show error on login page
             model.addAttribute("error", "Email and/or password is incorrect!");

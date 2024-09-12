@@ -63,15 +63,17 @@
       <a href="/">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="login" class="profile-link">
-        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
-      </a>
     </div>
 
     <div class="registration-form">
       <h1>Veterinarian Registration</h1>
 
-      <form id="vetForm" enctype="multipart/form-data" onsubmit="return false;">
+      <form
+        id="vetForm"
+        enctype="multipart/form-data"
+        th:action="@{/veterinarianRegister}"
+        method="POST"
+      >
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
@@ -148,17 +150,19 @@
         <label for="postcode">Postcode<span style="color: red">*</span></label>
         <input type="text" id="postcode" name="postcode" required />
 
-        <label for="country">Country<span style="color: red">*</span></label>
-        <input type="text" id="country" name="country" required />
-
         <div class="section-divider"></div>
 
         <!-- Veterinarian Qualifications Section -->
         <h2>Veterinarian Qualifications</h2>
-        <label for="qualification"
+        <label for="qualification_name"
           >Qualification<span style="color: red">*</span></label
         >
-        <input type="text" id="qualification" name="qualification" required />
+        <input
+          type="text"
+          id="qualification_name"
+          name="qualification_name"
+          required
+        />
 
         <label for="university"
           >University/College<span style="color: red">*</span></label
@@ -218,7 +222,7 @@
           <button type="button" onclick="window.location.href='register';">
             Back
           </button>
-          <button type="button" onclick="saveForm();">Continue</button>
+          <button type="submit" onclick="saveForm();">Continue</button>
         </div>
       </form>
     </div>

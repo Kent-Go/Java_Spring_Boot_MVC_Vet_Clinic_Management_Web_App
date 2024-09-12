@@ -78,4 +78,16 @@ public class Vet {
     public void setSelfDescription(String selfDescription) {
         this.selfDescription = selfDescription;
     }
+
+    // Default no-argument constructor required by JPA
+    public Vet() {
+    }
+
+    // Constructor without ID because it is auto-generated
+    public Vet(String title, String languagesSpoken, String selfDescription, int userID) {
+        this.title = title;
+        this.languagesSpoken = languagesSpoken;
+        this.selfDescription = selfDescription;
+        this.userID = userID;
+    }
 }
