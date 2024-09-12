@@ -8,75 +8,65 @@
   <body>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Retrieve the schedule link element which is the active link in the navbar (schedule page)
-        const scheduleLink = document.getElementById("schedule-link");
+        // Function to get the start and end of a week based on a given start date
+        function getWeekRange(startDate) {
+          const startOfWeek = new Date(startDate);
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 6); // Set end of week to 6 days after start
 
-        if (scheduleLink) {
-          // Function to get the start of the current week
-          function getStartOfWeek(date) {
-            const dayOfWeek = date.getDay();
-            const startOfWeek = new Date(date);
-            // Calculate the start of the week based on the day of the week
-            startOfWeek.setDate(
-              date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)
-            );
-            return startOfWeek.toISOString().split("T")[0];
-          }
-
-          // Get the current start of the week
-          const currentWeekStart = getStartOfWeek(new Date());
-
-          // Retrieve vetId from localStorage
-          const vetId = localStorage.getItem("vetId");
-
-          // Check if vetId is missing from localStorage
-          if (!vetId) {
-            console.error("vetId is missing from localStorage.");
-            return;
-          }
-
-          // Construct the URL with the current week start date
-          const currentUrl = `/schedule?vetId=${vetId}&weekStart=${currentWeekStart}`;
-
-          // Update the href attribute of the schedule link to be the current URL with the current week's start date
-          scheduleLink.href = currentUrl;
+          return {
+            start: startOfWeek.toISOString().split("T")[0],
+            end: endOfWeek.toISOString().split("T")[0],
+          };
         }
 
-        // Retrieve weekStart input element
+        // Retrieve weekStart value from the hidden input
         const weekStartInput = document.getElementById("weekStart");
+        if (weekStartInput) {
+          const weekStart = weekStartInput.value;
+          if (weekStart) {
+            const { start, end } = getWeekRange(weekStart);
 
-        // Check if weekStart input element is missing
-        if (!weekStartInput) {
-          console.error("weekStart input element is missing.");
-          return;
-        }
-
-        // Retrieve weekStart value from input element
-        const weekStart = weekStartInput.value;
-
-        // Retrieve vetId from localStorage
-        const vetId = localStorage.getItem("vetId");
-
-        // Check if vetId is missing from localStorage
-        if (!vetId) {
-          console.error("vetId is missing from localStorage.");
-          return;
-        }
-
-        const currentWeekStart = new Date(weekStart);
-
-        if (isNaN(currentWeekStart.getTime())) {
-          console.error("Invalid weekStart date:", weekStart);
-          return;
+            // Update the appointments range heading with the start and end of the week selected
+            const appointmentsHeading =
+              document.getElementById("appointments-range");
+            if (appointmentsHeading) {
+              appointmentsHeading.innerText = `${start} - ${end}`;
+            }
+          }
         }
 
         // Function to navigate to a different week
         function navigateWeek(offset) {
+          const weekStartInput = document.getElementById("weekStart");
+          if (!weekStartInput) {
+            console.error("weekStart input element is missing.");
+            return;
+          }
+
+          const weekStart = new Date(weekStartInput.value);
+          if (isNaN(weekStart.getTime())) {
+            console.error("Invalid weekStart date:", weekStart);
+            return;
+          }
+
+          // Calculate the new week start and end dates based on the offset
           const newWeekStartDate = new Date(
-            currentWeekStart.setDate(currentWeekStart.getDate() + offset * 7)
+            weekStart.setDate(weekStart.getDate() + offset * 7)
           );
-          // Convert the new week start date to a string
           const newWeekStart = newWeekStartDate.toISOString().split("T")[0];
+          const newWeekEnd = new Date(
+            newWeekStartDate.setDate(newWeekStartDate.getDate() + 6)
+          )
+            .toISOString()
+            .split("T")[0];
+
+          // Retrieve vetId from localStorage
+          const vetId = localStorage.getItem("vetId");
+          if (!vetId) {
+            console.error("vetId is missing from localStorage.");
+            return;
+          }
 
           // Construct the new URL
           const newUrl = `/schedule?vetId=${vetId}&weekStart=${newWeekStart}`;
@@ -97,6 +87,45 @@
           .addEventListener("click", function () {
             navigateWeek(1);
           });
+
+        // Retrieve the schedule link element
+        const scheduleLink = document.getElementById("schedule-link");
+
+        // Function to set the schedule link to the current week's schedule
+        function setScheduleLinkToCurrentWeek() {
+          const now = new Date();
+          const startOfWeek = new Date(
+            now.setDate(now.getDate() - now.getDay() + 1)
+          ); // Monday
+          const weekStart = startOfWeek.toISOString().split("T")[0];
+
+          // Retrieve vetId from localStorage
+          const vetId = localStorage.getItem("vetId");
+          if (!vetId) {
+            console.error("vetId is missing from localStorage.");
+            return;
+          }
+
+          // Construct the URL for the current week
+          const currentWeekUrl = `/schedule?vetId=${vetId}&weekStart=${weekStart}`;
+
+          // Update the href attribute of the schedule link
+          if (scheduleLink) {
+            scheduleLink.href = currentWeekUrl;
+          }
+        }
+
+        // Set the schedule link to the current week's schedule if on the schedule page
+        if (window.location.pathname.includes("schedule")) {
+          setScheduleLinkToCurrentWeek();
+        }
+
+        // Add click event to schedule-link to navigate to the current week
+        if (scheduleLink) {
+          scheduleLink.addEventListener("click", function () {
+            setScheduleLinkToCurrentWeek();
+          });
+        }
       });
     </script>
 
@@ -123,7 +152,10 @@
 
       <!-- Arrow buttons and heading in a flex container -->
       <div class="arrow-buttons-container">
-        <h2>Appointments for</h2>
+        <h2>
+          Appointments for:
+          <span id="appointments-range">Start of Week - End of Week</span>
+        </h2>
         <div class="arrow-buttons">
           <button class="arrow-button" id="left-arrow">
             <img src="/images/left-arrow-icon.png" alt="Left Arrow" />
