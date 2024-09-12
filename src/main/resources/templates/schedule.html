@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vet Dashboard</title>
+    <link rel="stylesheet" href="/css/schedule.css" />
+  </head>
+  <body>
+    <div class="header">
+      <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+      </a>
+      <a href="profile" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+      </a>
+    </div>
+
+    <div class="nav-bar">
+      <a href="vetDashboard">Home</a>
+      <a href="patients">Patients</a>
+      <a href="schedule" class="active">Schedule</a>
+      <a href="availability">Availability</a>
+      <a href="vetFaq">FAQ</a>
+    </div>
+
+    <!-- Weekly Calendar View -->
+    <div class="container">
+      <h1 style="text-align: left">Your Weekly Schedule</h1>
+      <h2 style="text-align: left">Appointments for</h2>
+
+      <!-- Left and right arrow button (Aligned right)-->
+
+      <!-- Container for the calendar -->
+      <div class="calendar">
+        <!-- Monday -->
+        <div class="day">
+          <h3>Mon</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Mon'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Tue</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Tue'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Wed</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Wed'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Thu</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Thu'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Fri</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Fri'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Sat</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Sat'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="day">
+          <h3>Sun</h3>
+          <div
+            th:each="appointment : ${appointments}"
+            th:if="${appointment.dayOfWeek == 'Sun'}"
+            class="appointment-card"
+          >
+            <h4>Appointment</h4>
+            <p>
+              <span th:text="${appointment.startTime}">Time</span>
+              -
+              <span th:text="${appointment.endTime}">Time</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

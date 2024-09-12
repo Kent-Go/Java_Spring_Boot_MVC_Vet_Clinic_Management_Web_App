@@ -27,8 +27,8 @@ public class VetRestController {
         return vetServiceImpl.getAllVets();
     }
 
-    @GetMapping("/userID={id}")
-    public Vet getVetById(@PathVariable int userID) {
+    @GetMapping("/{userID}")
+    public Vet getVetById(@PathVariable("userID") int userID) {
         return vetServiceImpl.getVetByUserID(userID);
     }
 

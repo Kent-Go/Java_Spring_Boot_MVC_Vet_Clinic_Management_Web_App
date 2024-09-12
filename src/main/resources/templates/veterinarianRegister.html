@@ -68,7 +68,12 @@
     <div class="registration-form">
       <h1>Veterinarian Registration</h1>
 
-      <form id="vetForm" enctype="multipart/form-data" th:action="@{/veterinarianRegister}" method="POST">
+      <form
+        id="vetForm"
+        enctype="multipart/form-data"
+        th:action="@{/veterinarianRegister}"
+        method="POST"
+      >
         <div class="section-divider"></div>
 
         <!-- Personal Information Section -->
@@ -152,7 +157,12 @@
         <label for="qualification_name"
           >Qualification<span style="color: red">*</span></label
         >
-        <input type="text" id="qualification_name" name="qualification_name" required />
+        <input
+          type="text"
+          id="qualification_name"
+          name="qualification_name"
+          required
+        />
 
         <label for="university"
           >University/College<span style="color: red">*</span></label
