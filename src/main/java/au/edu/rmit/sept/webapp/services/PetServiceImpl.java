@@ -29,8 +29,8 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Collection<Pet> getPetsByOwnerID(int ownerID){
-        return petRepository.findAllByOwnerId(ownerID);
+    public Collection<Pet> getPetsByPetOwnerID(int petOwnerID){
+        return petRepository.findAllByPetOwnerID(petOwnerID);
     }
 
     @Override

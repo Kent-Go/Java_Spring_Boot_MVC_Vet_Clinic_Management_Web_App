@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import au.edu.rmit.sept.webapp.models.Pet;
 
 public interface PetRepository extends JpaRepository<Pet, Integer> {
-    Collection<Pet> findAllByOwnerId(int ownerID);
+    Collection<Pet> findAllByPetOwnerID(int ownerID);
 }
