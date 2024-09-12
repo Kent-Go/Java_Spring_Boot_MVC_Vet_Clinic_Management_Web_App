@@ -63,30 +63,30 @@ public class VeterinarianRegisterController {
             @RequestParam("countryQualification") String country,
             @RequestParam("yearAwarded") String year,
 
-            Model model)
-        {
+            Model model) {
         // Handle the form submission, save the veterinarian details
 
         // Create user entitiy
-        User user = new User( firstName, lastName, LocalDate.parse(birthDate, DateTimeFormatter.ISO_LOCAL_DATE), gender, phoneNumber, email, password);
+        User user = new User(firstName, lastName, LocalDate.parse(birthDate, DateTimeFormatter.ISO_LOCAL_DATE), gender,
+                phoneNumber, email, password);
         userService.createUser(user);
 
         // Get the user_id by email
-        int user_id = userService.getUserByEmail(email).getId();
+        int userID = userService.getUserByEmail(email).getId();
 
         // Create address entity
-        Address address = new Address(street, suburb, state, postcode, user_id);
+        Address address = new Address(street, suburb, state, postcode, userID);
         addressService.createAddress(address);
 
         // Create vet entity
-        Vet vet = new Vet( title, languagesSpoken, selfDescription, user_id);
+        Vet vet = new Vet(title, languagesSpoken, selfDescription, userID);
         vetService.createVet(vet);
 
         // Get the vet_id by user_id
-        int vet_id = vetService.getVetByUserID(user_id).getId();
+        int vetID = vetService.getVetByUserID(userID).getId();
 
         // Create qualification entity
-        Qualification qualification = new Qualification( name, university, country, Integer.parseInt(year), vet_id);
+        Qualification qualification = new Qualification(name, university, country, Integer.parseInt(year), vetID);
         qualificationService.createQualification(qualification);
 
         return "redirect:/profile"; // Redirect to the same page or to a success page
