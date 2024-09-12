@@ -14,9 +14,13 @@
         // If both vetId and userId are available, update the vetDashboard URL to display the correct vet's daily schedule
         if (vetId && userId) {
           const vetDashboardLink = document.querySelector("#vet-dashboard-link");
+          const logoLink = document.querySelector("#logo-link");
           console.log(vetDashboardLink);
           if (vetDashboardLink) {
             vetDashboardLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+          }
+          if (logoLink) {
+            logoLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
           }
         } else {
           console.log("vetId or userId is missing from localStorage.");
@@ -144,7 +148,7 @@
     </script>
 
     <div class="header">
-      <a href="vetDashboard">
+      <a href="#" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a href="profile" class="profile-link">
