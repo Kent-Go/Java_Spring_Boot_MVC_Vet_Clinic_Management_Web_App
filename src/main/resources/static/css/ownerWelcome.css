@@ -1,0 +1,141 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    width: 100%;
+    background-color: #007bff;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header img.logo {
+    width: 50px;
+    height: auto;
+    margin-left: 15px;
+}
+
+.profile-link {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white;
+    padding: 5px;
+}
+
+.welcome-text {
+    padding-left: 150px; 
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 150px; /* Optional: adjust the margin as needed */
+}
+
+.schedule-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.schedule-btn:hover {
+    background-color: #0056b3; /* Slightly darker color on hover */
+}
+
+.appointment-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+/* Container holding both buttons */
+.appointment-actions {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    margin-top: 20px; /* Space above the buttons */
+}
+
+/* Styles for both buttons */
+.appointment-actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; /* Space between the two buttons */
+}
+
+/* Hover effect for both buttons */
+.appointment-actions button:hover {
+    background-color: #0056b3; /* Slightly darker blue on hover */
+}
+
+/* Individual button styles */
+.reschedule-btn {
+    background-color: #007bff;
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* Red for the Cancel button */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Navbar styles */
+.navbar {
+    width: 100%;
+    background-color: #0096C7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    margin: 0 50px;
+    padding: 10px 0;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #111;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    color: lightgray;
+}
