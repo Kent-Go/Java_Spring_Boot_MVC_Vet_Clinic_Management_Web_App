@@ -6,6 +6,37 @@
     <link rel="stylesheet" href="/css/vetDashboard.css" />
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the userId from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUserID = urlParams.get("userId");
+
+        // Check if userId is not already stored
+        if (urlUserID && !localStorage.getItem("userId")) {
+          localStorage.setItem("userId", urlUserID);
+        }
+
+        // Fetch the vet ID from the API
+        const userID = localStorage.getItem("userId");
+        if (userID) {
+          // Fetch vet details based on userId through the API
+          fetch(`/api/vets/${userID}`)
+            .then((response) => response.json())
+            .then((data) => {
+              const vetID = data.id;
+              const scheduleLink = document.querySelector(".schedule-link");
+
+              if (vetID) {
+                // Set the schedule link with the vetId
+                const newHref = `schedule?vetId=${vetID}`;
+                console.log("Setting schedule link href to:", newHref); // Log the new href
+                scheduleLink.href = newHref;
+              } else {
+                console.error("Vet ID not found");
+              }
+            })
+            .catch((error) => console.error("Error fetching vet ID:", error));
+        }
+
         // Retrieve the first name and last name from localStorage
         var firstName = localStorage.getItem("firstname");
         var lastName = localStorage.getItem("lastname");
@@ -34,7 +65,7 @@
     <div class="nav-bar">
       <a href="vetDashboard" class="active">Home</a>
       <a href="patients">Patients</a>
-      <a href="schedule">Schedule</a>
+      <a href="#" class="schedule-link">Schedule</a>
       <a href="availability">Availability</a>
       <a href="vetFaq">FAQ</a>
     </div>
