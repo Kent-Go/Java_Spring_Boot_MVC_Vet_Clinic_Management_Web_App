@@ -2,8 +2,6 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

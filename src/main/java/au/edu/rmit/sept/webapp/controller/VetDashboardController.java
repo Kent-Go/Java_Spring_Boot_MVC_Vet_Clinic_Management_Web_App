@@ -12,11 +12,8 @@ import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.PetOwner;
 import au.edu.rmit.sept.webapp.models.User;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Date;
 import java.time.LocalDate;
-import java.util.Locale;
+import java.util.Collection;
 
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.PetService;

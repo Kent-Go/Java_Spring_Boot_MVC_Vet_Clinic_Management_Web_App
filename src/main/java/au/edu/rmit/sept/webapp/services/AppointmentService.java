@@ -5,8 +5,6 @@ import java.util.Collection;
 
 import au.edu.rmit.sept.webapp.models.Appointment;
 
-import java.util.Date;
-
 public interface AppointmentService {
   // Get all the appointments
   public Collection<Appointment> getAllAppointments();
@@ -25,5 +23,4 @@ public interface AppointmentService {
 
   // Get appointments by VetID and Date
   public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date);
-  
 }
