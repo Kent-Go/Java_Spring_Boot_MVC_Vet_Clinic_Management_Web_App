@@ -45,19 +45,6 @@
             })
             .catch((error) => console.error("Error fetching vet ID:", error));
         }
-
-        // Retrieve the first name and last name from localStorage
-        var firstName = localStorage.getItem("firstname");
-        var lastName = localStorage.getItem("lastname");
-
-        // Set the welcome message with the fetched name
-        if (firstName && lastName) {
-          document.getElementById("welcomeName").textContent =
-            "Welcome, Dr " + firstName + " " + lastName;
-        } else {
-          document.getElementById("welcomeName").textContent =
-            "Welcome, Doctor";
-        }
       });
     </script>
   </head>
@@ -84,34 +71,24 @@
       <!-- Placeholder text, will be replaced by JS -->
       <h2>Your Appointments Today</h2>
       <div class="appointment">
-        <h3><span th:text="${#dates.format(today, 'EEEE, dd MMMM yyyy')}">12 January 2024</span></h3>
-        <div class="appointment-card">
-          <h4>1. General Clinical Consultation at 10:30</h4>
-          <p><strong>Patient:</strong> Donny</p>
-          <p><strong>Gender:</strong> Male</p>
-          <p><strong>Species:</strong> Dog</p>
-          <p><strong>Breed:</strong> Chihuahua</p>
-          <p><strong>Owner:</strong> John Johnny</p>
-          <p><strong>Gender:</strong> Male</p>
-          <p><strong>Email:</strong> littejohn@gmail.com</p>
-          <p><strong>Number:</strong> +61162745127</p>
-          <button>Pet Details</button>
-          <button>Owner Details</button>
+        <h3><span th:text="${#temporals.format(today, 'EEEE, dd MMMM yyyy')}"></span></h3>
+        
+        <div th:each="appointment, iterStat : ${appointments}">
+          <div class="appointment-card">
+            <h4 th:text="${iterStat.count + '. ' + appointment.appointmentType.name + ' at ' + appointment.startTime}"></h4>
+            <p><strong>Patient:</strong> <span th:text="${appointment.pet.name}"></span></p>
+            <p><strong>Gender:</strong> <span th:text="${appointment.pet.gender}"></span></p>
+            <p><strong>Species:</strong> <span th:text="${appointment.pet.species}"></span></p>
+            <p><strong>Breed:</strong> <span th:text="${appointment.pet.breed}"></span></p>
+            <p><strong>Owner:</strong> <span th:text="${appointment.pet.petOwner.user.name}"></span></p>
+            <p><strong>Gender:</strong> <span th:text="${appointment.pet.petOwner.user.gender}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${appointment.pet.petOwner.user.name}"></span></p>
+            <p><strong>Number:</strong> +<span th:text="${appointment.pet.petOwner.user.phoneNumber}"></span></p>
+            <button>Pet Details</button>
+            <button>Owner Details</button>
+          </div>
         </div>
-
-        <div class="appointment-card">
-          <h4>2. Surgery at 13:00</h4>
-          <p><strong>Patient:</strong> Snowy</p>
-          <p><strong>Gender:</strong> Female</p>
-          <p><strong>Species:</strong> Rabbit</p>
-          <p><strong>Breed:</strong> Lionhead</p>
-          <p><strong>Owner:</strong> John Johnny</p>
-          <p><strong>Gender:</strong> Male</p>
-          <p><strong>Email:</strong> littejohn@gmail.com</p>
-          <p><strong>Number:</strong> +61162745127</p>
-          <button>Pet Details</button>
-          <button>Owner Details</button>
-        </div>
+        
       </div>
     </div>
   </body>

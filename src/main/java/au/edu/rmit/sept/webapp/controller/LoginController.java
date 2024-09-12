@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.ui.Model;
 import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.models.Vet;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.VetService;
 
@@ -40,7 +41,8 @@ public class LoginController {
             
             // If the user is a vet, redirect to vet dashboard
             if (vetService.getVetByUserID(user.getId()) != null) {
-                redirectUrl = "/vetDashboard?userId=" + user.getId();
+                Vet vet = vetService.getVetByUserID(user.getId());
+                redirectUrl = "/vetDashboard?userId=" + user.getId() + "&vetId=" + vet.getId();
             }
             
             return "redirect:" + redirectUrl;

@@ -24,7 +24,7 @@ public class PetOwnerServiceImpl implements PetOwnerService {
   }
 
   @Override
-  public PetOwner getPetOwnerByUserID(int userID) {
+  public PetOwner getPetOwnerByPetOwnerID(int userID) {
     return petOwnerRepository.findById(userID).orElseThrow(() -> new RuntimeException("Pet Owner not found"));
   }
 

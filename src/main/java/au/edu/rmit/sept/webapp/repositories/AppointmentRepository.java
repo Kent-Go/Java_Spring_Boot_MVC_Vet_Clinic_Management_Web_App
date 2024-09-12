@@ -14,7 +14,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     public Collection<Appointment> findByPetID(int petID);
 
     //Find appointment using vet_id and date
-    public Collection<Appointment> findByVetIDAndDate(int vetID, Date date);
+    public Collection<Appointment> findByVetIDAndDateOrderByStartTimeAsc(int vetID, LocalDate date);
 
     //Find appointment and automatically order by date and startTime
     public Collection<Appointment> findByVetIDOrderByDateAscStartTimeAsc(int vetID);

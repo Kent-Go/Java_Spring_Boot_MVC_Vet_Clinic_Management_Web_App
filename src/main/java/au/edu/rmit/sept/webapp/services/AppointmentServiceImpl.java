@@ -45,13 +45,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     return appointmentRepository.findByPetID(petID);
   }
 
+  // create a new appointment
   @Override
   public Appointment createAppointment(Appointment appointment) {
     return appointmentRepository.save(appointment);
   }
 
+  // Get appointments by their vet ID and Date and order by startTime
   @Override
-  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, Date date) {
-    return appointmentRepository.findByVetIDAndDate(vetID, date);
+  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date) {
+    return appointmentRepository.findByVetIDAndDateOrderByStartTimeAsc(vetID, date);
   }
 }

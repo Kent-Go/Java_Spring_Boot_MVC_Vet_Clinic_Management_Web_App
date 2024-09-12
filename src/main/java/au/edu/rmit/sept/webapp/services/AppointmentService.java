@@ -24,6 +24,6 @@ public interface AppointmentService {
   public Appointment createAppointment(Appointment appointment);
 
   // Get appointments by VetID and Date
-  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, Date date);
+  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date);
   
 }
