@@ -4,12 +4,102 @@
     <meta charset="UTF-8" />
     <title>Vet Dashboard</title>
     <link rel="stylesheet" href="/css/schedule.css" />
-
-    <script>
-
-    </script>
   </head>
   <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Retrieve the schedule link element which is the active link in the navbar (schedule page)
+        const scheduleLink = document.getElementById("schedule-link");
+
+        if (scheduleLink) {
+          // Function to get the start of the current week
+          function getStartOfWeek(date) {
+            const dayOfWeek = date.getDay();
+            const startOfWeek = new Date(date);
+            // Calculate the start of the week based on the day of the week
+            startOfWeek.setDate(
+              date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1)
+            );
+            return startOfWeek.toISOString().split("T")[0];
+          }
+
+          // Get the current start of the week
+          const currentWeekStart = getStartOfWeek(new Date());
+
+          // Retrieve vetId from localStorage
+          const vetId = localStorage.getItem("vetId");
+
+          // Check if vetId is missing from localStorage
+          if (!vetId) {
+            console.error("vetId is missing from localStorage.");
+            return;
+          }
+
+          // Construct the URL with the current week start date
+          const currentUrl = `/schedule?vetId=${vetId}&weekStart=${currentWeekStart}`;
+
+          // Update the href attribute of the schedule link to be the current URL with the current week's start date
+          scheduleLink.href = currentUrl;
+        }
+
+        // Retrieve weekStart input element
+        const weekStartInput = document.getElementById("weekStart");
+
+        // Check if weekStart input element is missing
+        if (!weekStartInput) {
+          console.error("weekStart input element is missing.");
+          return;
+        }
+
+        // Retrieve weekStart value from input element
+        const weekStart = weekStartInput.value;
+
+        // Retrieve vetId from localStorage
+        const vetId = localStorage.getItem("vetId");
+
+        // Check if vetId is missing from localStorage
+        if (!vetId) {
+          console.error("vetId is missing from localStorage.");
+          return;
+        }
+
+        const currentWeekStart = new Date(weekStart);
+
+        if (isNaN(currentWeekStart.getTime())) {
+          console.error("Invalid weekStart date:", weekStart);
+          return;
+        }
+
+        // Function to navigate to a different week
+        function navigateWeek(offset) {
+          const newWeekStartDate = new Date(
+            currentWeekStart.setDate(currentWeekStart.getDate() + offset * 7)
+          );
+          // Convert the new week start date to a string
+          const newWeekStart = newWeekStartDate.toISOString().split("T")[0];
+
+          // Construct the new URL
+          const newUrl = `/schedule?vetId=${vetId}&weekStart=${newWeekStart}`;
+
+          // Redirect to the new URL
+          window.location.href = newUrl;
+        }
+
+        // Add event listeners to the arrow buttons
+        document
+          .getElementById("left-arrow")
+          .addEventListener("click", function () {
+            navigateWeek(-1);
+          });
+
+        document
+          .getElementById("right-arrow")
+          .addEventListener("click", function () {
+            navigateWeek(1);
+          });
+      });
+    </script>
+
     <div class="header">
       <a href="/">
         <img src="/images/logo.png" alt="Logo" class="logo" />
@@ -22,7 +112,7 @@
     <div class="nav-bar">
       <a href="vetDashboard">Home</a>
       <a href="patients">Patients</a>
-      <a href="schedule" class="active">Schedule</a>
+      <a href="#" id="schedule-link" class="active">Schedule</a>
       <a href="availability">Availability</a>
       <a href="vetFaq">FAQ</a>
     </div>
@@ -43,6 +133,9 @@
           </button>
         </div>
       </div>
+
+      <!-- Hidden input to store the current week start date -->
+      <input type="hidden" id="weekStart" th:value="${weekStart}" />
 
       <!-- Container for the calendar -->
       <div class="calendar">
