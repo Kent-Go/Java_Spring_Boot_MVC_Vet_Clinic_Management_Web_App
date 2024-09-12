@@ -25,6 +25,8 @@
               const vetID = data.id;
               const scheduleLink = document.querySelector(".schedule-link");
 
+              localStorage.setItem("vetId", vetID);
+
               if (vetID) {
                 // Set the schedule link with the vetId
                 const newHref = `schedule?vetId=${vetID}`;
