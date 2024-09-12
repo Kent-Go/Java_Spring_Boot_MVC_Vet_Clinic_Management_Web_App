@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <title>Vet Dashboard</title>
     <link rel="stylesheet" href="/css/schedule.css" />
+
+    <script>
+
+    </script>
   </head>
   <body>
     <div class="header">
@@ -26,9 +30,19 @@
     <!-- Weekly Calendar View -->
     <div class="container">
       <h1 style="text-align: left">Your Weekly Schedule</h1>
-      <h2 style="text-align: left">Appointments for</h2>
 
-      <!-- Left and right arrow button (Aligned right)-->
+      <!-- Arrow buttons and heading in a flex container -->
+      <div class="arrow-buttons-container">
+        <h2>Appointments for</h2>
+        <div class="arrow-buttons">
+          <button class="arrow-button" id="left-arrow">
+            <img src="/images/left-arrow-icon.png" alt="Left Arrow" />
+          </button>
+          <button class="arrow-button" id="right-arrow">
+            <img src="/images/right-arrow-icon.png" alt="Right Arrow" />
+          </button>
+        </div>
+      </div>
 
       <!-- Container for the calendar -->
       <div class="calendar">
