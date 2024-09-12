@@ -77,7 +77,7 @@
       <!-- Placeholder text, will be replaced by JS -->
       <h2>Your Appointments Today</h2>
       <div class="appointment">
-        <h3>Monday, 11 January 2024</h3>
+        <h3><span th:text="${#dates.format(today, 'EEEE, dd MMMM yyyy')}">12 January 2024</span></h3>
         <div class="appointment-card">
           <h4>1. General Clinical Consultation at 10:30</h4>
           <p><strong>Patient:</strong> Donny</p>
