@@ -6,8 +6,131 @@
     <link rel="stylesheet" href="/css/schedule.css" />
   </head>
   <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to get the start and end of a week based on a given start date
+        function getWeekRange(startDate) {
+          const startOfWeek = new Date(startDate);
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 6); // Set end of week to 6 days after start
+
+          return {
+            start: startOfWeek.toISOString().split("T")[0],
+            end: endOfWeek.toISOString().split("T")[0],
+          };
+        }
+
+        // Retrieve weekStart value from the hidden input
+        const weekStartInput = document.getElementById("weekStart");
+        if (weekStartInput) {
+          const weekStart = weekStartInput.value;
+          if (weekStart) {
+            const { start, end } = getWeekRange(weekStart);
+
+            // Update the appointments range heading with the start and end of the week selected
+            const appointmentsHeading =
+              document.getElementById("appointments-range");
+            if (appointmentsHeading) {
+              appointmentsHeading.innerText = `${start} - ${end}`;
+            }
+          }
+        }
+
+        // Function to navigate to a different week
+        function navigateWeek(offset) {
+          const weekStartInput = document.getElementById("weekStart");
+          if (!weekStartInput) {
+            console.error("weekStart input element is missing.");
+            return;
+          }
+
+          const weekStart = new Date(weekStartInput.value);
+          if (isNaN(weekStart.getTime())) {
+            console.error("Invalid weekStart date:", weekStart);
+            return;
+          }
+
+          // Calculate the new week start and end dates based on the offset
+          const newWeekStartDate = new Date(
+            weekStart.setDate(weekStart.getDate() + offset * 7)
+          );
+          const newWeekStart = newWeekStartDate.toISOString().split("T")[0];
+          const newWeekEnd = new Date(
+            newWeekStartDate.setDate(newWeekStartDate.getDate() + 6)
+          )
+            .toISOString()
+            .split("T")[0];
+
+          // Retrieve vetId from localStorage
+          const vetId = localStorage.getItem("vetId");
+          if (!vetId) {
+            console.error("vetId is missing from localStorage.");
+            return;
+          }
+
+          // Construct the new URL
+          const newUrl = `/schedule?vetId=${vetId}&weekStart=${newWeekStart}`;
+
+          // Redirect to the new URL
+          window.location.href = newUrl;
+        }
+
+        // Add event listeners to the arrow buttons
+        document
+          .getElementById("left-arrow")
+          .addEventListener("click", function () {
+            navigateWeek(-1);
+          });
+
+        document
+          .getElementById("right-arrow")
+          .addEventListener("click", function () {
+            navigateWeek(1);
+          });
+
+        // Retrieve the schedule link element
+        const scheduleLink = document.getElementById("schedule-link");
+
+        // Function to set the schedule link to the current week's schedule
+        function setScheduleLinkToCurrentWeek() {
+          const now = new Date();
+          const startOfWeek = new Date(
+            now.setDate(now.getDate() - now.getDay() + 1)
+          ); // Monday
+          const weekStart = startOfWeek.toISOString().split("T")[0];
+
+          // Retrieve vetId from localStorage
+          const vetId = localStorage.getItem("vetId");
+          if (!vetId) {
+            console.error("vetId is missing from localStorage.");
+            return;
+          }
+
+          // Construct the URL for the current week
+          const currentWeekUrl = `/schedule?vetId=${vetId}&weekStart=${weekStart}`;
+
+          // Update the href attribute of the schedule link
+          if (scheduleLink) {
+            scheduleLink.href = currentWeekUrl;
+          }
+        }
+
+        // Set the schedule link to the current week's schedule if on the schedule page
+        if (window.location.pathname.includes("schedule")) {
+          setScheduleLinkToCurrentWeek();
+        }
+
+        // Add click event to schedule-link to navigate to the current week
+        if (scheduleLink) {
+          scheduleLink.addEventListener("click", function () {
+            setScheduleLinkToCurrentWeek();
+          });
+        }
+      });
+    </script>
+
     <div class="header">
-      <a href="/">
+      <a href="vetDashboard">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a href="profile" class="profile-link">
@@ -18,7 +141,7 @@
     <div class="nav-bar">
       <a href="vetDashboard">Home</a>
       <a href="patients">Patients</a>
-      <a href="schedule" class="active">Schedule</a>
+      <a href="#" id="schedule-link" class="active">Schedule</a>
       <a href="availability">Availability</a>
       <a href="vetFaq">FAQ</a>
     </div>
@@ -26,9 +149,25 @@
     <!-- Weekly Calendar View -->
     <div class="container">
       <h1 style="text-align: left">Your Weekly Schedule</h1>
-      <h2 style="text-align: left">Appointments for</h2>
 
-      <!-- Left and right arrow button (Aligned right)-->
+      <!-- Arrow buttons and heading in a flex container -->
+      <div class="arrow-buttons-container">
+        <h2>
+          Appointments for:
+          <span id="appointments-range">Start of Week - End of Week</span>
+        </h2>
+        <div class="arrow-buttons">
+          <button class="arrow-button" id="left-arrow">
+            <img src="/images/left-arrow-icon.png" alt="Left Arrow" />
+          </button>
+          <button class="arrow-button" id="right-arrow">
+            <img src="/images/right-arrow-icon.png" alt="Right Arrow" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Hidden input to store the current week start date -->
+      <input type="hidden" id="weekStart" th:value="${weekStart}" />
 
       <!-- Container for the calendar -->
       <div class="calendar">
