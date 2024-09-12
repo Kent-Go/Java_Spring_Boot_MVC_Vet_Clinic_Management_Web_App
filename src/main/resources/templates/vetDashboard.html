@@ -28,8 +28,15 @@
               localStorage.setItem("vetId", vetID);
 
               if (vetID) {
-                // Set the schedule link with the vetId
-                const newHref = `schedule?vetId=${vetID}`;
+                // Calculate the start date of the current week (e.g., Monday of the current week)
+                const now = new Date();
+                const startOfWeek = new Date(
+                  now.setDate(now.getDate() - now.getDay() + 1)
+                ); // Monday
+                const weekStart = startOfWeek.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+
+                // Set the schedule link with vetId and weekStart
+                const newHref = `schedule?vetId=${vetID}&weekStart=${weekStart}`;
                 console.log("Setting schedule link href to:", newHref); // Log the new href
                 scheduleLink.href = newHref;
               } else {

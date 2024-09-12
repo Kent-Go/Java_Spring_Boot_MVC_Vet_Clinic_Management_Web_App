@@ -62,12 +62,12 @@ body {
 h1 {
   font-size: 32px;
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 h2 {
   font-size: 24px;
-  color: #555;
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -94,4 +94,30 @@ h3 {
   border: black 1px solid;
   min-width: min-content;
   margin: 20px;
+}
+.arrow-buttons-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.arrow-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.arrow-button {
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.arrow-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.arrow-button img:hover {
+  filter: invert(0.5);
 }
