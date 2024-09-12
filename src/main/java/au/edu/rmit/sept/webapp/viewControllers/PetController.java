@@ -39,8 +39,8 @@ public class PetController {
     }
 
     @PostMapping("/pets/new")
-    public String registerVet(@ModelAttribute Pet pet, Model model) {
+    public String registerPet(@ModelAttribute Pet pet, Model model) {
         petService.createPet(pet);
-        return "redirect:/vet_example";
+        return "redirect:/pets";
     }
 }
