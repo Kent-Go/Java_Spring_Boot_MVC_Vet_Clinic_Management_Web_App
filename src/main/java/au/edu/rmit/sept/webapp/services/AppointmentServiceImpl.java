@@ -25,7 +25,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
   @Override
   public Collection<Appointment> getAppointmentByVetID(int vetID) {
-    return appointmentRepository.findByVetID(vetID);
+    return appointmentRepository.findByVetIDOrderByDateAscStartTimeAsc(vetID);
   }
 
   @Override
