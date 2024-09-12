@@ -8,6 +8,20 @@
   <body>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        const vetId = localStorage.getItem("vetId");
+
+        // If both vetId and userId are available, update the vetDashboard URL to display the correct vet's daily schedule
+        if (vetId && userId) {
+          const vetDashboardLink = document.querySelector("#vet-dashboard-link");
+          console.log(vetDashboardLink);
+          if (vetDashboardLink) {
+            vetDashboardLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+          }
+        } else {
+          console.log("vetId or userId is missing from localStorage.");
+        }
+
         // Function to get the start and end of a week based on a given start date
         function getWeekRange(startDate) {
           const startOfWeek = new Date(startDate);
@@ -139,7 +153,7 @@
     </div>
 
     <div class="nav-bar">
-      <a href="vetDashboard">Home</a>
+      <a href="#" id="vet-dashboard-link">Home</a>
       <a href="patients">Patients</a>
       <a href="#" id="schedule-link" class="active">Schedule</a>
       <a href="availability">Availability</a>
