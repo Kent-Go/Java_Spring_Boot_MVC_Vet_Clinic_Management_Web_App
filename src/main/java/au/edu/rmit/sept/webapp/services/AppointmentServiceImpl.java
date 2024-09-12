@@ -2,10 +2,9 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.repositories.AppointmentRepository;
@@ -44,8 +43,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     return appointmentRepository.findByPetID(petID);
   }
 
+  // create a new appointment
   @Override
   public Appointment createAppointment(Appointment appointment) {
     return appointmentRepository.save(appointment);
+  }
+
+  // Get appointments by their vet ID and Date and order by startTime
+  @Override
+  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date) {
+    return appointmentRepository.findByVetIDAndDateOrderByStartTimeAsc(vetID, date);
   }
 }

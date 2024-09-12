@@ -20,5 +20,7 @@ public interface AppointmentService {
 
   // Create a new appointment
   public Appointment createAppointment(Appointment appointment);
-  
+
+  // Get appointments by VetID and Date
+  public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date);
 }
