@@ -6,21 +6,25 @@
     <link rel="stylesheet" href="/css/profile.css" />
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const userId = localStorage.getItem("userId");
-        const vetId = localStorage.getItem("vetId");
+        const userID = localStorage.getItem("userId");
+        const vetID = localStorage.getItem("vetId");
 
-        // If both vetId and userId are available, update the vetDashboard URL to display the correct vet's daily schedule
-        if (vetId && userId) {
+        // If both vetId and userId are available, update the dynamic URLs
+        if (vetID && userID) {
           const vetDashboardLink = document.querySelector(
             "#vet-dashboard-link"
           );
           const logoLink = document.querySelector("#logo-link");
+          const profileLink = document.querySelector("#profile-link");
           console.log(vetDashboardLink);
           if (vetDashboardLink) {
-            vetDashboardLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+            vetDashboardLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
           }
           if (logoLink) {
-            logoLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+            logoLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
+          }
+          if (profileLink) {
+            profileLink.href = `/profile?vetId=${vetID}`;
           }
         } else {
           console.log("vetId or userId is missing from localStorage.");
@@ -35,7 +39,7 @@
         const scheduleLink = document.querySelector("#schedule-link");
         // Update the href attribute of the schedule link
         if (scheduleLink) {
-          scheduleLink.href = `/schedule?vetId=${vetId}&weekStart=${weekStart}`;
+          scheduleLink.href = `/schedule?vetId=${vetID}&weekStart=${weekStart}`;
         }
       });
 
@@ -57,7 +61,7 @@
       <a href="#" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="login" class="profile-link">
+      <a href="#" id="profile-link" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
@@ -100,7 +104,6 @@
             <p><strong>Suburb:</strong> <span id="suburb"></span></p>
             <p><strong>State:</strong> <span id="state"></span></p>
             <p><strong>Postcode:</strong> <span id="postcode"></span></p>
-            <p><strong>Country:</strong> <span id="country"></span></p>
 
             <h3>Qualification</h3>
             <p>
@@ -253,16 +256,6 @@
                   id="edit-postcode"
                   name="postcode"
                   placeholder="Postcode"
-                  required
-                />
-              </p>
-              <p>
-                <strong>Country:</strong>
-                <input
-                  type="text"
-                  id="edit-country"
-                  name="country"
-                  placeholder="Country"
                   required
                 />
               </p>

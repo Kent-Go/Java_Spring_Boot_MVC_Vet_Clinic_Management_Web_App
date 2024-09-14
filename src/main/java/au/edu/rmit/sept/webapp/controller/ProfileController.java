@@ -1,22 +1,56 @@
 package au.edu.rmit.sept.webapp.controller;
 
 import java.util.Map;
+import java.util.List;
 import java.io.IOException;
 
 import org.springframework.ui.Model;
+import au.edu.rmit.sept.webapp.models.Vet;
+import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.models.Qualification;
+
+import au.edu.rmit.sept.webapp.services.VetService;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.QualificationService;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class ProfileController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private VetService vetService;
+
+    @Autowired
+    private QualificationService qualificationService;
 
     @GetMapping("/profile")
-    public String showProfilePage(Model model) {
-        // Load user profile data from the database or other sources
+    public String showProfilePage(@RequestParam("vetId") int vetId, Model model) {
+        // Get user profile data by vetId
+        User user = userService.getUserByUserID(vetId);
+
+        Vet vet = vetService.getVetByVetID(vetId);
+        vet.setUser(user);
+
+        // Get the qualifications of the vet
+        List<Qualification> qualifications = qualificationService.getQualificationsByVetID(vetId);
+
+        qualifications.forEach(qualification -> {
+            qualification.setVet(vet);
+        });
+
+        model.addAttribute("user", user);
+        model.addAttribute("vet", vet);
+        model.addAttribute("qualifications", qualifications);
+
         return "profile"; // Returns the profile.html view
     }
 
