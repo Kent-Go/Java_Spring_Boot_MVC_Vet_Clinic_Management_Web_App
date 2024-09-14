@@ -86,33 +86,69 @@
             />
           </div>
           <div class="profile-info">
-            <p><strong>Title:</strong> <span id="title"></span></p>
-            <p><strong>First Name:</strong> <span id="firstname"></span></p>
-            <p><strong>Last Name:</strong> <span id="lastname"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="dob"></span></p>
-            <p><strong>Gender:</strong> <span id="gender"></span></p>
-            <p><strong>Phone Number:</strong> <span id="phone"></span></p>
-            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Title:</strong> <span th:text="${vet.title}"></span></p>
             <p>
-              <strong>Languages Spoken:</strong> <span id="languages"></span>
+              <strong>First Name:</strong>
+              <span th:text="${user.firstName}"></span>
+            </p>
+            <p>
+              <strong>Last Name:</strong>
+              <span th:text="${user.lastName}"></span>
+            </p>
+            <p>
+              <strong>Date of Birth:</strong>
+              <span th:text="${user.birthDate}"></span>
+            </p>
+            <p>
+              <strong>Gender:</strong> <span th:text="${user.gender}"></span>
+            </p>
+            <p>
+              <strong>Phone Number:</strong>
+              <span th:text="${user.phoneNumber}"></span>
+            </p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+            <p>
+              <strong>Languages Spoken:</strong>
+              <span th:text="${vet.languagesSpoken}"></span>
             </p>
 
-            <h3>Current Residential Address:</h3>
+            <h3>Current Residential Address</h3>
             <p>
-              <strong>Street Address:</strong> <span id="streetAddress"></span>
+              <strong>Street Address:</strong>
+              <span th:text="${address.street}"></span>
             </p>
-            <p><strong>Suburb:</strong> <span id="suburb"></span></p>
-            <p><strong>State:</strong> <span id="state"></span></p>
-            <p><strong>Postcode:</strong> <span id="postcode"></span></p>
+            <p>
+              <strong>Suburb:</strong> <span th:text="${address.suburb}"></span>
+            </p>
+            <p>
+              <strong>State:</strong> <span th:text="${address.state}"></span>
+            </p>
+            <p>
+              <strong>Postcode:</strong>
+              <span th:text="${address.postcode}"></span>
+            </p>
 
-            <h3>Qualification</h3>
-            <p>
-              <strong>Qualification:</strong> <span id="qualification"></span>
-            </p>
-            <p>
-              <strong>University/College:</strong> <span id="university"></span>
-            </p>
-            <p><strong>Year Awarded:</strong> <span id="yearAwarded"></span></p>
+            <h3>Qualifications</h3>
+            <ol>
+              <li th:each="qualification : ${qualifications}">
+                <p>
+                  <strong>Qualification:</strong>
+                  <span th:text="${qualification.name}"></span>
+                </p>
+                <p>
+                  <strong>University/College:</strong>
+                  <span th:text="${qualification.university}"></span>
+                </p>
+                <p>
+                  <strong>Country:</strong>
+                  <span th:text="${qualification.country}"></span>
+                </p>
+                <p>
+                  <strong>Year Awarded:</strong>
+                  <span th:text="${qualification.year}"></span>
+                </p>
+              </li>
+            </ol>
 
             <div class="profile-actions">
               <button type="button" class="edit-button" onclick="editProfile()">

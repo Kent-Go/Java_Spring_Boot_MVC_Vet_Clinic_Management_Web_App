@@ -7,10 +7,12 @@ import java.io.IOException;
 import org.springframework.ui.Model;
 import au.edu.rmit.sept.webapp.models.Vet;
 import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.models.Qualification;
 
 import au.edu.rmit.sept.webapp.services.VetService;
 import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.QualificationService;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,9 @@ public class ProfileController {
     private UserService userService;
 
     @Autowired
+    private AddressService addressService;
+
+    @Autowired
     private VetService vetService;
 
     @Autowired
@@ -34,20 +39,28 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String showProfilePage(@RequestParam("vetId") int vetId, Model model) {
-        // Get user profile data by vetId
-        User user = userService.getUserByUserID(vetId);
-
+        // Get the vet by vetID and the user by userID that is associated with the vet
         Vet vet = vetService.getVetByVetID(vetId);
+        User user = userService.getUserByUserID(vet.getUserID());
+
+        // Associate the vet with the user
         vet.setUser(user);
+
+        // Get the address of the vet
+        Address address = addressService.getAddressByUserID(user.getId());
+        address.setUser(user);
 
         // Get the qualifications of the vet
         List<Qualification> qualifications = qualificationService.getQualificationsByVetID(vetId);
 
+        // Associate the qualifications with the vet
         qualifications.forEach(qualification -> {
             qualification.setVet(vet);
         });
 
+        // Add the vet, user, address, and qualifications to the model
         model.addAttribute("user", user);
+        model.addAttribute("address", address);
         model.addAttribute("vet", vet);
         model.addAttribute("qualifications", qualifications);
 
