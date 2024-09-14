@@ -5,118 +5,39 @@
     <title>Profile Details</title>
     <link rel="stylesheet" href="/css/profile.css" />
     <script>
-      function loadProfile() {
-        document.getElementById("title").innerText =
-          localStorage.getItem("title") || "";
-        document.getElementById("firstname").innerText =
-          localStorage.getItem("firstname") || "";
-        document.getElementById("lastname").innerText =
-          localStorage.getItem("lastname") || "";
-        document.getElementById("dob").innerText =
-          localStorage.getItem("dob") || "";
-        document.getElementById("gender").innerText =
-          localStorage.getItem("gender") || "";
-        document.getElementById("phone").innerText =
-          localStorage.getItem("phone") || "";
-        document.getElementById("email").innerText =
-          localStorage.getItem("email") || "";
-        document.getElementById("languages").innerText =
-          localStorage.getItem("language") || "";
-        document.getElementById("streetAddress").innerText =
-          localStorage.getItem("streetAddress") || "";
-        document.getElementById("suburb").innerText =
-          localStorage.getItem("suburb") || "";
-        document.getElementById("state").innerText =
-          localStorage.getItem("state") || "";
-        document.getElementById("postcode").innerText =
-          localStorage.getItem("postcode") || "";
-        document.getElementById("country").innerText =
-          localStorage.getItem("country") || "";
-        document.getElementById("qualification").innerText =
-          localStorage.getItem("qualification") || "";
-        document.getElementById("university").innerText =
-          localStorage.getItem("university") || "";
-        document.getElementById("yearAwarded").innerText =
-          localStorage.getItem("yearAwarded") || "";
+      document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        const vetId = localStorage.getItem("vetId");
 
-        var profilePicture = localStorage.getItem("profilePicture");
-        if (profilePicture) {
-          document.getElementById("profile-picture").src = profilePicture;
-          document.getElementById("edit-profilePicturePlaceholder").innerText =
-            "Change file";
-        }
-      }
-
-      function editProfile() {
-        document.getElementById("viewMode").style.display = "none";
-        document.getElementById("editMode").style.display = "block";
-
-        document.getElementById("edit-title").value =
-          localStorage.getItem("title") || "";
-        document.getElementById("edit-firstname").value =
-          localStorage.getItem("firstname") || "";
-        document.getElementById("edit-lastname").value =
-          localStorage.getItem("lastname") || "";
-        document.getElementById("edit-dob").value =
-          localStorage.getItem("dob") || "";
-        document.getElementById("edit-gender").value =
-          localStorage.getItem("gender") || "male";
-        document.getElementById("edit-phone").value =
-          localStorage.getItem("phone") || "";
-        document.getElementById("edit-email").value =
-          localStorage.getItem("email") || "";
-        document.getElementById("edit-languages").value =
-          localStorage.getItem("language") || "";
-        document.getElementById("edit-streetAddress").value =
-          localStorage.getItem("streetAddress") || "";
-        document.getElementById("edit-suburb").value =
-          localStorage.getItem("suburb") || "";
-        document.getElementById("edit-state").value =
-          localStorage.getItem("state") || "";
-        document.getElementById("edit-postcode").value =
-          localStorage.getItem("postcode") || "";
-        document.getElementById("edit-country").value =
-          localStorage.getItem("country") || "";
-        document.getElementById("edit-qualification").value =
-          localStorage.getItem("qualification") || "";
-        document.getElementById("edit-university").value =
-          localStorage.getItem("university") || "";
-        document.getElementById("edit-yearAwarded").value =
-          localStorage.getItem("yearAwarded") || "";
-
-        var profilePicture = localStorage.getItem("profilePicture");
-        if (profilePicture) {
-          document.getElementById("edit-profilePicturePreview").src =
-            profilePicture;
-          document.getElementById("edit-profilePicturePlaceholder").innerText =
-            "Change file";
-        }
-      }
-
-      function saveProfile() {
-        var formData = new FormData(document.querySelector("form"));
-        formData.forEach((value, key) => {
-          localStorage.setItem(key, value);
-        });
-
-        var profilePictureFile = document.getElementById("edit-profilePicture")
-          .files[0];
-
-        if (profilePictureFile) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            localStorage.setItem("profilePicture", e.target.result);
-            document.getElementById("profile-picture").src = e.target.result;
-            document.getElementById(
-              "edit-profilePicturePlaceholder"
-            ).innerText = "Change file";
-          };
-          reader.readAsDataURL(profilePictureFile);
+        // If both vetId and userId are available, update the vetDashboard URL to display the correct vet's daily schedule
+        if (vetId && userId) {
+          const vetDashboardLink = document.querySelector(
+            "#vet-dashboard-link"
+          );
+          const logoLink = document.querySelector("#logo-link");
+          console.log(vetDashboardLink);
+          if (vetDashboardLink) {
+            vetDashboardLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+          }
+          if (logoLink) {
+            logoLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+          }
+        } else {
+          console.log("vetId or userId is missing from localStorage.");
         }
 
-        alert("Profile updated successfully!");
-        window.location.reload();
-      }
+        const now = new Date();
+        const startOfWeek = new Date(
+          now.setDate(now.getDate() - now.getDay() + 1)
+        ); // Monday
+        const weekStart = startOfWeek.toISOString().split("T")[0];
+
+        const scheduleLink = document.querySelector("#schedule-link");
+        // Update the href attribute of the schedule link
+        if (scheduleLink) {
+          scheduleLink.href = `/schedule?vetId=${vetId}&weekStart=${weekStart}`;
+        }
+      });
 
       function cancelEdit() {
         document.getElementById("editMode").style.display = "none";
@@ -133,7 +54,7 @@
   </head>
   <body>
     <div class="header">
-      <a href="/">
+      <a href="#" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a href="login" class="profile-link">
@@ -142,9 +63,9 @@
     </div>
 
     <div class="nav-bar">
-      <a href="vetDashboard">Home</a>
+      <a href="#" id="vet-dashboard-link">Home</a>
       <a href="patients">Patients</a>
-      <a href="schedule">Schedule</a>
+      <a href="#" id="schedule-link">Schedule</a>
       <a href="availability">Availability</a>
       <a href="vetFaq">FAQ</a>
     </div>
