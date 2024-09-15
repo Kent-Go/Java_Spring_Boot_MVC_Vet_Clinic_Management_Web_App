@@ -24,6 +24,7 @@
             .then((data) => {
               const vetID = data.id;
               const scheduleLink = document.querySelector(".schedule-link");
+              const profileLink = document.querySelector("#profile-link");
 
               localStorage.setItem("vetId", vetID);
 
@@ -39,6 +40,10 @@
                 const newHref = `schedule?vetId=${vetID}&weekStart=${weekStart}`;
                 console.log("Setting schedule link href to:", newHref); // Log the new href
                 scheduleLink.href = newHref;
+
+                if (profileLink) {
+                  profileLink.href = `/profile?vetId=${vetID}`;
+                }
               } else {
                 console.error("Vet ID not found");
               }
@@ -53,13 +58,18 @@
       <a href="javascript:void(0)" onclick="window.location.reload()">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="profile" class="profile-link">
+      <a href="#" id="profile-link" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
 
     <div class="nav-bar">
-      <a href="javascript:void(0)" onclick="window.location.reload()" class="active">Home</a>
+      <a
+        href="javascript:void(0)"
+        onclick="window.location.reload()"
+        class="active"
+        >Home</a
+      >
       <a href="patients">Patients</a>
       <a href="#" class="schedule-link">Schedule</a>
       <a href="availability">Availability</a>
@@ -71,24 +81,54 @@
       <!-- Placeholder text, will be replaced by JS -->
       <h2>Your Appointments Today</h2>
       <div class="appointment">
-        <h3><span th:text="${#temporals.format(today, 'EEEE, dd MMMM yyyy')}"></span></h3>
-        
+        <h3>
+          <span
+            th:text="${#temporals.format(today, 'EEEE, dd MMMM yyyy')}"
+          ></span>
+        </h3>
+
         <div th:each="appointment, iterStat : ${appointments}">
           <div class="appointment-card">
-            <h4 th:text="${iterStat.count + '. ' + appointment.appointmentType.name + ' at ' + appointment.startTime}"></h4>
-            <p><strong>Patient:</strong> <span th:text="${appointment.pet.name}"></span></p>
-            <p><strong>Gender:</strong> <span th:text="${appointment.pet.gender}"></span></p>
-            <p><strong>Species:</strong> <span th:text="${appointment.pet.species}"></span></p>
-            <p><strong>Breed:</strong> <span th:text="${appointment.pet.breed}"></span></p>
-            <p><strong>Owner:</strong> <span th:text="${appointment.pet.petOwner.user.name}"></span></p>
-            <p><strong>Gender:</strong> <span th:text="${appointment.pet.petOwner.user.gender}"></span></p>
-            <p><strong>Email:</strong> <span th:text="${appointment.pet.petOwner.user.name}"></span></p>
-            <p><strong>Number:</strong> +<span th:text="${appointment.pet.petOwner.user.phoneNumber}"></span></p>
+            <h4
+              th:text="${iterStat.count + '. ' + appointment.appointmentType.name + ' at ' + appointment.startTime}"
+            ></h4>
+            <p>
+              <strong>Patient:</strong>
+              <span th:text="${appointment.pet.name}"></span>
+            </p>
+            <p>
+              <strong>Gender:</strong>
+              <span th:text="${appointment.pet.gender}"></span>
+            </p>
+            <p>
+              <strong>Species:</strong>
+              <span th:text="${appointment.pet.species}"></span>
+            </p>
+            <p>
+              <strong>Breed:</strong>
+              <span th:text="${appointment.pet.breed}"></span>
+            </p>
+            <p>
+              <strong>Owner:</strong>
+              <span th:text="${appointment.pet.petOwner.user.name}"></span>
+            </p>
+            <p>
+              <strong>Gender:</strong>
+              <span th:text="${appointment.pet.petOwner.user.gender}"></span>
+            </p>
+            <p>
+              <strong>Email:</strong>
+              <span th:text="${appointment.pet.petOwner.user.name}"></span>
+            </p>
+            <p>
+              <strong>Number:</strong> +<span
+                th:text="${appointment.pet.petOwner.user.phoneNumber}"
+              ></span>
+            </p>
             <button>Pet Details</button>
             <button>Owner Details</button>
           </div>
         </div>
-        
       </div>
     </div>
   </body>

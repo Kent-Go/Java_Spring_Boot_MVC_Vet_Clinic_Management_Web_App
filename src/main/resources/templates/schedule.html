@@ -8,19 +8,25 @@
   <body>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const userId = localStorage.getItem("userId");
-        const vetId = localStorage.getItem("vetId");
+        const userID = localStorage.getItem("userId");
+        const vetID = localStorage.getItem("vetId");
 
-        // If both vetId and userId are available, update the vetDashboard URL to display the correct vet's daily schedule
-        if (vetId && userId) {
-          const vetDashboardLink = document.querySelector("#vet-dashboard-link");
+        // If both vetID and userID are available, update the vetDashboard URL to display the correct vet's daily schedule
+        if (vetID && userID) {
+          const vetDashboardLink = document.querySelector(
+            "#vet-dashboard-link"
+          );
           const logoLink = document.querySelector("#logo-link");
+          const profileLink = document.querySelector("#profile-link");
           console.log(vetDashboardLink);
           if (vetDashboardLink) {
-            vetDashboardLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+            vetDashboardLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
           }
           if (logoLink) {
-            logoLink.href = `/vetDashboard?userId=${userId}&vetId=${vetId}`;
+            logoLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
+          }
+          if (profileLink) {
+            profileLink.href = `/profile?vetId=${vetID}`;
           }
         } else {
           console.log("vetId or userId is missing from localStorage.");
@@ -80,14 +86,14 @@
             .split("T")[0];
 
           // Retrieve vetId from localStorage
-          const vetId = localStorage.getItem("vetId");
-          if (!vetId) {
+          const vetID = localStorage.getItem("vetId");
+          if (!vetID) {
             console.error("vetId is missing from localStorage.");
             return;
           }
 
           // Construct the new URL
-          const newUrl = `/schedule?vetId=${vetId}&weekStart=${newWeekStart}`;
+          const newUrl = `/schedule?vetId=${vetID}&weekStart=${newWeekStart}`;
 
           // Redirect to the new URL
           window.location.href = newUrl;
@@ -118,14 +124,14 @@
           const weekStart = startOfWeek.toISOString().split("T")[0];
 
           // Retrieve vetId from localStorage
-          const vetId = localStorage.getItem("vetId");
-          if (!vetId) {
+          const vetID = localStorage.getItem("vetId");
+          if (!vetID) {
             console.error("vetId is missing from localStorage.");
             return;
           }
 
           // Construct the URL for the current week
-          const currentWeekUrl = `/schedule?vetId=${vetId}&weekStart=${weekStart}`;
+          const currentWeekUrl = `/schedule?vetId=${vetID}&weekStart=${weekStart}`;
 
           // Update the href attribute of the schedule link
           if (scheduleLink) {
@@ -151,7 +157,7 @@
       <a href="#" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="profile" class="profile-link">
+      <a href="#" id="profile-link" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
@@ -206,6 +212,7 @@
           </div>
         </div>
 
+        <!-- Tuesday -->
         <div class="day">
           <h3>Tue</h3>
           <div
@@ -222,6 +229,7 @@
           </div>
         </div>
 
+        <!-- Wednesday -->
         <div class="day">
           <h3>Wed</h3>
           <div
@@ -238,6 +246,7 @@
           </div>
         </div>
 
+        <!-- Thursday -->
         <div class="day">
           <h3>Thu</h3>
           <div
@@ -254,6 +263,7 @@
           </div>
         </div>
 
+        <!-- Friday -->
         <div class="day">
           <h3>Fri</h3>
           <div
@@ -270,6 +280,7 @@
           </div>
         </div>
 
+        <!-- Saturday -->
         <div class="day">
           <h3>Sat</h3>
           <div
@@ -286,6 +297,7 @@
           </div>
         </div>
 
+        <!-- Sunday -->
         <div class="day">
           <h3>Sun</h3>
           <div

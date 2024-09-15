@@ -4,6 +4,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -29,6 +31,10 @@ public class Qualification {
 
     @Column(name = "vet_id")
     private int vetID;
+
+    @ManyToOne
+    @JoinColumn(name = "vet_id", insertable = false, updatable = false)
+    private Vet vet;
 
     // Getters and Setters
     public int getId() {
@@ -77,6 +83,14 @@ public class Qualification {
 
     public void setVetID(int vetID) {
         this.vetID = vetID;
+    }
+
+    public Vet getVet() {
+        return vet;
+    }
+
+    public void setVet(Vet vet) {
+        this.vet = vet;
     }
 
     // Default no-argument constructor required by JPA

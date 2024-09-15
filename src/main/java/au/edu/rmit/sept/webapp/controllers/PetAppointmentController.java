@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.controllers;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import org.springframework.stereotype.Controller;

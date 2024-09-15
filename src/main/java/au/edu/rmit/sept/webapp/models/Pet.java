@@ -134,4 +134,18 @@ public class Pet {
     public void setPetOwner(PetOwner petOwner) {
         this.petOwner = petOwner;
     }
+
+    // Constructors
+    public Pet() {
+    }
+
+    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight, int petOwnerID) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.species = species;
+        this.breed = breed;
+        this.gender = gender;
+        this.weight = weight;
+        this.petOwnerID = petOwnerID;
+    }
 }
