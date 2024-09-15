@@ -35,11 +35,11 @@ public class PetOwner {
         this.id = id;
     }
 
-    public int getUserId() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserId(int id) {
+    public void setUserID(int id) {
         this.userID = id;
     }
 
@@ -49,5 +49,14 @@ public class PetOwner {
 
     public User getUser() {
         return user;
+    }
+
+    // Constructors
+    public PetOwner() {
+    }
+
+    public PetOwner(int id, int userID) {
+        this.id = id;
+        this.userID = userID;
     }
 }
