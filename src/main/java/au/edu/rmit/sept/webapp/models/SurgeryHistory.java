@@ -1,13 +1,15 @@
 package au.edu.rmit.sept.webapp.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
+import java.time.LocalDate;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import java.time.LocalDate;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "surgery_history")
@@ -33,6 +35,10 @@ public class SurgeryHistory {
     //Foreign key - Pet ID
     @Column(name = "pet_id")
     private int petID;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id", insertable = false, updatable = false)
+    private Pet pet;
 
     // Getters and Setters
     //ID
@@ -77,6 +83,26 @@ public class SurgeryHistory {
     }
 
     public void setPetID(int petID) {
+        this.petID = petID;
+    }
+
+    //Pet
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+
+    // Constructors
+    public SurgeryHistory() {
+    }
+
+    public SurgeryHistory(String name, LocalDate date, String notes, int petID) {
+        this.name = name;
+        this.date = date;
+        this.notes = notes;
         this.petID = petID;
     }
 }
