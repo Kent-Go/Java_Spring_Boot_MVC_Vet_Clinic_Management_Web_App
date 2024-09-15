@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.Map;
 import java.util.List;

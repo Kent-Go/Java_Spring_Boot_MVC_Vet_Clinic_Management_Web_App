@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.Locale;
 import java.util.Collection;
