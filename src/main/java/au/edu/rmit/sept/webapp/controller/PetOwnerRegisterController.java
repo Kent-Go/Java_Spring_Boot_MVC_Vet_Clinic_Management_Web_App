@@ -86,7 +86,7 @@ public class PetOwnerRegisterController {
 
         // Create a new pet owner
         PetOwner petOwner = new PetOwner();
-        petOwner.setUserId(savedUser.getId()); // Set the user ID for the pet owner to the user ID of the new user
+        petOwner.setUserID(savedUser.getId()); // Set the user ID for the pet owner to the user ID of the new user
                                                // created
 
         // Store user, address, and petOwner in session
