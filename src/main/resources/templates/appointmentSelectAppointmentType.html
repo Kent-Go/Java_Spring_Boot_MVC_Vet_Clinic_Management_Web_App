@@ -60,10 +60,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select an Appointment Type:</h3>
 
-    <div th:each="appointmentType : ${appointmentTypes}" class="appointment-type-card" th:data-appointment-type-id="${appointmentType['id']}">
-        <h3 th:text="${appointmentType['name']}">General Clinical Consultation</h3>
-        <p th:text="${appointmentType['duration']} + ' min'">30 min</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <div th:each="appointmentType : ${appointmentTypes}" class="appointment-type-card">
+        <h3 th:text="${appointmentType.name}"></h3>
+        <p th:text="${appointmentType.duration} + ' min'"></p>
+        <p th:text="${appointmentType.description}"></p>
     </div>
 </div>
 

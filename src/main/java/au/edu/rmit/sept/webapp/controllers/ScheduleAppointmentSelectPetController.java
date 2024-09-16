@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
-public class PetAppointmentController {
+public class ScheduleAppointmentSelectPetController {
 
     @Autowired
     private PetService petService;
