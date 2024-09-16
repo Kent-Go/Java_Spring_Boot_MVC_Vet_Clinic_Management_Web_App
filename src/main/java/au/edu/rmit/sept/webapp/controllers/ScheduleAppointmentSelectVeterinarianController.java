@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class VetListController {
+public class ScheduleAppointmentSelectVeterinarianController {
 
     // Hardcoded list of veterinarians
     private List<Vet> getVets() {
@@ -34,7 +34,7 @@ public class VetListController {
         return vets;
     }
 
-    @GetMapping("/appointment/vetList")
+    @GetMapping("/appointment/new/select_veterinarian")
     public String selectVet(Model model) {
         List<Vet> vets = getVets();
         model.addAttribute("vets", vets);
