@@ -25,6 +25,7 @@
                 });
             });
 
+            // continue button logic
             document.querySelector('.continue-button').addEventListener('click', function () {
                 const selectedSlot = document.querySelector('.time-slot.selected');
                 const selectedDate = document.querySelector('#appointment-date').value; // Get the date
@@ -43,10 +44,34 @@
                 }
             });
 
+            // back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
                 window.history.back(); // Go back to the previous page
             });
         });
+
+        function handleDateChange() {
+            const selectedVetId = localStorage.getItem('selectedVetId');
+            var dateValue = document.getElementById("appointment-date").value;
+            console.log("Selected date: " + dateValue);
+            // You can perform any action with the dateValue here
+            document.getElementById("selected-date").innerText = "Selected date: " + dateValue;
+
+            // Fetch appointment details based on userId through the API
+            fetch(`/api/appointment/${selectedVetId}?date=${dateValue}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    const scheduledTime = {};
+                    data.forEach((appointment) => {
+                        scheduledTime[appointment.startTime] = appointment.endTime;
+                    });
+                    console.log(scheduledTime);
+                    // You can now use dateDictionary as needed
+                })
+                .catch((error) => {
+                    console.error('Error fetching appointments:', error);
+                });
+        }
     </script>
 
 </head>
@@ -66,7 +91,9 @@
     <h3>Select Date and Time:</h3>
 
     <!-- Date Picker (For the sake of simplicity, using a simple date input) -->
-    <input type="date" id="appointment-date" name="appointment-date" value="2024-09-29">
+    <input type="date" id="appointment-date" name="appointment-date" value="2024-09-29" onchange="handleDateChange()">
+    <p id="selected-date">Selected date: 2024-09-29</p>
+    
 
     <h3>Time Available:</h3>
 
