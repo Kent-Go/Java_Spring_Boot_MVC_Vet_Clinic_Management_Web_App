@@ -1,6 +1,9 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.services.PetService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
 public class PetAppointmentController {
+
+    @Autowired
+    private PetService petService;
 
     // Mock service to get the list of pets
     private List<Pet> getPets() {
@@ -52,11 +59,11 @@ public class PetAppointmentController {
         return pets;
     }
 
-    @GetMapping("/appointment/selectPet")
-    public String selectPet(Model model) {
-        List<Pet> pets = getPets();
+    @GetMapping("/appointment/new")
+    public String displayPet(@RequestParam("petOwnerId") int petOwnerId, Model model) {
+        Collection<Pet> pets = petService.getPetsByPetOwnerID(petOwnerId);
         model.addAttribute("pets", pets);
-        return "petAppointment";  // This should match your Thymeleaf template name
+        return "appointmentSelectPet";  // This should match your Thymeleaf template name
     }
 
     @PostMapping("/appointment/create")
