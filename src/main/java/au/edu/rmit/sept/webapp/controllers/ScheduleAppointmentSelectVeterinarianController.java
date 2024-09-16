@@ -38,7 +38,7 @@ public class ScheduleAppointmentSelectVeterinarianController {
     public String selectVet(Model model) {
         List<Vet> vets = getVets();
         model.addAttribute("vets", vets);
-        return "vetList";  // This should match your Thymeleaf template name for vet list
+        return "appointmentSelectVeterinarian";  // This should match your Thymeleaf template name for vet list
     }
 
     @PostMapping("/appointment/selectVet")
