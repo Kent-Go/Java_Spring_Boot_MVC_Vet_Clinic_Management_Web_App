@@ -22,11 +22,12 @@
                     localStorage.setItem("petOwnerId", urlPetOwnerID);
                 }
 
-                // set href link for new appointment schedule button
-                const newScheduleBtn = document.querySelector(".new-schedule-btn-a");
-                const newScheduleBtnHref = `appointment/new/select_pet?petOwnerId=${urlPetOwnerID}`;
-                console.log("Setting new schedule btn link href to:", newScheduleBtnHref); // Log the new href
-                newScheduleBtn.href = newScheduleBtnHref;
+                // Schedule new appointment button logic
+                document.querySelector('.new-schedule-btn').addEventListener('click', function () {
+                    const petOwnerID = localStorage.getItem("petOwnerId");
+                    // redirect to select pet page
+                    window.location.href = `appointment/new/select_pet?petOwnerId=${petOwnerID}`;
+                });
             });
         </script>
     </head>
@@ -52,7 +53,7 @@
         <h1>Welcome John Johnny Jr.</h1>
         <div class="appointment-header">
             <h2>Upcoming Appointment</h2>
-            <a href="#" class="new-schedule-btn-a"><button class="new-schedule-btn">Schedule New Appointment</button></a>
+            <button type="button" class="new-schedule-btn">Schedule New Appointment</button>
         </div>
             
     </div>
