@@ -33,7 +33,7 @@
                     localStorage.setItem('selectedVetId', selectedVetId)
 
                     // Redirect to the vetSchedule page with the selected vet ID
-                    window.location.href = `/appointment/time?vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&petId=${petId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_date_time?vetId=${selectedVetId}&appointmentTypeId=${appointmentTypeId}`;
                 } else {
                     alert('Please select a veterinarian to continue.');
                 }
