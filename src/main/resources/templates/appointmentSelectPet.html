@@ -36,11 +36,10 @@
                 }
             });
 
-            // set href link for back button
-            const backBtn = document.querySelector(".back-button-a");
-            const backBtnHref = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
-            console.log("Setting back btn link href to:", backBtnHref); // Log the new href
-            backBtn.href = backBtnHref;
+            document.querySelector('.back-button').addEventListener('click', function () {
+                // Redirect to the select pet page
+                window.location.href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
+            });
         });
     </script>
 </head>
@@ -79,7 +78,7 @@
 </div>
 
 <div class="buttons">
-    <a href="#" class="back-button-a"><button class="back-button">Back</button></a>
+    <button type="button" class="back-button">Back</button>
     <button type="button" class="continue-button">Continue</button>
 </div>
 </body>

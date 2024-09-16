@@ -42,14 +42,8 @@
             // Back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
                 // Redirect to the select pet page
-                window.location.href = `/appointment/selectPet`;
+                window.location.href = `/appointment/new/select_pet?petOwnerId=${petOwnerId}`;
             });
-
-            // set href link for back button
-            const backBtn = document.querySelector(".back-button-a");
-            const backBtnHref = `/appointment/new/select_pet?petOwnerId=${petOwnerId}`;
-            console.log("Setting back btn link href to:", backBtnHref); // Log the new href
-            backBtn.href = backBtnHref;
         });
     </script>
 </head>
@@ -76,7 +70,7 @@
 </div>
 
 <div class="buttons">
-    <a href="#" class="back-button-a"><button class="back-button">Back</button></a>
+    <button type="button" class="back-button">Back</button>
     <button type="button" class="continue-button">Continue</button>
 </div>
 
