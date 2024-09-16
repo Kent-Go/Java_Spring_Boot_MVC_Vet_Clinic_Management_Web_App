@@ -59,7 +59,7 @@ public class PetAppointmentController {
         return pets;
     }
 
-    @GetMapping("/appointment/new")
+    @GetMapping("/appointment/new/select_pet")
     public String displayPet(@RequestParam("petOwnerId") int petOwnerId, Model model) {
         Collection<Pet> pets = petService.getPetsByPetOwnerID(petOwnerId);
         model.addAttribute("pets", pets);

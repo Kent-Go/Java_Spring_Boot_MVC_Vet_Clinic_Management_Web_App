@@ -22,8 +22,9 @@
                     localStorage.setItem("petOwnerId", urlPetOwnerID);
                 }
 
+                // set href link for new appointment schedule button
                 const newScheduleBtn = document.querySelector(".new-schedule-btn-a");
-                const newScheduleBtnHref = `appointment/new?petOwnerId=${urlPetOwnerID}`;
+                const newScheduleBtnHref = `appointment/new/select_pet?petOwnerId=${urlPetOwnerID}`;
                 console.log("Setting new schedule btn link href to:", newScheduleBtnHref); // Log the new href
                 newScheduleBtn.href = newScheduleBtnHref;
             });
