@@ -56,6 +56,14 @@ public class VetAppointmentTypeOffered {
         this.appointmentTypeID = appointmentTypeID;
     }
 
+    public Vet getVet() {
+        return vet;
+    }
+
+    public void setVet(Vet vet) {
+        this.vet = vet;
+    }
+
     public AppointmentType getAppointmentType() {
         return appointmentType;
     }
