@@ -27,8 +27,10 @@
                 if (selectedCard) {
                     const selectedPetId = selectedCard.getAttribute('data-pet-id');
                     const petName = selectedCard.querySelector('.pet-info h2').textContent;
+                    localStorage.setItem('selectedPetId', selectedPetId);
                     // Redirect to appointment type page with selected pet ID
-                    window.location.href = `/appointment/new/select_appointment_type?petId=${selectedPetId}&petName=${encodeURIComponent(petName)}`;
+                    // window.location.href = `/appointment/new/select_appointment_type?petId=${selectedPetId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_appointment_type`;
                 } else {
                     alert('Please select a pet to continue.');
                 }

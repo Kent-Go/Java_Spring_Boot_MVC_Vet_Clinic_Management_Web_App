@@ -32,7 +32,7 @@
                     const appointmentTypeName = selectedCard.querySelector('h3').textContent;
 
                     // Redirect to the vet list page with the selected appointment type ID
-                    window.location.href = `/appointment/vetList?appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&petId=${petId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${appointmentTypeId}`;
                 } else {
                     alert('Please select an appointment type to continue.');
                 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class ScheduleAppointmentSelectServiceController {
+public class ScheduleAppointmentSelectAppointmentTypeController {
 
     @Autowired
     private AppointmentTypeService appointmentTypeService;
