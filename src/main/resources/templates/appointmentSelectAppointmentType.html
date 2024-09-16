@@ -7,6 +7,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const typeCards = document.querySelectorAll('.appointment-type-card');
+            const petOwnerId = localStorage.getItem('petOwnerId');
 
             // Make the entire card clickable
             typeCards.forEach(card => {
@@ -42,6 +43,12 @@
                 // Redirect to the select pet page
                 window.location.href = `/appointment/selectPet`;
             });
+
+            // set href link for back button
+            const backBtn = document.querySelector(".back-button-a");
+            const backBtnHref = `/appointment/new/select_pet?petOwnerId=${1}`;
+            console.log("Setting back btn link href to:", backBtnHref); // Log the new href
+            backBtn.href = backBtnHref;
         });
     </script>
 </head>
@@ -68,7 +75,7 @@
 </div>
 
 <div class="buttons">
-    <button type="button" class="back-button">Back</button>
+    <a href="#" class="back-button-a"><button class="back-button">Back</button></a>
     <button type="button" class="continue-button">Continue</button>
 </div>
 
