@@ -21,44 +21,6 @@ public class ScheduleAppointmentSelectPetController {
     @Autowired
     private PetService petService;
 
-    // Mock service to get the list of pets
-    private List<Pet> getPets() {
-        List<Pet> pets = new ArrayList<>();
-
-        // Creating pets using the default constructor and setters
-        Pet johnny = new Pet();
-        johnny.setName("Johnny");
-        johnny.setSpecies("dog");
-        johnny.setBreed("Chihuahua");
-        johnny.setGender("Male");
-        johnny.setWeight(3.5f);
-        johnny.setBirthDate(LocalDate.of(2018, 5, 14));  // Example date
-        johnny.setId(1); // Setting unique ID
-        pets.add(johnny);
-
-        Pet donny = new Pet();
-        donny.setName("Donny");
-        donny.setSpecies("cat");
-        donny.setBreed("Persian");
-        donny.setGender("Male");
-        donny.setWeight(4.2f);
-        donny.setBirthDate(LocalDate.of(2017, 7, 23));
-        donny.setId(2);
-        pets.add(donny);
-
-        Pet billy = new Pet();
-        billy.setName("Billy");
-        billy.setSpecies("bird");
-        billy.setBreed("Parrot");
-        billy.setGender("Female");
-        billy.setWeight(1.2f);
-        billy.setBirthDate(LocalDate.of(2020, 10, 11));
-        billy.setId(3);
-        pets.add(billy);
-
-        return pets;
-    }
-
     @GetMapping("/appointment/new/select_pet")
     public String displayPet(@RequestParam("petOwnerId") int petOwnerId, Model model) {
         Collection<Pet> pets = petService.getPetsByPetOwnerID(petOwnerId);
