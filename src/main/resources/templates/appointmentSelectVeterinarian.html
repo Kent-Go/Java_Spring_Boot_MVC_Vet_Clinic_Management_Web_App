@@ -8,10 +8,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const vetCards = document.querySelectorAll('.vet-card');
             const urlParams = new URLSearchParams(window.location.search);
-            const petId = urlParams.get('petId');
-            const petName = urlParams.get('petName');
             const appointmentTypeId = urlParams.get('appointmentTypeId');
-            const appointmentTypeName = urlParams.get('appointmentTypeName');
 
             // Make the entire card clickable
             vetCards.forEach(card => {
