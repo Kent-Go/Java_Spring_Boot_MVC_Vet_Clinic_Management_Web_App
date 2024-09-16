@@ -46,7 +46,7 @@
 
             // set href link for back button
             const backBtn = document.querySelector(".back-button-a");
-            const backBtnHref = `/appointment/new/select_pet?petOwnerId=${1}`;
+            const backBtnHref = `/appointment/new/select_pet?petOwnerId=${petOwnerId}`;
             console.log("Setting back btn link href to:", backBtnHref); // Log the new href
             backBtn.href = backBtnHref;
         });
