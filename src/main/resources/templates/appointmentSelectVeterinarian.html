@@ -28,8 +28,9 @@
             document.querySelector('.continue-button').addEventListener('click', function () {
                 const selectedCard = document.querySelector('.vet-card.selected');
                 if (selectedCard) {
-                    const vetId = selectedCard.getAttribute('data-vet-id');
-                    const vetName = selectedCard.querySelector('h3').textContent;
+                    const selectedVetId = selectedCard.getAttribute('data-vet-id');
+
+                    localStorage.setItem('selectedVetId', selectedVetId)
 
                     // Redirect to the vetSchedule page with the selected vet ID
                     window.location.href = `/appointment/time?vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&petId=${petId}&petName=${encodeURIComponent(petName)}`;
@@ -61,9 +62,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select a Veterinarian:</h3>
 
-    <div th:each="vet : ${vets}" class="vet-card" th:data-vet-id="${vet.id}">
-        <h3 th:text="${vet.title}">Dr Jude Bellingham</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <div th:each="vetAppointmentTypeOffered : ${vetAppointmentTypeOffereds}" class="vet-card" th:data-vet-id="${vetAppointmentTypeOffered.vet.id}">
+        <h3 th:text="${vetAppointmentTypeOffered.vet.title + ' ' + vetAppointmentTypeOffered.vet.user.firstName + ' ' + vetAppointmentTypeOffered.vet.user.lastName}"></h3>
+        <p th:text="${vetAppointmentTypeOffered.vet.languagesSpoken}"></p>
+        <p th:text="${vetAppointmentTypeOffered.vet.selfDescription}"></p>
     </div>
 </div>
 

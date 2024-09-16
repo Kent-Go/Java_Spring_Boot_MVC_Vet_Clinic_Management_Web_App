@@ -1,5 +1,6 @@
 package au.edu.rmit.sept.webapp.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,37 +8,42 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import au.edu.rmit.sept.webapp.models.Vet;
+import au.edu.rmit.sept.webapp.models.VetAppointmentTypeOffered;
+import au.edu.rmit.sept.webapp.models.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import au.edu.rmit.sept.webapp.services.VetAppointmentTypeOfferedService;
+import au.edu.rmit.sept.webapp.services.VetService;
+import au.edu.rmit.sept.webapp.services.UserService;
+
+import java.util.Collection;
 
 @Controller
 public class ScheduleAppointmentSelectVeterinarianController {
 
-    // Hardcoded list of veterinarians
-    private List<Vet> getVets() {
-        List<Vet> vets = new ArrayList<>();
+    @Autowired
+    private VetAppointmentTypeOfferedService vetAppointmentTypeOfferedService;
 
-        // Adding hardcoded veterinarians
-        Vet vet1 = new Vet("Dr Jude Bellingham", "English, Spanish", "Experienced in treating small animals", 101);
-        vet1.setId(1);
-        vets.add(vet1);
+    @Autowired
+    private VetService vetService;
 
-        Vet vet2 = new Vet("Dr Julian Alvarez", "English, French", "Specialized in surgeries", 102);
-        vet2.setId(2);
-        vets.add(vet2);
-
-        Vet vet3 = new Vet("Dr Felix Gavi", "English, German", "Focuses on dental care for pets", 103);
-        vet3.setId(3);
-        vets.add(vet3);
-
-        return vets;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/appointment/new/select_veterinarian")
-    public String selectVet(Model model) {
-        List<Vet> vets = getVets();
-        model.addAttribute("vets", vets);
+    public String showVet(@RequestParam("appointmentTypeId") int appointmentTypeId, Model model) {
+        Collection<VetAppointmentTypeOffered> vetAppointmentTypeOffereds = vetAppointmentTypeOfferedService.getVetAppointmentTypeOfferedByAppointmentTypeID(appointmentTypeId);
+
+        for (VetAppointmentTypeOffered vetAppointmentTypeOffered : vetAppointmentTypeOffereds) {
+            Vet vet = vetService.getVetByVetID(vetAppointmentTypeOffered.getVetID());
+            User user = userService.getUserByUserID(vet.getUserID());
+
+            // store the User into Vet entity
+            vet.setUser(user);
+            // store the Vet into VetAppointmentTypeOffered entity
+            vetAppointmentTypeOffered.setVet(vet);
+        }
+
+        model.addAttribute("vetAppointmentTypeOffereds", vetAppointmentTypeOffereds);
         return "appointmentSelectVeterinarian";  // This should match your Thymeleaf template name for vet list
     }
 
