@@ -28,13 +28,13 @@ public class ScheduleAppointmentSelectPetController {
         return "appointmentSelectPet";  // This should match your Thymeleaf template name
     }
 
-    @PostMapping("/appointment/create")
-    public String createAppointment(@RequestParam("petId") int petId, Model model) {
-        // Logic to handle creating the appointment with the selected pet
-        Pet selectedPet = getPets().stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
-        if (selectedPet != null) {
-            model.addAttribute("selectedPetName", selectedPet.getName());
-        }
-        return "appointmentConfirmation";  // This should match your confirmation view template
-    }
+    // @PostMapping("/appointment/create")
+    // public String createAppointment(@RequestParam("petId") int petId, Model model) {
+    //     // Logic to handle creating the appointment with the selected pet
+    //     Pet selectedPet = getPets().stream().filter(pet -> pet.getId() == petId).findFirst().orElse(null);
+    //     if (selectedPet != null) {
+    //         model.addAttribute("selectedPetName", selectedPet.getName());
+    //     }
+    //     return "appointmentConfirmation";  // This should match your confirmation view template
+    // }
 }
