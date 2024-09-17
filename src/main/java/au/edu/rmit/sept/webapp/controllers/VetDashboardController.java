@@ -50,7 +50,8 @@ public class VetDashboardController {
 
         for (Appointment appointment : appointments) {
             Pet pet = petService.getPetByPetID(appointment.getPetID());
-            AppointmentType appointmentType = appointmentTypeService.getAppointmentTypeByAppointmentTypeID(appointment.getAppointmentTypeID());
+            AppointmentType appointmentType = appointmentTypeService
+                    .getAppointmentTypeByAppointmentTypeID(appointment.getAppointmentTypeID());
             PetOwner petOwner = petOwnerService.getPetOwnerByPetOwnerID(pet.getPetOwnerID());
             User user = userService.getUserByUserID(petOwner.getUserID());
 
