@@ -67,7 +67,7 @@
                 </div>
             </div>
     
-            <button href="/article" class="view-more-btn">View More</button>
+            <button class="view-more-btn" th:onclick="|window.location.href='@{/articles}'|">View More Articles</button>
     
             <div class="latest-videos">
                 <h2>Latest Videos</h2>
@@ -111,7 +111,7 @@
                 </div>
             </div>
     
-            <button class="view-more-btn">View More</button>
+            <button class="view-more-btn" th:onclick="|window.location.href='@{/videos}'|">View More Videos</button>
     
         </div>
     </div>
