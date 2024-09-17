@@ -15,9 +15,7 @@
           return;
         }
         const petName = petNameElement.innerText || "pet";
-        const cleanPetName = petName
-          .replace(/\s+/g, "_")
-          .replace(/[^\w]/g, "");
+        const cleanPetName = petName.replace(/\s+/g, "_").replace(/[^\w]/g, "");
         const element = document.body;
 
         const options = {
@@ -29,6 +27,22 @@
         };
 
         html2pdf().set(options).from(element).save();
+      }
+
+      async function sharePDFViaEmail() {
+        try {
+          await downloadAsPDF(); // Wait for the PDF download to start
+
+          // Wait for a brief period before showing the alert
+          setTimeout(() => {
+            alert(
+              "PDF has been downloaded. Please attach it to your email and send it to the intended recipient."
+            );
+          }, 1500);
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+          alert("There was an error generating the PDF. Please try again.");
+        }
       }
     </script>
   </head>
@@ -46,11 +60,18 @@
       <div class="pet-info-header">
         <span style="font-size: 1.5em">Pet Profile</span>
         <div class="icons-container">
-          <img src="/images/share-icon.png" class="share-icon" alt="Share" />
+          <img
+            src="/images/share-icon.png"
+            class="share-icon"
+            alt="Share"
+            title="Share via Email"
+            onclick="sharePDFViaEmail()"
+          />
           <img
             src="/images/download-icon.png"
             class="download-icon"
             alt="Download"
+            title="Download as PDF"
             onclick="downloadAsPDF()"
           />
         </div>
