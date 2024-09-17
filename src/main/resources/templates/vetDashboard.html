@@ -108,17 +108,14 @@
               <strong>Breed:</strong>
               <span th:text="${appointment.pet.breed}"></span>
             </p>
+            <hr />
             <p>
-              <strong>Owner:</strong>
-              <span th:text="${appointment.pet.petOwner.user.name}"></span>
-            </p>
-            <p>
-              <strong>Gender:</strong>
-              <span th:text="${appointment.pet.petOwner.user.gender}"></span>
+              <strong>Pet Owner:</strong>
+              <span th:text="${appointment.pet.petOwner.user.firstName + ' ' + appointment.pet.petOwner.user.lastName}">N/A</span>
             </p>
             <p>
               <strong>Email:</strong>
-              <span th:text="${appointment.pet.petOwner.user.name}"></span>
+              <span th:text="${appointment.pet.petOwner.user.email}"></span>
             </p>
             <p>
               <strong>Number:</strong> +<span
