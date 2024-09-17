@@ -144,16 +144,36 @@
             </div>
             <div class="pet-info-content">
               <div class="medication-details">
-                <p><strong>Name: </strong> <span id="medDosage"></span> </p>
-                <p><strong>Dosage:</strong> <span id="medDosage"></span> </p>
-                <p><strong>Duration:</strong> <span id="medDuration"></span> </p>
-                <p>
-                  <strong>Frequency:</strong> <span id="medFrequency"></span>
-                </p>
-                <p>
-                  <strong>Time Remaining:</strong>
-                  <span id="timeRemaining"></span>
-                </p>
+                <div th:if="${#lists.isEmpty(prescribedMedications)}">
+                  <p>No medications prescribed.</p>
+                </div>
+                <div th:if="${!#lists.isEmpty(prescribedMedications)}">
+                  <ol>
+                    <li th:each="medication : ${prescribedMedications}">
+                      <p>
+                        <strong>Name:</strong>
+                        <span th:text="${medication.medicine.name}"></span>
+                      </p>
+                      <p>
+                        <strong>Dosage:</strong>
+                        <span th:text="${medication.dosage}"></span>
+                      </p>
+                      <p>
+                        <strong>Daily Frequency:</strong>
+                        <span th:text="${medication.dailyFrequency}"></span>
+                      </p>
+                      <p>
+                        <strong>Duration:</strong>
+                        <span th:text="${medication.duration}"></span>
+                        days
+                      </p>
+                      <p>
+                        <strong>Instruction:</strong>
+                        <span th:text="${medication.instruction}"></span>
+                      </p>
+                    </li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>

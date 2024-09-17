@@ -51,11 +51,15 @@ public class PetProfileController {
             appointment.setPet(pet);
         });
 
-        // For each appointment, get the prescribed medications
+        // For each appointment, get the prescribed medications and add them to the list
         List<PrescribedMedication> prescribedMedications = new ArrayList<>();
         appointments.forEach(appointment -> {
-            prescribedMedications
-                    .addAll(prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId()));
+            prescribedMedications.addAll(prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId()));
+        });
+
+        // For each prescribed medication, get the medicine
+        prescribedMedications.forEach(prescribedMedication -> {
+            prescribedMedication.setMedicine(prescribedMedication.getMedicine());
         });
 
         // Add the pet to the model

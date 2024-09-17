@@ -177,3 +177,7 @@ h1 {
 .hidden {
     display: none;
 }
+
+li {
+    margin-bottom: 1rem;
+}
