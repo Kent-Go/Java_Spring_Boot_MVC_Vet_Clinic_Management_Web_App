@@ -23,8 +23,8 @@
 
                 if (selectedSlot) {
                     const selectedTime = selectedSlot.getAttribute('data-time');
-                    // Redirect or perform action with selected time and date
-                    // window.location.href = `/appointment/confirm?petId=${petId}&petName=${encodeURIComponent(petName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&time=${selectedTime}&date=${selectedDate}`;
+                    // Redirect to confirmation page
+                    window.location.href = `/appointment/new/confirmation`;
                 } else {
                     alert('Please select a time to continue.');
                 }
