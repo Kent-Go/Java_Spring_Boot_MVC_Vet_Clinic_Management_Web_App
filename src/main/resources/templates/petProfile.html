@@ -267,10 +267,6 @@
                     <strong>Existing Conditions:</strong>
                     <input type="text" id="edit-existingConditions" required />
                   </p>
-                  <p>
-                    <strong>Veterinarian:</strong>
-                    <input type="text" id="edit-veterinarian" required />
-                  </p>
                 </div>
               </div>
               <button type="button" onclick="cancelEdit('healthConcerns')">
@@ -289,13 +285,26 @@
             <div class="owner-info-header">Owner's Information</div>
             <div class="owner-info-content">
               <div class="owner-details">
-                <p><strong>Name:</strong> Sum Ting Wong</p>
-                <p><strong>Phone:</strong> +61450588688</p>
                 <p>
-                  <strong>Home Address:</strong> 1945 Wong Street, Seymour, VIC,
-                  3660
+                  <strong>Name: </strong
+                  ><span
+                    th:text="${pet.petOwner.user.firstName} + ' ' + ${pet.petOwner.user.lastName}"
+                  ></span>
                 </p>
-                <p><strong>Email Address:</strong> wongemail@gmail.com</p>
+                <p>
+                  <strong>Phone: </strong
+                  ><span th:text="${pet.petOwner.user.phoneNumber}"></span>
+                </p>
+                <p>
+                  <strong>Home Address: </strong>
+                  <span
+                    th:text="${address.street} + ' ' + ${address.suburb} + ' ' + ${address.postcode} + ' ' + ${address.state}"
+                  ></span>
+                </p>
+                <p>
+                  <strong>Email: </strong>
+                  <span th:text="${pet.petOwner.user.email}"></span>
+                </p>
               </div>
             </div>
           </div>

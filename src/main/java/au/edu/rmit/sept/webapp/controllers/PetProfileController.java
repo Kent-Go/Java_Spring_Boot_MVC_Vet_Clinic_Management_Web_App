@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
 import au.edu.rmit.sept.webapp.services.PetService;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
@@ -22,7 +25,13 @@ import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 @Controller
 public class PetProfileController {
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private PetService petService;
+
+    @Autowired
+    private AddressService addressService;
 
     @Autowired
     private PetOwnerService petOwnerService;
@@ -42,6 +51,13 @@ public class PetProfileController {
 
         // Associate the pet with the pet owner
         pet.setPetOwner(petOwnerService.getPetOwnerByPetOwnerID(pet.getPetOwnerID()));
+
+        // Associate the pet owner with the user
+        pet.getPetOwner().setUser(userService.getUserByUserID(pet.getPetOwner().getUserID()));
+
+        // Associate the user with the address
+        Address address = addressService.getAddressByUserID(pet.getPetOwner().getUserID());
+        address.setUser(pet.getPetOwner().getUser());
 
         // Get the appointments of the pet
         Collection<Appointment> appointments = appointmentService.getAppointmentByPetID(petId);
@@ -64,6 +80,7 @@ public class PetProfileController {
 
         // Add the pet to the model
         model.addAttribute("pet", pet);
+        model.addAttribute("address", address);
         model.addAttribute("prescribedMedications", prescribedMedications);
 
         return "petProfile"; // This refers to the petProfile.html page
