@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.models.Appointment;
+import au.edu.rmit.sept.webapp.models.ImmunisationHistory;
 import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
 import au.edu.rmit.sept.webapp.services.PetService;
@@ -20,6 +21,7 @@ import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
+import au.edu.rmit.sept.webapp.services.ImmunisationHistoryService;
 import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
 @Controller
@@ -38,6 +40,9 @@ public class PetProfileController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private ImmunisationHistoryService immunisationHistoryService;
 
     @Autowired
     private PrescribedMedicationService prescribedMedicationService;
@@ -78,9 +83,13 @@ public class PetProfileController {
             prescribedMedication.setMedicine(prescribedMedication.getMedicine());
         });
 
+        // Get the list of immunisation history of the pet
+        List<ImmunisationHistory> immunisationHistories = immunisationHistoryService.getImmunisationHistoryByPetID(petId);
+
         // Add the pet to the model
         model.addAttribute("pet", pet);
         model.addAttribute("address", address);
+        model.addAttribute("immunisationHistories", immunisationHistories);
         model.addAttribute("prescribedMedications", prescribedMedications);
 
         return "petProfile"; // This refers to the petProfile.html page

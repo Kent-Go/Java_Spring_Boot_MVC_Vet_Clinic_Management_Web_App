@@ -181,3 +181,8 @@ h1 {
 li {
     margin-bottom: 1rem;
 }
+
+.immunisation-date-column, .immunisation-name-column {
+    width: 1%;
+    white-space: nowrap;
+}
