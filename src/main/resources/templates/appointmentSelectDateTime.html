@@ -32,7 +32,18 @@
 
             // back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
-                window.history.back(); // Go back to the previous page
+                const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId')
+
+                // clear local stroage relevant data
+                if (localStorage.getItem('selectedAppointmentDate')) {
+                    localStorage.removeItem('selectedAppointmentDate');
+                }
+                if (localStorage.getItem('selectedAppointmentTime')) {
+                    localStorage.removeItem('selectedAppointmentTime');
+                }
+                
+                // Redirect back to the veterinarian selection page
+                window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}`;
             });
         });
 
