@@ -2,14 +2,14 @@ package au.edu.rmit.sept.webapp.models;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pet")
@@ -43,6 +43,14 @@ public class Pet {
     // Weight
     @Column(name = "weight")
     private float weight;
+
+    // Allergies
+    @Column(name = "allergies")
+    private String allergies;
+
+    // Existing conditions
+    @Column(name = "existing_conditions")
+    private String existingConditions;
 
     // Foreign key - Pet Owner ID
     @Column(name = "pet_owner_id")
@@ -114,6 +122,24 @@ public class Pet {
 
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    // Allergies
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    // Existing Conditions
+    public String getExistingConditions() {
+        return existingConditions;
+    }
+
+    public void setExistingConditions(String existingConditions) {
+        this.existingConditions = existingConditions;
     }
 
     // Pet Owner ID

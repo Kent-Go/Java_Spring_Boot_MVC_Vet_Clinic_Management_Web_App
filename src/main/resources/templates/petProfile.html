@@ -237,10 +237,13 @@
             </div>
             <div class="pet-info-content">
               <div class="pet-details">
-                <p><strong>Allergies:</strong> <span id="allergies"></span></p>
+                <p>
+                  <strong>Allergies:</strong>
+                  <span th:text="${pet.allergies}"></span>
+                </p>
                 <p>
                   <strong>Existing Conditions:</strong>
-                  <span id="existingConditions"></span>
+                  <span th:text="${pet.existingConditions}"></span>
                 </p>
               </div>
             </div>
@@ -331,11 +334,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="immunisation : ${immunisationHistories}">
-                        <td class="immunisation-date-column" th:text="${immunisation.date}"></td>
-                        <td class="immunisation-name-column" th:text="${immunisation.name}"></td>
-                        <td th:text="${immunisation.notes}"></td>
-                    </tr>
+                  <tr th:each="immunisation : ${immunisationHistories}">
+                    <td
+                      class="immunisation-date-column"
+                      th:text="${immunisation.date}"
+                    ></td>
+                    <td
+                      class="immunisation-name-column"
+                      th:text="${immunisation.name}"
+                    ></td>
+                    <td th:text="${immunisation.notes}"></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -396,9 +405,15 @@
                   </tr>
                 </thead>
                 <tr th:each="surgery : ${surgeryHistories}">
-                    <td class="surgery-date-column" th:text="${surgery.date}"></td>
-                    <td class="surgery-name-column" th:text="${surgery.name}"></td>
-                    <td th:text="${surgery.notes}"></td>
+                  <td
+                    class="surgery-date-column"
+                    th:text="${surgery.date}"
+                  ></td>
+                  <td
+                    class="surgery-name-column"
+                    th:text="${surgery.name}"
+                  ></td>
+                  <td th:text="${surgery.notes}"></td>
                 </tr>
               </table>
             </div>

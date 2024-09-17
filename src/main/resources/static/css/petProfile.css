@@ -121,7 +121,7 @@ h1 {
 .medication-picture img {
   border-radius: 10px;
   width: 280px;
-  height: 280px;
+  height: 225px;
   object-fit: cover;
   margin-right: 30px;
 }
