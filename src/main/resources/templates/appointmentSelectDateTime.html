@@ -157,20 +157,28 @@
             displayStartTimeSlot(availableStartTime);
         }
 
+        // convert time into 12 hour format
+        function convertTo12HourFormat(time) {
+            const [hours, minutes] = time.split(':');
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const adjustedHours = hours % 12 || 12; // Convert 0 to 12 for midnight
+            return `${adjustedHours}:${minutes} ${period}`;
+        }
+
         function displayStartTimeSlot(availableStartTime) {
             const timeContainer = document.getElementById('time-container');
 
+            // display all available time slot in box
             availableStartTime.forEach(slot => {
                 const slotElement = document.createElement('div');
                 slotElement.className = 'time-slot';
                 slotElement.dataset.time = slot;
-                slotElement.textContent = slot;
+                slotElement.textContent = convertTo12HourFormat(slot);
                 timeContainer.appendChild(slotElement);
             });
 
             // Add click event to the time slots
             addClickEventToTimeSlots();
-
         }
         
     </script>
