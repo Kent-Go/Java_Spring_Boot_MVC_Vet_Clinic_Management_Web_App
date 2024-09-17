@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.models.Appointment;
+import au.edu.rmit.sept.webapp.models.SurgeryHistory;
 import au.edu.rmit.sept.webapp.models.ImmunisationHistory;
 import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
@@ -21,6 +22,7 @@ import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
+import au.edu.rmit.sept.webapp.services.SurgeryHistoryService;
 import au.edu.rmit.sept.webapp.services.ImmunisationHistoryService;
 import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
@@ -40,6 +42,9 @@ public class PetProfileController {
 
     @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private SurgeryHistoryService surgeryHistoryService;
 
     @Autowired
     private ImmunisationHistoryService immunisationHistoryService;
@@ -86,9 +91,13 @@ public class PetProfileController {
         // Get the list of immunisation history of the pet
         List<ImmunisationHistory> immunisationHistories = immunisationHistoryService.getImmunisationHistoryByPetID(petId);
 
+        // Get the list of surgery history of the pet
+        List<SurgeryHistory> surgeryHistories = surgeryHistoryService.getSurgeryHistoryByPetID(petId);
+
         // Add the pet to the model
         model.addAttribute("pet", pet);
         model.addAttribute("address", address);
+        model.addAttribute("surgeryHistories", surgeryHistories);
         model.addAttribute("immunisationHistories", immunisationHistories);
         model.addAttribute("prescribedMedications", prescribedMedications);
 

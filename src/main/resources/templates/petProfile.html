@@ -391,11 +391,15 @@
                 <thead>
                   <tr>
                     <th>Date</th>
-                    <th>Surgery Type/Name</th>
+                    <th>Surgery Name</th>
                     <th>Notes</th>
                   </tr>
                 </thead>
-                <tbody id="surgeryTableBody"></tbody>
+                <tr th:each="surgery : ${surgeryHistories}">
+                    <td class="surgery-date-column" th:text="${surgery.date}"></td>
+                    <td class="surgery-name-column" th:text="${surgery.name}"></td>
+                    <td th:text="${surgery.notes}"></td>
+                </tr>
               </table>
             </div>
           </div>
