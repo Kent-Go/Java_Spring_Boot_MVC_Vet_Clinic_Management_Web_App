@@ -37,6 +37,25 @@
             });
 
             document.querySelector('.back-button').addEventListener('click', function () {
+                // clear local storage relevant data
+                if (localStorage.getItem('selectedPetId')) {
+                    localStorage.removeItem('selectedPetId');
+                }
+                if (localStorage.getItem('selectedAppointmentTypeId')) {
+                    localStorage.removeItem('selectedAppointmentTypeId');
+                }
+                if (localStorage.getItem('selectedAppointmentTypeDuration')) {
+                    localStorage.removeItem('selectedAppointmentTypeDuration');
+                }
+                if (localStorage.getItem('selectedVetId')) {
+                    localStorage.removeItem('selectedVetId');
+                }
+                if (localStorage.getItem('selectedAppointmentDate')) {
+                    localStorage.removeItem('selectedAppointmentDate');
+                }
+                if (localStorage.getItem('selectedAppointmentTime')) {
+                    localStorage.removeItem('selectedAppointmentTime');
+                }
                 // Redirect to the select pet page
                 window.location.href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
             });
