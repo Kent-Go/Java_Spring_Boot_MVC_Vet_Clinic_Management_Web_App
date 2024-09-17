@@ -8,12 +8,8 @@
         document.addEventListener('DOMContentLoaded', function () {
             const timeSlots = document.querySelectorAll('.time-slot');
             const urlParams = new URLSearchParams(window.location.search);
-            const petId = urlParams.get('petId');
-            const petName = urlParams.get('petName');
             const appointmentTypeId = urlParams.get('appointmentTypeId');
-            const appointmentTypeName = urlParams.get('appointmentTypeName');
             const vetId = urlParams.get('vetId');
-            const vetName = urlParams.get('vetName');
 
             // continue button logic
             document.querySelector('.continue-button').addEventListener('click', function () {
@@ -28,7 +24,7 @@
                 if (selectedSlot) {
                     const selectedTime = selectedSlot.getAttribute('data-time');
                     // Redirect or perform action with selected time and date
-                    window.location.href = `/appointment/confirm?petId=${petId}&petName=${encodeURIComponent(petName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&time=${selectedTime}&date=${selectedDate}`;
+                    // window.location.href = `/appointment/confirm?petId=${petId}&petName=${encodeURIComponent(petName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&time=${selectedTime}&date=${selectedDate}`;
                 } else {
                     alert('Please select a time to continue.');
                 }
@@ -60,6 +56,8 @@
         function handleDateChange() {
             const selectedVetId = localStorage.getItem('selectedVetId');
             const timeContainer = document.getElementById('time-container');
+            const messageElement = document.querySelector('.time-availability-message');
+
             // Clear existing time slots
             timeContainer.innerHTML = '';
 
@@ -72,7 +70,8 @@
             fetch(`/api/vet_availability/${selectedVetId}?date=${dateValue}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data) {
+                    if (data  && data.availability) {
+                        messageElement.textContent = 'Time available:';
                         // retrieve startTime and endTime
                         const vetStartTime = data.availability.startTime;
                         const vetEndTime = data.availability.endTime;
@@ -82,6 +81,8 @@
                         getAppointmentTime(selectedVetId, dateValue, vetStartTime, vetEndTime);
                     } else {
                         console.log('No availability found for the specified date and vet ID.');
+                        // Display message when no availability is found
+                        messageElement.textContent = 'No time availability found. Please select a new date.';
                     }
                 })
                 .catch((error) => {
@@ -202,7 +203,7 @@
     <!-- Date Picker (For the sake of simplicity, using a simple date input) -->
     <input type="date" id="appointment-date" name="appointment-date" value="2024-09-29" onchange="handleDateChange()">
     
-    <h3>Time Available:</h3>
+    <h3 class="time-availability-message"></h3>
 
     <div class="time-container" id="time-container">
     </div>
