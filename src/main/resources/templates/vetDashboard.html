@@ -129,13 +129,12 @@
                 th:text="${appointment.pet.petOwner.user.phoneNumber}"
               ></span>
             </p>
-            <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
-              <button>Pet Details</button>
-            </a>
-            <!-- Need to implement pet owner profile page -->
-            <a>
-              <button>Pet Owner Details</button>
-            </a>
+            <div class="button-container">
+              <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
+                <button>Pet Details</button>
+              </a>
+              <button>Owner Details</button>
+            </div>
           </div>
         </div>
       </div>
