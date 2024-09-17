@@ -31,6 +31,15 @@
                 .catch((error) => {
                     console.error('Error fetching pet:', error);
                 });
+            
+            // Display appointment date
+            const appointmentDate = document.querySelector('.appointment-date');
+            const selectedAppointmentDate = localStorage.getItem('selectedAppointmentDate');
+            const selectedAppointmentDateObj = new Date(selectedAppointmentDate);
+            const selectedAppointmentDateDay = selectedAppointmentDateObj.getDate();
+            const selectedAppointmentDateMonth = selectedAppointmentDateObj.toLocaleString('default', { month: 'long' });
+            const selectedAppointmentDateYear = selectedAppointmentDateObj.getFullYear();
+            appointmentDate.textContent = `${selectedAppointmentDateDay} ${selectedAppointmentDateMonth} ${selectedAppointmentDateYear}`;
 
             document.querySelector('.back-button').addEventListener('click', function () {
                 window.history.back();
