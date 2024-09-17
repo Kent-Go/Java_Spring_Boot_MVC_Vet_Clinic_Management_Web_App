@@ -4,7 +4,33 @@
     <meta charset="UTF-8" />
     <title>Pet Profile</title>
     <link rel="stylesheet" href="/css/petProfile.css" />
-    <script></script>
+    <!-- Use html2pdf.js to convert html pages to pdf for download -->
+    <!-- Referenced from: https://pspdfkit.com/blog/2019/html-to-pdf-in-javascript/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script>
+      function downloadAsPDF() {
+        const petNameElement = document.getElementById("pet-name");
+        if (!petNameElement) {
+          console.error('Element with ID "pet-name" not found');
+          return;
+        }
+        const petName = petNameElement.innerText || "pet";
+        const cleanPetName = petName
+          .replace(/\s+/g, "_")
+          .replace(/[^\w]/g, "");
+        const element = document.body;
+
+        const options = {
+          margin: [0, 0, 0, 0], // top, right, bottom, left margins in inches
+          filename: `${cleanPetName}_profile.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" }, // Set format to A4
+        };
+
+        html2pdf().set(options).from(element).save();
+      }
+    </script>
   </head>
   <body>
     <div class="header">
@@ -18,10 +44,15 @@
 
     <div class="container">
       <div class="pet-info-header">
-        <span style="font-size: 1.5em;">Pet Profile</span>
+        <span style="font-size: 1.5em">Pet Profile</span>
         <div class="icons-container">
           <img src="/images/share-icon.png" class="share-icon" alt="Share" />
-          <img src="/images/download-icon.png" class="download-icon" alt="Download" />
+          <img
+            src="/images/download-icon.png"
+            class="download-icon"
+            alt="Download"
+            onclick="downloadAsPDF()"
+          />
         </div>
       </div>
 
@@ -48,7 +79,8 @@
               </div>
               <div class="pet-details">
                 <p>
-                  <strong>Pet Name:</strong> <span th:text="${pet.name}"></span>
+                  <strong>Pet Name:</strong>
+                  <span id="pet-name" th:text="${pet.name}"></span>
                 </p>
                 <p>
                   <strong>Birth Date: </strong>
