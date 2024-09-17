@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +22,10 @@ public class PetOwner {
     @Column(name = "user_id")
     private int userID;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -29,11 +35,28 @@ public class PetOwner {
         this.id = id;
     }
 
-    public int getUserId() {
+    public int getUserID() {
         return userID;
     }
 
-    public void setUserId(int id) {
+    public void setUserID(int id) {
         this.userID = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    // Constructors
+    public PetOwner() {
+    }
+
+    public PetOwner(int id, int userID) {
+        this.id = id;
+        this.userID = userID;
     }
 }

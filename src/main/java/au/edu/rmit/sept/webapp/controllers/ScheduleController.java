@@ -1,8 +1,10 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.Locale;
 import java.util.Collection;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -20,8 +22,21 @@ public class ScheduleController {
 
     // Get the appointments of the specific vet when the page is loaded
     @GetMapping("/schedule")
-    public String showSchedulePage(@RequestParam("vetId") int vetId, Model model) {
-        Collection<Appointment> appointments = appointmentService.getAppointmentByVetID(vetId);
+    public String showSchedulePage(@RequestParam("vetId") int vetId,
+            @RequestParam(value = "weekStart", required = false) String weekStart,
+            Model model) {
+        // Determine the week start date
+        LocalDate startDate = (weekStart != null) ? LocalDate.parse(weekStart)
+                : LocalDate.now().with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+        LocalDate endDate = startDate.plusDays(6);
+
+        // Fetch appointments for the week
+        Collection<Appointment> appointments = appointmentService.getAppointmentsByVetAndWeek(vetId, startDate,
+                endDate);
+
+        // Format the startDate to a string in YYYY-MM-DD format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedWeekStart = startDate.format(formatter);
 
         // Format the day of the week based on the date
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("E", Locale.ENGLISH);
@@ -32,7 +47,12 @@ public class ScheduleController {
             String dayOfWeek = appointment.getDate().format(dayFormatter);
             appointment.setDayOfWeek(dayOfWeek); // Store this in the Appointment class
         }
+
+        // Add attributes to the model
         model.addAttribute("appointments", appointments);
+        model.addAttribute("weekStart", formattedWeekStart);
+        model.addAttribute("vetId", vetId);
+
         return "schedule"; // Return the schedule.html template
     }
 }

@@ -1,11 +1,13 @@
 package au.edu.rmit.sept.webapp.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "vet")
@@ -29,6 +31,10 @@ public class Vet {
 
     @Column(name = "user_id")
     private int userID;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 
     // Getters and Setters
     public int getId() {
@@ -77,6 +83,14 @@ public class Vet {
 
     public void setSelfDescription(String selfDescription) {
         this.selfDescription = selfDescription;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // Default no-argument constructor required by JPA

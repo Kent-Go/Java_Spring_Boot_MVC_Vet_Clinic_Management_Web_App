@@ -1,4 +1,4 @@
-package au.edu.rmit.sept.webapp.controller;
+package au.edu.rmit.sept.webapp.controllers;
 
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -45,6 +47,10 @@ public class Pet {
     //Foreign key - Pet Owner ID
     @Column(name = "pet_owner_id")
     private int petOwnerID;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_owner_id", insertable = false, updatable = false)
+    private PetOwner petOwner;
 
     //Getters and Setters
     //Pet ID
@@ -116,6 +122,30 @@ public class Pet {
     }
 
     public void setPetOwnerID(int petOwnerID) {
+        this.petOwnerID = petOwnerID;
+    }
+
+    // Set Pet Owner entity
+    public PetOwner getPetOwner() {
+        return petOwner;
+    }
+
+    // Get Pet Owner entity
+    public void setPetOwner(PetOwner petOwner) {
+        this.petOwner = petOwner;
+    }
+
+    // Constructors
+    public Pet() {
+    }
+
+    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight, int petOwnerID) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.species = species;
+        this.breed = breed;
+        this.gender = gender;
+        this.weight = weight;
         this.petOwnerID = petOwnerID;
     }
 }

@@ -1,8 +1,5 @@
 package au.edu.rmit.sept.webapp.models;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -10,6 +7,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "appointment")
@@ -36,6 +37,14 @@ public class Appointment {
 
     @Column(name = "appointment_type_id")
     private int appointmentTypeID;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id", insertable = false, updatable = false)
+    private Pet pet;
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_type_id", insertable = false, updatable = false)
+    private AppointmentType appointmentType;
 
     private String dayOfWeek;
 
@@ -102,6 +111,22 @@ public class Appointment {
 
     public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+
+    public AppointmentType getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(AppointmentType appointmentType) {
+        this.appointmentType = appointmentType;
     }
 
     // Default no-argument constructor required by JPA
