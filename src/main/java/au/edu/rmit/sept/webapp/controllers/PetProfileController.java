@@ -1,12 +1,14 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.List;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -54,7 +56,8 @@ public class PetProfileController {
 
     // Display the pet profile page
     @GetMapping("/petProfile")
-    public String showPetProfile(@RequestParam("petId") int petId, Model model) {
+    public String showPetProfile(@RequestParam("petId") int petId,
+            @RequestParam(value = "editMode", defaultValue = "false") boolean editMode, Model model) {
         // Get the pet by petId and the pet owner by the petOwnerId that is associated
         // with the pet
         Pet pet = petService.getPetByPetID(petId);
@@ -80,7 +83,8 @@ public class PetProfileController {
         // For each appointment, get the prescribed medications and add them to the list
         List<PrescribedMedication> prescribedMedications = new ArrayList<>();
         appointments.forEach(appointment -> {
-            prescribedMedications.addAll(prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId()));
+            prescribedMedications
+                    .addAll(prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId()));
         });
 
         // For each prescribed medication, get the medicine
@@ -89,7 +93,8 @@ public class PetProfileController {
         });
 
         // Get the list of immunisation history of the pet
-        List<ImmunisationHistory> immunisationHistories = immunisationHistoryService.getImmunisationHistoryByPetID(petId);
+        List<ImmunisationHistory> immunisationHistories = immunisationHistoryService
+                .getImmunisationHistoryByPetID(petId);
 
         // Get the list of surgery history of the pet
         List<SurgeryHistory> surgeryHistories = surgeryHistoryService.getSurgeryHistoryByPetID(petId);
@@ -100,7 +105,43 @@ public class PetProfileController {
         model.addAttribute("surgeryHistories", surgeryHistories);
         model.addAttribute("immunisationHistories", immunisationHistories);
         model.addAttribute("prescribedMedications", prescribedMedications);
+        model.addAttribute("editMode", editMode); // Add the editMode flag to the model
 
         return "petProfile"; // This refers to the petProfile.html page
+    }
+
+    @PostMapping("/updatePetProfile")
+    public String updatePetProfile(@RequestParam("petId") int petId,
+            @RequestParam("name") String name,
+            @RequestParam("birthDate") String birthDate,
+            @RequestParam("species") String species,
+            @RequestParam("breed") String breed,
+            @RequestParam("gender") String gender,
+            @RequestParam("weight") float weight) {
+
+        // Fetch the pet by ID and update the details
+        Pet pet = petService.getPetByPetID(petId);
+
+        String regex = "^[a-zA-Z0-9 ]*$";
+
+        // Validate the input before updating the pet profile
+        if (name == null || name.isEmpty() || birthDate == null || birthDate.isEmpty() || species == null
+                || species.isEmpty() || breed == null || breed.isEmpty() || gender == null || gender.isEmpty()
+                || weight <= 0 || !name.matches(regex) || !species.matches(regex) || !breed.matches(regex)) {
+            return "redirect:/petProfile?petId=" + petId + "&editMode=true";
+        }
+
+        pet.setName(name);
+        pet.setBirthDate(LocalDate.parse(birthDate));
+        pet.setSpecies(species);
+        pet.setBreed(breed);
+        pet.setGender(gender);
+        pet.setWeight(weight);
+
+        // Save the updated pet profile
+        petService.updatePet(pet);
+
+        // Redirect to view mode after saving
+        return "redirect:/petProfile?petId=" + petId;
     }
 }

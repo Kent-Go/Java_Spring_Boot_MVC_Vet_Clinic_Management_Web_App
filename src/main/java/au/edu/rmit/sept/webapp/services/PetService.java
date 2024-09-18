@@ -16,5 +16,7 @@ public interface PetService {
 
     // Create a new pet
     public Pet createPet(Pet pet);
-  
+
+    // Update a pet
+    public Pet updatePet(Pet pet);
 }

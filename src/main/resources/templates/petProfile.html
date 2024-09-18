@@ -44,6 +44,16 @@
           alert("There was an error generating the PDF. Please try again.");
         }
       }
+
+      // Function to validate edit pet information section
+      function validatePetProfile() {
+        const weight = document.getElementById("edit-weight").value;
+        if (weight <= 0) {
+          alert("Please enter a positive number for the weight.");
+          return false;
+        }
+        return true;
+      }
     </script>
   </head>
   <body>
@@ -78,17 +88,14 @@
       </div>
 
       <!-- View Mode for Pet Information -->
-      <div id="viewPetInfoMode">
+      <div th:if="${!editMode}">
         <div class="pet-profile-card">
           <div class="pet-info-box">
             <div class="pet-info-header">
               Pet Information
-              <img
-                src="/images/edit-icon.png"
-                class="edit-icon"
-                onclick="editPetInfo()"
-                alt="Edit"
-              />
+              <a th:href="@{/petProfile(petId=${pet.id}, editMode=true)}">
+                <img src="/images/edit-icon.png" class="edit-icon" alt="Edit" />
+              </a>
             </div>
             <div class="pet-info-content">
               <div class="pet-picture">
@@ -131,12 +138,15 @@
       </div>
 
       <!-- Edit Mode for Pet Information -->
-      <div id="editPetInfoMode" class="hidden">
+      <div th:if="${editMode}">
         <form
-          id="petProfileForm"
+          action="/updatePetProfile"
+          method="POST"
           enctype="multipart/form-data"
-          onsubmit="savePetProfile(); return false;"
+          onsubmit="return validatePetProfile()"
         >
+          <input type="hidden" name="petId" th:value="${pet.id}" />
+          <!-- Hidden input for petId -->
           <div class="pet-profile-card">
             <div class="pet-info-box">
               <div class="pet-info-header">Edit Pet Information</div>
@@ -144,42 +154,77 @@
                 <div class="pet-details">
                   <p>
                     <strong>Pet Name:</strong>
-                    <input type="text" id="edit-petName" required />
-                  </p>
-                  <p>
-                    <strong>Pet Age:</strong>
-                    <input type="number" id="edit-petAge" required />
+                    <input
+                      type="text"
+                      id="edit-petName"
+                      name="name"
+                      th:value="${pet.name}"
+                      required
+                    />
                   </p>
                   <p>
                     <strong>Birth Date:</strong>
-                    <input type="date" id="edit-birthDate" required />
+                    <input
+                      type="date"
+                      id="edit-birthDate"
+                      name="birthDate"
+                      th:value="${pet.birthDate}"
+                      required
+                    />
                   </p>
                   <p>
                     <strong>Species:</strong>
-                    <input type="text" id="edit-species" required />
+                    <input
+                      type="text"
+                      id="edit-species"
+                      name="species"
+                      th:value="${pet.species}"
+                      required
+                    />
                   </p>
                   <p>
                     <strong>Breed:</strong>
-                    <input type="text" id="edit-breed" required />
+                    <input
+                      type="text"
+                      id="edit-breed"
+                      name="breed"
+                      th:value="${pet.breed}"
+                      required
+                    />
                   </p>
                   <p>
                     <strong>Gender:</strong>
-                    <select id="edit-gender">
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
+                    <select id="edit-gender" name="gender">
+                      <option
+                        value="Male"
+                        th:selected="${pet.gender == 'Male'}"
+                      >
+                        Male
+                      </option>
+                      <option
+                        value="Female"
+                        th:selected="${pet.gender == 'Female'}"
+                      >
+                        Female
+                      </option>
                     </select>
                   </p>
                   <p>
                     <strong>Weight:</strong>
-                    <input type="text" id="edit-weight" required />
-                  </p>
-                  <p>
-                    <strong>Color:</strong>
-                    <input type="text" id="edit-color" required />
+                    <input
+                      type="text"
+                      id="edit-weight"
+                      name="weight"
+                      th:value="${pet.weight}"
+                      required
+                    />
                   </p>
                 </div>
               </div>
-              <button type="button" onclick="cancelEdit('petInfo')">
+              <button
+                type="button"
+                th:onclick="'window.location.href=\'/petProfile?petId=' + ${pet.id} + '\''"
+              >
                 Cancel
               </button>
               <button type="submit">Save Changes</button>
