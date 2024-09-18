@@ -1,5 +1,7 @@
 package au.edu.rmit.sept.webapp.services;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,10 @@ public class AppointmentTypeServiceImpl implements AppointmentTypeService{
     @Override
     public AppointmentType getAppointmentTypeByAppointmentTypeID(int appointmentTypeID) {
         return appointmentTypeRepository.findById(appointmentTypeID);
+    }
+
+    @Override
+    public Collection<AppointmentType> getAllAppointmentType() {
+        return appointmentTypeRepository.findAll();
     }
 }
