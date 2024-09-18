@@ -57,21 +57,18 @@
         return true;
       }
 
-      // Function to toggle between edit and view modes for medication
-      function toggleEditModes() {
-        var editMode = document.getElementById("editMedicationMode");
-        var viewMode = document.getElementById("viewMedicationMode");
+      // Function to add a new row to the immunisation history table
+      function addNewRow() {
+        const tbody = document.getElementById("editImmunisationTableBody");
+        const row = document.createElement("tr");
 
-        // Toggle visibility
-        editMode.classList.toggle("hidden");
+        row.innerHTML = `
+          <td><input type="date" name="immunisations[].date" required /></td>
+          <td><input type="text" name="immunisations[].name" required /></td>
+          <td><input type="text" name="immunisations[].notes" /></td>
+        `;
 
-        // Hide view mode if edit mode is visible
-        if (
-          !editMode.classList.contains("hidden") &&
-          !viewMode.classList.contains("hidden")
-        ) {
-          viewMode.classList.add("hidden");
-        }
+        tbody.appendChild(row);
       }
 
       // Function to update hidden fields with delimiter before form submission
@@ -112,23 +109,6 @@
           return false;
         }
         return true;
-      }
-
-      // Function to cancel editing and switch back to view mode
-      function cancelEdit(mode) {
-        if (mode === "petMedication") {
-          document.getElementById("editMedicationMode").classList.add("hidden");
-          document
-            .getElementById("viewMedicationMode")
-            .classList.remove("hidden");
-        } else if (mode === "healthConcerns") {
-          document
-            .getElementById("editHealthConcernsMode")
-            .classList.add("hidden");
-          document
-            .getElementById("viewHealthConcernsMode")
-            .classList.remove("hidden");
-        }
       }
 
       function deleteMedication(medicationId) {
@@ -172,15 +152,6 @@
               alert("An error occurred while deleting medication.");
             });
         }
-      }
-
-      function editHealthConcerns() {
-        document
-          .getElementById("viewHealthConcernsMode")
-          .classList.add("hidden");
-        document
-          .getElementById("editHealthConcernsMode")
-          .classList.remove("hidden");
       }
 
       // Ensure hidden fields are updated when form is submitted
@@ -393,17 +364,16 @@
       </div>
 
       <!-- View Mode for Medication -->
-      <div id="viewMedicationMode">
+      <div th:if="${!editMedicationMode}">
         <div class="pet-profile-card">
           <div class="pet-info-box">
             <div class="pet-info-header">
               Pet Medication
-              <img
-                src="/images/edit-icon.png"
-                class="edit-icon"
-                onclick="toggleEditModes()"
-                alt="Edit"
-              />
+              <a
+                th:href="@{/petProfile(petId=${pet.id}, editMedicationMode=true)}"
+              >
+                <img src="/images/edit-icon.png" class="edit-icon" alt="Edit" />
+              </a>
             </div>
             <div class="pet-info-content">
               <div class="medication-details">
@@ -444,7 +414,7 @@
       </div>
 
       <!-- Edit Existing Medication -->
-      <div id="editMedicationMode" class="hidden">
+      <div th:if="${editMedicationMode}">
         <form
           id="editMedicationForm"
           th:action="@{/updateMedication}"
@@ -549,29 +519,23 @@
               </div>
             </div>
           </div>
-
-          <button
-            type="button"
-            onclick="cancelEdit('petMedication')"
-            style="margin-bottom: 2rem"
-          >
-            Cancel
-          </button>
+          <a th:href="@{/petProfile(petId=${pet.id})}">
+            <button type="button" style="margin-bottom: 1rem">Cancel</button>
+          </a>
         </form>
       </div>
 
       <!-- View Mode for Health Concerns -->
-      <div id="viewHealthConcernsMode">
+      <div th:if="${!editHealthConcernsMode}">
         <div class="pet-profile-card">
           <div class="pet-info-box">
             <div class="pet-info-header">
               Health Concerns
-              <img
-                src="/images/edit-icon.png"
-                class="edit-icon"
-                onclick="editHealthConcerns()"
-                alt="Edit"
-              />
+              <a
+                th:href="@{/petProfile(petId=${pet.id}, editHealthConcernsMode=true)}"
+              >
+                <img src="/images/edit-icon.png" class="edit-icon" alt="Edit" />
+              </a>
             </div>
             <div class="pet-info-content">
               <div class="pet-details">
@@ -590,11 +554,8 @@
       </div>
 
       <!-- Edit Mode for Health Concerns -->
-      <div id="editHealthConcernsMode" class="hidden">
-        <form
-          action="/updateHealthConcerns"
-          method="POST"
-        >
+      <div th:if="${editHealthConcernsMode}">
+        <form action="/updateHealthConcerns" method="POST">
           <input type="hidden" name="petId" th:value="${pet.id}" />
           <div class="pet-profile-card">
             <div class="pet-info-box">
@@ -623,9 +584,11 @@
                   </p>
                 </div>
               </div>
-              <button type="button" onclick="cancelEdit('healthConcerns')">
-                Cancel
-              </button>
+              <a th:href="@{/petProfile(petId=${pet.id})}">
+                <button type="button" style="margin-bottom: 1rem">
+                  Cancel
+                </button>
+              </a>
               <button type="submit">Save Changes</button>
             </div>
           </div>
@@ -666,17 +629,16 @@
       </div>
 
       <!-- View Mode for Immunisation History -->
-      <div id="viewImmunisationMode">
+      <div th:if="${!editImmunisationMode}">
         <div class="immunisation-profile-card">
           <div class="immunisation-info-box">
             <div class="immunisation-info-header">
               Immunisation History
-              <img
-                src="/images/edit-icon.png"
-                class="edit-icon"
-                onclick="editImmunisationHistory()"
-                alt="Edit"
-              />
+              <a
+                th:href="@{/petProfile(petId=${pet.id}, editImmunisationMode=true)}"
+              >
+                <img src="/images/edit-icon.png" class="edit-icon" alt="Edit" />
+              </a>
             </div>
             <div class="immunisation-info-content">
               <table>
@@ -707,8 +669,14 @@
       </div>
 
       <!-- Edit Mode for Immunisation History -->
-      <div id="editImmunisationMode" class="hidden">
-        <form onsubmit="saveImmunisationHistory(); return false;">
+      <div th:if="${editImmunisationMode}">
+        <form
+          id="editImmunisationForm"
+          action="/updateImmunisationHistory"
+          method="POST"
+          onsubmit="return validateImmunisationForm()"
+        >
+          <input type="hidden" name="petId" th:value="${pet.id}" />
           <div class="immunisation-profile-card">
             <div class="immunisation-info-box">
               <div class="immunisation-info-header">
@@ -723,13 +691,41 @@
                       <th>Notes</th>
                     </tr>
                   </thead>
-                  <tbody id="editImmunisationTableBody"></tbody>
+                  <tbody id="editImmunisationTableBody">
+                    <tr
+                      th:each="immunisation, iterStat : ${immunisationHistories}"
+                    >
+                      <td>
+                        <input
+                          type="date"
+                          name="immunisations[${iterStat.index}].date"
+                          th:value="${immunisation.date}"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="immunisations[${iterStat.index}].name"
+                          th:value="${immunisation.name}"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="immunisations[${iterStat.index}].notes"
+                          th:value="${immunisation.notes}"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <button type="button" onclick="addNewRow()">Add New Row</button>
-              <button type="button" onclick="cancelEditImmunisation()">
-                Cancel
-              </button>
+              <a th:href="@{/petProfile(petId=${pet.id})}">
+                <button type="button">Cancel</button>
+              </a>
               <button type="submit">Save Changes</button>
             </div>
           </div>
@@ -737,17 +733,16 @@
       </div>
 
       <!-- View Mode for Surgery History -->
-      <div id="viewSurgeryMode">
+      <div th:if="${!editSurgeryMode}">
         <div class="surgery-profile-card">
           <div class="surgery-info-box">
             <div class="surgery-info-header">
               Surgery History
-              <img
-                src="/images/edit-icon.png"
-                class="edit-icon"
-                onclick="editSurgeryHistory()"
-                alt="Edit"
-              />
+              <a
+                th:href="@{/petProfile(petId=${pet.id}, editSurgeryMode=true)}"
+              >
+                <img src="/images/edit-icon.png" class="edit-icon" alt="Edit" />
+              </a>
             </div>
             <div class="surgery-info-content">
               <table>
@@ -776,7 +771,7 @@
       </div>
 
       <!-- Edit Mode for Surgery History -->
-      <div id="editSurgeryMode" class="hidden">
+      <div th:if="${editSurgeryMode}">
         <form onsubmit="saveSurgeryHistory(); return false;">
           <div class="surgery-profile-card">
             <div class="surgery-info-box">
@@ -796,9 +791,9 @@
               <button type="button" onclick="addNewSurgeryRow()">
                 Add New Row
               </button>
-              <button type="button" onclick="cancelEditSurgery()">
-                Cancel
-              </button>
+              <a th:href="@{/petProfile(petId=${pet.id})}">
+                <button type="button">Cancel</button>
+              </a>
               <button type="submit">Save Changes</button>
             </div>
           </div>

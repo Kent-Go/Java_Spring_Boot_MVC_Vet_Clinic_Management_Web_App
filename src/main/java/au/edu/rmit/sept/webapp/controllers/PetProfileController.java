@@ -69,7 +69,12 @@ public class PetProfileController {
     // Display the pet profile page
     @GetMapping("/petProfile")
     public String showPetProfile(@RequestParam("petId") int petId,
-            @RequestParam(value = "editMode", defaultValue = "false") boolean editMode, Model model) {
+            @RequestParam(value = "editMode", defaultValue = "false") boolean editMode, 
+            @RequestParam(value = "editMedicationMode", defaultValue = "false") boolean editMedicationMode,
+            @RequestParam(value = "editHealthConcernsMode", defaultValue = "false") boolean editHealthConcernsMode,
+            @RequestParam(value = "editImmunisationMode", defaultValue = "false") boolean editImmunisationMode,
+            @RequestParam(value = "editSurgeryMode", defaultValue = "false") boolean editSurgeryMode,
+            Model model) {
         // Get the pet by petId and the pet owner by the petOwnerId that is associated
         // with the pet
         Pet pet = petService.getPetByPetID(petId);
@@ -117,7 +122,14 @@ public class PetProfileController {
         model.addAttribute("surgeryHistories", surgeryHistories);
         model.addAttribute("immunisationHistories", immunisationHistories);
         model.addAttribute("prescribedMedications", prescribedMedications);
-        model.addAttribute("editMode", editMode); // Add the editMode flag to the model
+
+        // Add flags to the model to determine if the page is in edit mode
+        model.addAttribute("editMode", editMode); 
+        model.addAttribute("editMedicationMode", editMedicationMode);
+        model.addAttribute("editHealthConcernsMode", editHealthConcernsMode);
+        model.addAttribute("editImmunisationMode", editImmunisationMode);
+        model.addAttribute("editSurgeryMode", editSurgeryMode);
+
 
         return "petProfile"; // This refers to the petProfile.html page
     }
@@ -168,11 +180,6 @@ public class PetProfileController {
             @RequestParam("frequency") String frequency,
             @RequestParam("duration") String duration,
             @RequestParam("instruction") String instruction) {
-        System.out.println("Unmodified Name: " + name);
-        // // Remove trailing delimiters from name and instruction
-        // String cleanedName = name.replaceAll("^\\|,|\\|,$", "");
-        // String cleanedInstruction = instruction.replaceAll("\\|,$", "");
-
         // Split name and instruction using '|'
         String[] nameSplit = name.split("\\|,");
         String[] instructionSplit = instruction.split("\\|,");
