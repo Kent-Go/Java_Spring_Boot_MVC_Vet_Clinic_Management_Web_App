@@ -6,16 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class ArticlesController {
+public class article1Controller {
 
-    @GetMapping("/articlesPage")
+    @GetMapping("/article1")
     public String showArticles(Model model) {
-        return "articlesPage";
+        return "article1";
     }
 
-    @PostMapping("/articlesPage")
+    @PostMapping("/article1")
     public String articlesPage() {
         // Handle the form submission, save the pet owner details
-        return "redirect:/articlesPage"; // Redirect to the same page or to a success page
+        return "redirect:/article1"; // Redirect to the same page or to a success page
     }
 }
+
+

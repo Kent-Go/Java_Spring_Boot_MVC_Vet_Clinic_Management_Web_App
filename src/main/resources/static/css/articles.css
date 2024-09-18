@@ -1,22 +1,24 @@
+/* Basic Page and Typography Settings */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: Arial, sans-serif; /* Font for the entire page */
+    background-color: #f5f5f5; /* Light background color */
 }
 
+/* Header Styling */
 .header {
     width: 100%;
-    background-color: #007bff;
+    background-color: #007bff; /* Blue background for the header */
     padding: 10px 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between logo and profile icon */
 }
 
 .header img.logo {
-    width: 50px;
+    width: 50px; /* Logo width */
     height: auto;
     margin-left: 15px;
 }
@@ -28,160 +30,119 @@ html, body {
 }
 
 .profile-icon {
-    width: 45px;
+    width: 45px; /* Size of profile icon */
     height: 45px;
-    border-radius: 50%;
-    background-color: white;
-    padding: 5px;
+    border-radius: 50%; /* Rounded profile icon */
+    background-color: white; /* White background for icon */
+    padding: 5px; /* Padding inside the profile icon */
 }
 
-/* Navbar styling */
+/* Navbar Styling */
 .navbar {
-    background-color: #d3edf8;
+    background-color: #d3edf8; /* Light blue background */
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center the navigation items */
     padding: 15px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .navbar ul {
     display: flex;
-    list-style-type: none;
+    list-style-type: none; /* Remove default list styling */
     margin: 0;
     padding: 0;
 }
 
 .navbar li {
-    margin: 0 20px;
+    margin: 0 20px; /* Space between navigation items */
 }
 
 .navbar a {
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
+    text-decoration: none; /* Remove underline from links */
+    color: #333; /* Dark text color */
+    font-size: 18px; /* Font size for links */
     padding: 10px 20px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
 }
 
 .navbar a:hover {
-    background-color: #007bff;
-    color: white;
+    background-color: #007bff; /* Blue background on hover */
+    color: white; /* White text color on hover */
 }
 
-/* Articles section */
-.articles-section {
+/* Article Page Main Content */
+.article-content {
+    max-width: 1000px; /* Maximum width for content */
+    margin: 20px auto; /* Center content and add top/bottom margin */
+    padding: 20px 40px; /* Add padding to all sides, more on left and right */
+    box-sizing: border-box; /* Ensure padding does not affect total width */
+    background-color: #fff; /* Optional: Add background color for better visibility */
+    border-radius: 8px; /* Optional: Add rounded corners */
+}
+
+/* Article Header Image */
+.article-header-image img {
+    width: 100%; /* Make image responsive */
+    height: auto;
+    border-radius: 8px; /* Rounded corners for the image */
+}
+
+/* Article Title */
+.article-title {
+    font-size: 36px; /* Larger font size for the title */
+    text-align: center; /* Center the title */
+    margin-top: 10px; /* Reduced margin to decrease the gap */
+    margin-bottom: 20px; /* Add margin at the bottom for spacing from the image */
+    color: #333; /* Dark text color */
+    padding: 0 10px;
+}
+
+/* Article Text Sections */
+.article-text-section {
+    background-color: #f1f1f1; /* Light grey background */
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.articles-section h1 {
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    padding: 5px 0;
-}
-
-.main-article {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.main-article img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.main-article-content {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 300px;
-}
-
-.sub-articles {
-    display: flex;
-    justify-content: space-between;
     margin-top: 20px;
-}
-
-.sub-article {
-    width: 32%; /* Ensure three sub-articles fit within the parent */
-    margin-bottom: 20px; /* Space between each sub-article */
-    text-align: center; /* Center-align the title text */
-}
-
-.sub-article img {
-    width: 100%; /* Full width to match the container */
-    height: 200px; /* Consistent height */
-    object-fit: cover; /* Cover the container without stretching */
     border-radius: 8px; /* Rounded corners */
 }
 
-.sub-article-title {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    color: white;
-    padding: 10px 0; /* Padding for the text box */
-    border-radius: 0 0 8px 8px; /* Rounded corners on the bottom */
-    margin-top: -5px; /* Slight overlap for a seamless look */
-    font-size: 18px; /* Adjust font size */
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Include padding in the width calculation */
+.article-text-section h2 {
+    margin-top: 0; /* Remove default margin from heading */
 }
 
-/* What's New section */
-.whats-new-section {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.whats-new-section h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-/* Set up the container to align articles vertically */
-.whats-new-container {
-    display: flex;
-    flex-direction: column; /* Stack articles vertically */
-    gap: 20px; /* Space between articles */
-}
-
-/* Flex to place image and text side by side */
-.whats-new-article {
+/* Image with Text Section */
+.article-image-with-text {
     display: flex; /* Align image and text side by side */
-    align-items: center; /* Center vertically */
+    margin-top: 20px;
+    align-items: center; /* Vertically center-align content */
 }
 
-.whats-new-article img {
-    width: 40%; /* Adjust width as needed */
-    border-radius: 8px;
-    margin-right: 20px; /* Space between image and text */
+/* Default Image on the left */
+.article-image-with-text img {
+    width: 50%; /* Image takes up half the width of the container */
+    height: auto;
+    border-radius: 8px; /* Rounded corners */
+    margin-right: 20px; /* Add space between image and text */
 }
 
-.whats-new-content {
-    flex: 1; /* Take up remaining space */
+/* Specific styling for the section with image on the right */
+.image-right {
+    flex-direction: row-reverse; /* Move the image to the right side */
 }
 
-.whats-new-article h2 {
-    font-size: 24px;
-    color: #333;
-    margin: 0;
+.image-right img {
+    margin-left: 20px; /* Add space between image and text */
+    margin-right: 0; /* Remove any previous right margin */
 }
 
-.whats-new-article p {
+.side-text {
+    width: 50%; /* Text takes up the other half of the container */
+}
+
+.side-text h2 {
+    margin-top: 0; /* Remove default margin from heading */
+}
+
+.side-text p {
     margin-top: 10px;
-    color: #555;
 }
