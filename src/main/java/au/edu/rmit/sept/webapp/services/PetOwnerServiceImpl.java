@@ -32,4 +32,9 @@ public class PetOwnerServiceImpl implements PetOwnerService {
   public PetOwner createPetOwner(PetOwner petOwner) {
     return petOwnerRepository.save(petOwner);
   }
+
+  @Override
+  public PetOwner getPetOwnerByUserID(int userID) {
+    return petOwnerRepository.findByUserID(userID);
+  }
 }

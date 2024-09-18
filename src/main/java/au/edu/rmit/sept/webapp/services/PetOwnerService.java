@@ -13,4 +13,7 @@ public interface PetOwnerService {
 
   // Create a new pet owner
   public PetOwner createPetOwner(PetOwner petOwner);  
+
+  // Get a pet owner by user ID
+  public PetOwner getPetOwnerByUserID(int userID);
 }
