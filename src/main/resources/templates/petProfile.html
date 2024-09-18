@@ -8,6 +8,7 @@
     <!-- Referenced from: https://pspdfkit.com/blog/2019/html-to-pdf-in-javascript/ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
     <script>
+      // Function to download the page as PDF
       function downloadAsPDF() {
         const petNameElement = document.getElementById("pet-name");
         if (!petNameElement) {
@@ -29,6 +30,7 @@
         html2pdf().set(options).from(element).save();
       }
 
+      // Function to share the PDF via email
       async function sharePDFViaEmail() {
         try {
           await downloadAsPDF(); // Wait for the PDF download to start
@@ -40,12 +42,12 @@
             );
           }, 1500);
         } catch (error) {
-          console.error("Error generating PDF:", error);
+          console.error("Error generating the PDF:", error);
           alert("There was an error generating the PDF. Please try again.");
         }
       }
 
-      // Function to validate edit pet information section
+      // Function to validate the pet profile form
       function validatePetProfile() {
         const weight = document.getElementById("edit-weight").value;
         if (weight <= 0) {
@@ -54,6 +56,102 @@
         }
         return true;
       }
+
+      // Function to toggle between edit and view modes for medication
+      function toggleEditModes() {
+        var editMode = document.getElementById("editMedicationMode");
+        var viewMode = document.getElementById("viewMedicationMode");
+
+        // Toggle visibility
+        editMode.classList.toggle("hidden");
+
+        // Hide view mode if edit mode is visible
+        if (
+          !editMode.classList.contains("hidden") &&
+          !viewMode.classList.contains("hidden")
+        ) {
+          viewMode.classList.add("hidden");
+        }
+      }
+
+      // Function to update hidden fields with delimiter before form submission
+      function updateHiddenFields() {
+        var nameValue = document.getElementById("nameDisplay").value;
+        var instructionValue =
+          document.getElementById("instructionDisplay").value;
+
+        // Append the delimiter and set it to the hidden field
+        document.getElementById("nameHidden").value = nameValue + "|";
+        document.getElementById("instructionHidden").value =
+          instructionValue + "|";
+      }
+
+      // Function to validate medication details form
+      function validateEditMedication() {
+        const dosage = parseFloat(
+          document.getElementById("edit-medDosage").value
+        );
+        const frequency = parseFloat(
+          document.getElementById("edit-medFrequency").value
+        );
+        const duration = parseFloat(
+          document.getElementById("edit-medDuration").value
+        );
+
+        if (
+          isNaN(dosage) ||
+          dosage <= 0 ||
+          isNaN(frequency) ||
+          frequency <= 0 ||
+          isNaN(duration) ||
+          duration <= 0
+        ) {
+          alert(
+            "Please enter positive numbers for the dosage, daily frequency, and duration."
+          );
+          return false;
+        }
+        return true;
+      }
+
+      // Function to cancel editing and switch back to view mode
+      function cancelEdit() {
+        document.getElementById("editMedicationMode").classList.add("hidden");
+        document
+          .getElementById("viewMedicationMode")
+          .classList.remove("hidden");
+      }
+
+      // Ensure hidden fields are updated when form is submitted
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+          const params = new URLSearchParams(window.location.search);
+          const error = params.get("error");
+          return { error };
+        }
+
+        // Function to display an alert if an error query parameter is present
+        function checkForErrors() {
+          const { error } = getQueryParams();
+          if (error === "Medicine does not exist!") {
+            alert("Medicine does not exist!");
+          }
+        }
+
+        // Check for errors when the page loads
+        checkForErrors();
+
+        var editMedicationForm = document.getElementById("editMedicationForm");
+        if (editMedicationForm) {
+          editMedicationForm.addEventListener("submit", function (event) {
+            updateHiddenFields();
+            if (!validateEditMedication()) {
+              event.preventDefault(); // Prevent form submission if validation fails
+            }
+          });
+        }
+      });
     </script>
   </head>
   <body>
@@ -242,7 +340,7 @@
               <img
                 src="/images/edit-icon.png"
                 class="edit-icon"
-                onclick="editMedication()"
+                onclick="toggleEditModes()"
                 alt="Edit"
               />
             </div>
@@ -284,45 +382,121 @@
         </div>
       </div>
 
-      <!-- Edit Mode for Medication -->
+      <!-- Edit Existing Medication -->
       <div id="editMedicationMode" class="hidden">
-        <form id="medicationForm" onsubmit="saveMedication(); return false;">
+        <form
+          id="editMedicationForm"
+          th:action="@{/updateMedication}"
+          method="POST"
+          onsubmit="return validateEditMedication();"
+        >
+          <input type="hidden" name="petId" th:value="${pet.id}" />
+
+          <!-- Assuming this part shows details for the medication being edited -->
           <div class="pet-profile-card">
             <div class="pet-info-box">
-              <div class="pet-info-header">Edit Pet Medication</div>
+              <div class="pet-info-header">Edit Selected Medication</div>
               <div class="pet-info-content">
-                <div class="medication-picture">
-                  <img src="/images/medication.jpg" alt="Medication Picture" />
-                </div>
                 <div class="medication-details">
-                  <p>
-                    <strong>Medication Name:</strong>
-                    <input type="text" id="edit-medName" required />
-                  </p>
-                  <p>
-                    <strong>Dosage:</strong>
-                    <input type="text" id="edit-medDosage" required />
-                  </p>
-                  <p>
-                    <strong>Duration:</strong>
-                    <input type="text" id="edit-medDuration" required />
-                  </p>
-                  <p>
-                    <strong>Frequency:</strong>
-                    <input type="text" id="edit-medFrequency" required />
-                  </p>
-                  <p>
-                    <strong>Time Remaining:</strong>
-                    <input type="text" id="edit-timeRemaining" required />
-                  </p>
+                  <!-- Loop over medications to show details -->
+                  <div
+                    th:each="medication, iterStat : ${prescribedMedications}"
+                    style="margin-bottom: 1rem;"
+                  >
+                    <!-- This could be hidden or visible based on the selected medication -->
+                    <input
+                      type="hidden"
+                      name="medicationId"
+                      th:value="${medication.id}"
+                    />
+                    <p>
+                      <strong>Name:</strong>
+                      <!-- Visible input field for user -->
+                      <input
+                        type="text"
+                        id="nameDisplay"
+                        name="nameDisplay"
+                        th:value="${medication.medicine.name}"
+                        required
+                        class="large-textbox"
+                      />
+                      <!-- Hidden input field with delimiter -->
+                      <input
+                        type="hidden"
+                        id="nameHidden"
+                        name="name"
+                        th:value="${medication.medicine.name} + '|'"
+                      />
+                    </p>
+                    <p>
+                      <strong>Dosage:</strong>
+                      <input
+                        type="text"
+                        name="dosage"
+                        th:value="${medication.dosage}"
+                        required
+                      />
+                    </p>
+                    <p>
+                      <strong>Daily Frequency:</strong>
+                      <input
+                        type="text"
+                        name="frequency"
+                        th:value="${medication.dailyFrequency}"
+                        required
+                      />
+                    </p>
+                    <p>
+                      <strong>Duration:</strong>
+                      <input
+                        type="text"
+                        name="duration"
+                        th:value="${medication.duration}"
+                        required
+                      />
+                    </p>
+                    <p>
+                      <strong>Instruction:</strong>
+                      <!-- Visible input field for user -->
+                      <input
+                        type="text"
+                        id="instructionDisplay"
+                        name="instructionDisplay"
+                        th:value="${medication.instruction}"
+                        required
+                        class="large-textbox"
+                      />
+                      <!-- Hidden input field with delimiter -->
+                      <input
+                        type="hidden"
+                        id="instructionHidden"
+                        name="instruction"
+                        th:value="${medication.instruction} + '|'"
+                      />
+                    </p>
+
+                    <!-- Buttons for saving or deleting the medication -->
+                    <button type="submit">Save Changes</button>
+                    <button
+                      type="button"
+                      onclick="deleteMedication('${medication.id}')"
+                    >
+                      Delete Medication
+                    </button>
+                    <hr style="margin-top: 1rem;"/>
+                  </div>
                 </div>
               </div>
-              <button type="button" onclick="cancelEdit('medication')">
-                Cancel
-              </button>
-              <button type="submit">Save Changes</button>
             </div>
           </div>
+
+          <button
+            type="button"
+            onclick="cancelEdit()"
+            style="margin-bottom: 2rem"
+          >
+            Cancel
+          </button>
         </form>
       </div>
 
