@@ -45,6 +45,25 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.pet-info-header {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  font-size: 2em;
+  padding: 10px 0;
+}
+
+.icons-container {
+  display: flex;
+  gap: 3rem;
+}
+
+.share-icon, .download-icon{
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+}
+
 h1 {
   font-size: 32px;
   margin-bottom: 20px;
