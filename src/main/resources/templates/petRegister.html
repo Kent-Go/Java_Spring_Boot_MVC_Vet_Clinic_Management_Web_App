@@ -24,18 +24,47 @@
         return true;
       }
 
-      function saveForm() {
+      function extractFields(fieldName){
+        var fieldElements = document.getElementsByClassName(fieldName);
+        var values = [];
+
+        for(var i = 0; i < fieldElements.length; i++){
+          values.push(fieldElements[i].value);
+        }
+
+        return values;
+      }
+
+      async function saveForm() {
         if (validateForm()) {
-          // Collect form data excluding confirmEmail and confirmPassword
-          var formData = new FormData(document.querySelector("form"));
 
-          // Save remaining data to localStorage
-          formData.forEach((value, key) => {
-            localStorage.setItem(key, value);
-          });
+          //
+          var formData = new FormData();
 
+          formData.append("petName", extractFields("petName"));
+          formData.append("dob", extractFields("dob"));
+          formData.append("gender", extractFields("gender"));
+          formData.append("petType", extractFields("petType"));
+          formData.append("breed", extractFields("breed"));
+          formData.append("color", extractFields("color"));
+          formData.append("weight", extractFields("weight"));
+          //formData.append("profilePicture", extractFields("profilePicture"));
+          formData.append("allergies", extractFields("allergies"));
+          formData.append("existingCondition", extractFields("existingCondition"));
+
+          try{
+            const response = await fetch("/petRegister", {
+              method: "POST",
+              body: formData
+            })
+          }
+
+          catch (e) {
+            console.error(e);
+          }
           // Submit the form programmatically
-          document.querySelector("form").submit();
+          //document.querySelector("form").submit();
+          //formData.submit();
         }
       }
 
@@ -100,7 +129,8 @@
         var newFormID = "pet" + nextPetID;
 
         const newFormDiv = document.createElement("div");
-        newFormDiv.setAttribute("id", newFormID);
+        newFormDiv.id = newFormID;
+        newFormDiv.className = "petInfo";
 
         //Name label and input
         const formNameLabel = createLabel("petName", "Full Name");
@@ -159,6 +189,7 @@
         removalButton.setAttribute("onclick", "removePet(this.dataset.petNumber)");
 
         //Append all the created elements to the new form
+        //This is so many things and there is probably a better way lol
         newFormDiv.appendChild(formNameLabel);
         newFormDiv.appendChild(formName);
         newFormDiv.appendChild(formDOBLabel);
@@ -227,7 +258,7 @@
         <button type="button" onclick="addPet()">Add Pet</button>
 
         <div id="allPets">
-          <div id="pet0">
+          <div id="pet0" class="petInfo">
             <!-- Pet Information Section -->
             <label for="petName">Full Name<span style="color: red">*</span></label>
             <input type="text" class="petName" name="petName" required />

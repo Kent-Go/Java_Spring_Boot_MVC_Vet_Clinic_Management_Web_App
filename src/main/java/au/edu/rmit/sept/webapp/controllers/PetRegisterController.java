@@ -39,41 +39,55 @@ public class PetRegisterController {
 
     @PostMapping("/petRegister")
     public String registerPet(
-            @RequestParam("petName") String petName,
-            @RequestParam("dob") LocalDate dob,
-            @RequestParam("gender") String gender,
-            @RequestParam("petType") String petType,
-            @RequestParam("breed") String breed,
-            @RequestParam("color") String color,
-            @RequestParam("weight") float weight,
+            @RequestParam("petName") String[] petName,
+            @RequestParam("dob") LocalDate[] dob,
+            @RequestParam("gender") String[] gender,
+            @RequestParam("petType") String[] petType,
+            @RequestParam("breed") String[] breed,
+            @RequestParam("color") String[] color,
+            @RequestParam("weight") float[] weight,
             //@RequestParam("profilePicture") IDK profilePicture,
-            @RequestParam("allergies") String allergies,
-            @RequestParam("existingCondition") String condition,
+            @RequestParam("allergies") String[] allergies,
+            @RequestParam("existingCondition") String[] condition,
             SessionStatus sessionStatus,
             Model model) {
 
+        /*for(int i = 0; i < petName.length; i++){
+            System.out.println("=====");
+            System.out.println("Name: " + petName[i]);
+            System.out.println("DOB: " + dob[i]);
+            System.out.println("Gender: " + gender[i]);
+            System.out.println("Species: " + petType[i]);
+            System.out.println("Color: " + color[i]);
+            System.out.println("Weight: " + weight[i]);
+            System.out.println("Allergies: " + allergies[i]);
+            System.out.println("Conditions: " + condition[i]);
+            System.out.println("=====");
+        }*/
         // Retrieve user, address, and petOwner from session
         User user = (User) model.getAttribute("user");
         PetOwner petOwner = (PetOwner) model.getAttribute("petOwner");
         Address address = (Address) model.getAttribute("address");
-
+        
         if (user != null && petOwner != null && address != null) {
             // Save address and petOwner to database
             addressService.createAddress(address);
             PetOwner owner = petOwnerService.createPetOwner(petOwner);
 
 
-            // Assuming there is a service to handle pets
-            Pet pet = new Pet();
+            for(int i = 0; i < petName.length; i++){
+                // Assuming there is a service to handle pets
+                Pet pet = new Pet();
 
-            pet.setName(petName);
-            pet.setBirthDate(dob);
-            pet.setGender(gender);
-            pet.setSpecies(petType);
-            pet.setBreed(breed);
-            pet.setPetOwnerID(owner.getId());
+                pet.setName(petName[i]);
+                pet.setBirthDate(dob[i]);
+                pet.setGender(gender[i]);
+                pet.setSpecies(petType[i]);
+                pet.setBreed(breed[i]);
+                pet.setPetOwnerID(owner.getId());
 
-            petService.createPet(pet); // Add your code to save pet
+                petService.createPet(pet); // Add your code to save pet
+            }
 
             // Clear session
             sessionStatus.setComplete();
