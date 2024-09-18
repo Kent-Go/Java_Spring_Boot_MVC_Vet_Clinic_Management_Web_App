@@ -20,4 +20,14 @@ public class PrescribedMedicationServiceImpl implements PrescribedMedicationServ
   public List<PrescribedMedication> getPrescribedMedicationByAppointmentID(int appointmentID) {
     return prescribedMedicationRepository.findByAppointmentID(appointmentID);
   }
+
+  @Override
+  public PrescribedMedication getPrescribedMedicationByID(int id) {
+    return prescribedMedicationRepository.findById(id).orElse(null);
+  }
+
+  @Override
+  public PrescribedMedication updatePrescribedMedication(PrescribedMedication prescribedMedication) {
+    return prescribedMedicationRepository.save(prescribedMedication);
+  }
 }

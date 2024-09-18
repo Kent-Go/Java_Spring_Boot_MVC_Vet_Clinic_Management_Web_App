@@ -1,6 +1,8 @@
 package au.edu.rmit.sept.webapp.controllers;
 
+import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Address;
+import au.edu.rmit.sept.webapp.models.Medicine;
 import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.SurgeryHistory;
 import au.edu.rmit.sept.webapp.models.ImmunisationHistory;
@@ -23,6 +26,7 @@ import au.edu.rmit.sept.webapp.services.PetService;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
+import au.edu.rmit.sept.webapp.services.MedicineService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.SurgeryHistoryService;
 import au.edu.rmit.sept.webapp.services.ImmunisationHistoryService;
@@ -41,6 +45,9 @@ public class PetProfileController {
 
     @Autowired
     private PetOwnerService petOwnerService;
+
+    @Autowired
+    private MedicineService medicineService;
 
     @Autowired
     private AppointmentService appointmentService;
@@ -110,6 +117,7 @@ public class PetProfileController {
         return "petProfile"; // This refers to the petProfile.html page
     }
 
+    // Method to handle form submission for updating the pet basic information
     @PostMapping("/updatePetProfile")
     public String updatePetProfile(@RequestParam("petId") int petId,
             @RequestParam("name") String name,
@@ -142,6 +150,95 @@ public class PetProfileController {
         petService.updatePet(pet);
 
         // Redirect to view mode after saving
+        return "redirect:/petProfile?petId=" + petId;
+    }
+
+    // Method to handle form submission for updating existing medication
+    @PostMapping("/updateMedication")
+    public String updateMedication(
+            @RequestParam("petId") int petId,
+            @RequestParam("medicationId") String medicationId,
+            @RequestParam("name") String name,
+            @RequestParam("dosage") String dosage,
+            @RequestParam("frequency") String frequency,
+            @RequestParam("duration") String duration,
+            @RequestParam("instruction") String instruction) {
+        System.out.println("Unmodified Name: " + name);
+        // // Remove trailing delimiters from name and instruction
+        // String cleanedName = name.replaceAll("^\\|,|\\|,$", "");
+        // String cleanedInstruction = instruction.replaceAll("\\|,$", "");
+
+        // Split name and instruction using '|'
+        String[] nameSplit = name.split("\\|,");
+        String[] instructionSplit = instruction.split("\\|,");
+        
+        // If the name or instruction contains '|', then change it to ""
+        for (int i = 0; i < nameSplit.length; i++) {
+            if (nameSplit[i].contains("|")) {
+                nameSplit[i] = nameSplit[i].replace("|", "");
+            }
+        }
+
+        for (int i = 0; i < instructionSplit.length; i++) {
+            if (instructionSplit[i].contains("|")) {
+                instructionSplit[i] = instructionSplit[i].replace("|", "");
+            }
+        }
+
+        // Split medicationId, dosage, frequency, and duration to get the integer values
+        // from delimiter ","
+        String[] medicationIdSplit = medicationId.split(",");
+        String[] dosageSplit = dosage.split(",");
+        String[] frequencySplit = frequency.split(",");
+        String[] durationSplit = duration.split(",");
+
+        // Loop through the split values and append them to a list
+        List<Map<String, Object>> prescriptionList = new ArrayList<>();
+        for (int i = 0; i < medicationIdSplit.length; i++) {
+            Map<String, Object> medicationMap = new HashMap<>();
+            try {
+                medicationMap.put("medicationId", Integer.parseInt(medicationIdSplit[i]));
+                medicationMap.put("name", nameSplit[i]);
+                medicationMap.put("dosage", Integer.parseInt(dosageSplit[i]));
+                medicationMap.put("frequency", Integer.parseInt(frequencySplit[i]));
+                medicationMap.put("duration", Integer.parseInt(durationSplit[i]));
+                medicationMap.put("instruction", instructionSplit[i]);
+            } catch (NumberFormatException e) {
+                // Handle the case where parsing fails
+                e.printStackTrace();
+                continue;
+            }
+            prescriptionList.add(medicationMap);
+        }
+
+        // For each medication in the list, update the prescribed medication
+        for (Map<String, Object> medicationMap : prescriptionList) {
+            // Check if the medicine exists
+            Medicine medicine = medicineService.getMedicineByName((String) medicationMap.get("name"));
+
+            if (medicine == null) {
+                // If the medicine does not exist, pass a message to the html to display an
+                // error
+                return "redirect:/petProfile?petId=" + petId + "&error=Medicine does not exist!";
+            }
+
+            // Get the prescribed medication by ID
+            PrescribedMedication prescribedMedication = prescribedMedicationService
+                    .getPrescribedMedicationByID((int) medicationMap.get("medicationId"));
+
+            // Update the prescribed medication
+            prescribedMedication.setDosage((int) medicationMap.get("dosage"));
+            prescribedMedication.setDailyFrequency((int) medicationMap.get("frequency"));
+            prescribedMedication.setDuration((int) medicationMap.get("duration"));
+            prescribedMedication.setInstruction((String) medicationMap.get("instruction"));
+            prescribedMedication.setMedicineID(medicine.getId());
+            prescribedMedication.setMedicine(medicine);
+
+            // Save the updated prescribed medication
+            prescribedMedicationService.updatePrescribedMedication(prescribedMedication);
+        }
+
+        // Redirect back to the pet's profile after successful update
         return "redirect:/petProfile?petId=" + petId;
     }
 }
