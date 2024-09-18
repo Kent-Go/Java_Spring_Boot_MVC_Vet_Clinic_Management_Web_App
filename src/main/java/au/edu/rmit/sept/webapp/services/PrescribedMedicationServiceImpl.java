@@ -30,4 +30,9 @@ public class PrescribedMedicationServiceImpl implements PrescribedMedicationServ
   public PrescribedMedication updatePrescribedMedication(PrescribedMedication prescribedMedication) {
     return prescribedMedicationRepository.save(prescribedMedication);
   }
+
+  @Override
+  public void deletePrescribedMedicationByID(int id) {
+    prescribedMedicationRepository.deleteById(id);
+  }
 }

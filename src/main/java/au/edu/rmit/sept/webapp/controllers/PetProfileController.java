@@ -9,10 +9,14 @@ import java.util.Collection;
 
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Address;
@@ -171,7 +175,7 @@ public class PetProfileController {
         // Split name and instruction using '|'
         String[] nameSplit = name.split("\\|,");
         String[] instructionSplit = instruction.split("\\|,");
-        
+
         // If the name or instruction contains '|', then change it to ""
         for (int i = 0; i < nameSplit.length; i++) {
             if (nameSplit[i].contains("|")) {
@@ -240,5 +244,22 @@ public class PetProfileController {
 
         // Redirect back to the pet's profile after successful update
         return "redirect:/petProfile?petId=" + petId;
+    }
+
+    // Method to handle deletion of medication
+    @DeleteMapping("/deleteMedication/{id}")
+    public ResponseEntity<Map<String, String>> deleteMedication(@PathVariable int id,
+            @RequestParam("petId") int petId) {
+        try {
+            prescribedMedicationService.deletePrescribedMedicationByID(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Medication deleted successfully");
+            response.put("redirectUrl", "/petProfile?petId=" + petId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Error deleting medication: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 }

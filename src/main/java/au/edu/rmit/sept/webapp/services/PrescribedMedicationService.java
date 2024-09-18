@@ -12,4 +12,7 @@ public interface PrescribedMedicationService {
 
     // Update prescribed medication
     public PrescribedMedication updatePrescribedMedication(PrescribedMedication prescribedMedication);
+
+    // Delete prescribed medication by ID
+    public void deletePrescribedMedicationByID(int id);
 }
