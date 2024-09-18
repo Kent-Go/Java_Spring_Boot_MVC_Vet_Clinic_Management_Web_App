@@ -52,8 +52,8 @@
             <!-- For: Pet's Name -->
             <p>For: <span th:text="'Princess'"></span></p>
 
-            <!-- Refill Button -->
-            <a href="/refillPrescription" class="request-refill-btn">
+            <!-- Refill Button, sending prescriptionId as parameter -->
+            <a th:href="@{/refillPrescription(prescriptionId=${prescription.id})}" class="request-refill-btn">
                 <img src="/images/shopping-cart.png" alt="Cart" class="cart-icon" />
                 Request refill
             </a>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Medicine - Checkout</title>
+    <link rel="stylesheet" href="/css/checkout.css" />
+</head>
+<body>
+<!-- Header Section -->
+<div class="header">
+    <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+    </a>
+    <a href="#" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+    </a>
+</div>
+
+<!-- Main Content Section -->
+<div class="container">
+    <h1>Purchase medicine</h1>
+
+    <div class="tabs">
+        <div class="tab">1. Shipment Details</div>
+        <div class="tab">2. Payment Details</div>
+        <div class="tab active">3. Review and checkout</div>
+    </div>
+
+    <div class="content">
+        <h2>Review order</h2>
+        <div class="order-summary">
+            <p th:text="${prescriptionName} + ' - Bottle x' + ${quantity}"></p>
+            <p th:text="${price}"></p>
+
+            <hr />
+
+            <p th:text="${additionalItemName} + ' - Bottle x' + ${additionalQuantity}"></p>
+            <p th:text="${additionalPrice}"></p>
+
+            <hr />
+            <h3>Total: <span th:text="${totalPrice}"></span>$</h3>
+        </div>
+
+        <p class="shipping-address">Shipping address: <span th:text="${shippingAddress}"></span></p>
+
+        <p>Payment method: <span th:text="${paymentMethod}"></span></p>
+
+        <!-- Buttons -->
+        <div class="actions">
+            <!-- Back button doesn't go back, idk why the param isn't passed -->
+            <form action="/payment" method="get">
+                <input type="hidden" name="prescriptionId" th:value="${prescriptionId}" />
+                <button class="back-btn" type="submit">Back</button>
+            </form>
+
+            <!-- It should be userId as the parameter-->
+            <form action="/petOwnerWelcome" method="get">
+                <input type="hidden" name="prescriptionId" th:value="${prescriptionId}" />
+                <button class="proceed-btn" type="submit">Purchase</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
