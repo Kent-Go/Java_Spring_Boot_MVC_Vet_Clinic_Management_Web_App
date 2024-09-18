@@ -3,7 +3,14 @@ package au.edu.rmit.sept.webapp.models;
 import java.time.LocalDate;
 import java.time.Period;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "pet")
@@ -38,6 +45,14 @@ public class Pet {
     @Column(name = "weight")
     private float weight;
 
+    // Allergies
+    @Column(name = "allergies")
+    private String allergies;
+
+    // Existing conditions
+    @Column(name = "existing_conditions")
+    private String existingConditions;
+
     // Foreign key - Pet Owner ID
     @Column(name = "pet_owner_id")
     private int petOwnerID;
@@ -51,6 +66,7 @@ public class Pet {
     private int age;
 
     // Getters and Setters
+    // Pet ID
     public int getId() {
         return id;
     }
@@ -59,6 +75,7 @@ public class Pet {
         this.id = id;
     }
 
+    // Name
     public String getName() {
         return name;
     }
@@ -67,6 +84,7 @@ public class Pet {
         this.name = name;
     }
 
+    // Birth Date
     public LocalDate getBirthDate() {
         return birthDate;
     }
@@ -76,6 +94,7 @@ public class Pet {
         this.age = calculateAge();
     }
 
+    // Species
     public String getSpecies() {
         return species;
     }
@@ -84,6 +103,7 @@ public class Pet {
         this.species = species;
     }
 
+    // Breed
     public String getBreed() {
         return breed;
     }
@@ -92,6 +112,7 @@ public class Pet {
         this.breed = breed;
     }
 
+    // Gender
     public String getGender() {
         return gender;
     }
@@ -100,6 +121,7 @@ public class Pet {
         this.gender = gender;
     }
 
+    // Weight
     public float getWeight() {
         return weight;
     }
@@ -108,6 +130,26 @@ public class Pet {
         this.weight = weight;
     }
 
+
+    // Allergies
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    // Existing Conditions
+    public String getExistingConditions() {
+        return existingConditions;
+    }
+
+    public void setExistingConditions(String existingConditions) {
+        this.existingConditions = existingConditions;
+    }
+
+    // Pet Owner ID
     public int getPetOwnerID() {
         return petOwnerID;
     }
@@ -132,7 +174,8 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight, int petOwnerID) {
+    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight,
+            int petOwnerID) {
         this.name = name;
         this.birthDate = birthDate;
         this.species = species;

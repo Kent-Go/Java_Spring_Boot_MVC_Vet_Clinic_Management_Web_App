@@ -1,586 +1,455 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Pet Profile</title>
-    <link rel="stylesheet" href="/css/petProfile.css">
-    <script>
-        function loadPetProfile() {
-            // Pet Information
-            document.getElementById("petName").innerText = localStorage.getItem("petName") || "Princess";
-            document.getElementById("petAge").innerText = localStorage.getItem("petAge") || "3";
-            document.getElementById("birthDate").innerText = localStorage.getItem("birthDate") || "06/6/2006";
-            document.getElementById("species").innerText = localStorage.getItem("species") || "Dog";
-            document.getElementById("breed").innerText = localStorage.getItem("breed") || "Chihuahua";
-            document.getElementById("gender").innerText = localStorage.getItem("gender") || "Male";
-            document.getElementById("weight").innerText = localStorage.getItem("weight") || "1.6 kg";
-            document.getElementById("color").innerText = localStorage.getItem("color") || "Brown";
-
-            // Medication Information
-            document.getElementById("medName").innerText = localStorage.getItem("medName") || "Frusemide 20mg";
-            document.getElementById("medDosage").innerText = localStorage.getItem("medDosage") || "One tablet daily";
-            document.getElementById("medDuration").innerText = localStorage.getItem("medDuration") || "2 weeks";
-            document.getElementById("medFrequency").innerText = localStorage.getItem("medFrequency") || "During breakfast";
-            document.getElementById("timeRemaining").innerText = localStorage.getItem("timeRemaining") || "5 days";
-
-            // Health Concerns Information
-            document.getElementById("allergies").innerText = localStorage.getItem("allergies") || "None";
-            document.getElementById("existingConditions").innerText = localStorage.getItem("existingConditions") || "None";
-            document.getElementById("veterinarian").innerText = localStorage.getItem("veterinarian") || "Johnny Smithy";
-
-            // Load pet picture if available
-            var petPicture = localStorage.getItem("petPicture");
-            if (petPicture) {
-                document.getElementById("pet-picture").src = petPicture;
-            }
-
-            // Immunisation History
-            const immunisationTable = document.getElementById('immunisationTableBody');
-            const immunisationHistory = JSON.parse(localStorage.getItem('immunisationHistory')) || [
-                { date: '20/10/2006', vaccination: 'Rabies, DHPP, Lyme', notes: 'None' },
-                { date: '10/08/2007', vaccination: 'Bordatella, Lepto', notes: 'None' }
-            ];
-
-            immunisationTable.innerHTML = '';
-            immunisationHistory.forEach(record => {
-                const row = `<tr><td>${record.date}</td><td>${record.vaccination}</td><td>${record.notes}</td></tr>`;
-                immunisationTable.innerHTML += row;
-            });
-
-            // Surgery History
-            const surgeryTable = document.getElementById('surgeryTableBody');
-            const surgeryHistory = JSON.parse(localStorage.getItem('surgeryHistory')) || [
-                { date: '20/10/2006', surgery: 'Neutering', notes: 'None' },
-                { date: '10/08/2007', surgery: 'Dental Cleaning', notes: 'None' }
-            ];
-            surgeryTable.innerHTML = '';
-            surgeryHistory.forEach(record => {
-                const row = `<tr><td>${record.date}</td><td>${record.surgery}</td><td>${record.notes}</td></tr>`;
-                surgeryTable.innerHTML += row;
-            });
-        }
-
-        // Edit Pet Information
-        function editPetInfo() {
-            document.getElementById("viewPetInfoMode").style.display = "none";
-            document.getElementById("editPetInfoMode").style.display = "block";
-
-            document.getElementById("edit-petName").value = localStorage.getItem("petName") || "Princess";
-            document.getElementById("edit-petAge").value = localStorage.getItem("petAge") || "3";
-            document.getElementById("edit-birthDate").value = localStorage.getItem("birthDate") || "2006-06-06";
-            document.getElementById("edit-species").value = localStorage.getItem("species") || "Dog";
-            document.getElementById("edit-breed").value = localStorage.getItem("breed") || "Chihuahua";
-            document.getElementById("edit-gender").value = localStorage.getItem("gender") || "Male";
-            document.getElementById("edit-weight").value = localStorage.getItem("weight") || "1.6 kg";
-            document.getElementById("edit-color").value = localStorage.getItem("color") || "Brown";
-        }
-
-        // Edit Medication Information
-        function editMedication() {
-            document.getElementById("viewMedicationMode").style.display = "none";
-            document.getElementById("editMedicationMode").style.display = "block";
-
-            document.getElementById("edit-medName").value = localStorage.getItem("medName") || "Frusemide 20mg";
-            document.getElementById("edit-medDosage").value = localStorage.getItem("medDosage") || "One tablet daily";
-            document.getElementById("edit-medDuration").value = localStorage.getItem("medDuration") || "2 weeks";
-            document.getElementById("edit-medFrequency").value = localStorage.getItem("medFrequency") || "During breakfast";
-            document.getElementById("edit-timeRemaining").value = localStorage.getItem("timeRemaining") || "5 days";
-        }
-
-        // Edit Health Concerns Information
-        function editHealthConcerns() {
-            document.getElementById("viewHealthConcernsMode").style.display = "none";
-            document.getElementById("editHealthConcernsMode").style.display = "block";
-
-            document.getElementById("edit-allergies").value = localStorage.getItem("allergies") || "None";
-            document.getElementById("edit-existingConditions").value = localStorage.getItem("existingConditions") || "None";
-            document.getElementById("edit-veterinarian").value = localStorage.getItem("veterinarian") || "Johnny Smithy";
-        }
-
-        // Save Pet Profile
-        function savePetProfile() {
-            localStorage.setItem("petName", document.getElementById("edit-petName").value);
-            localStorage.setItem("petAge", document.getElementById("edit-petAge").value);
-            localStorage.setItem("birthDate", document.getElementById("edit-birthDate").value);
-            localStorage.setItem("species", document.getElementById("edit-species").value);
-            localStorage.setItem("breed", document.getElementById("edit-breed").value);
-            localStorage.setItem("gender", document.getElementById("edit-gender").value);
-            localStorage.setItem("weight", document.getElementById("edit-weight").value);
-            localStorage.setItem("color", document.getElementById("edit-color").value);
-
-            var petPictureFile = document.getElementById("edit-petPicture").files[0];
-            if (petPictureFile) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem("petPicture", e.target.result);
-                    document.getElementById("pet-picture").src = e.target.result;
-                };
-                reader.readAsDataURL(petPictureFile);
-            }
-
-            alert("Pet profile updated successfully!");
-            window.location.reload();
-        }
-
-        // Save Medication
-        function saveMedication() {
-            localStorage.setItem("medName", document.getElementById("edit-medName").value);
-            localStorage.setItem("medDosage", document.getElementById("edit-medDosage").value);
-            localStorage.setItem("medDuration", document.getElementById("edit-medDuration").value);
-            localStorage.setItem("medFrequency", document.getElementById("edit-medFrequency").value);
-            localStorage.setItem("timeRemaining", document.getElementById("edit-timeRemaining").value);
-
-            alert("Medication details updated successfully!");
-            window.location.reload();
-        }
-
-        // Save Health Concerns
-        function saveHealthConcerns() {
-            localStorage.setItem("allergies", document.getElementById("edit-allergies").value);
-            localStorage.setItem("existingConditions", document.getElementById("edit-existingConditions").value);
-            localStorage.setItem("veterinarian", document.getElementById("edit-veterinarian").value);
-
-            alert("Health Concerns updated successfully!");
-            window.location.reload();
-        }
-
-        function cancelEdit(type) {
-            if (type === 'petInfo') {
-                document.getElementById("editPetInfoMode").style.display = "none";
-                document.getElementById("viewPetInfoMode").style.display = "block";
-            } else if (type === 'medication') {
-                document.getElementById("editMedicationMode").style.display = "none";
-                document.getElementById("viewMedicationMode").style.display = "block";
-            } else if (type === 'healthConcerns') {
-                document.getElementById("editHealthConcernsMode").style.display = "none";
-                document.getElementById("viewHealthConcernsMode").style.display = "block";
-            }
-        }
-
-        // Edit Immunisation History
-        function editImmunisationHistory() {
-            document.getElementById("viewImmunisationMode").style.display = "none";
-            document.getElementById("editImmunisationMode").style.display = "block";
-
-            const immunisationHistory = JSON.parse(localStorage.getItem('immunisationHistory')) || [
-                { date: '20/10/2006', vaccination: 'Rabies, DHPP, Lyme', notes: 'None' },
-                { date: '10/08/2007', vaccination: 'Bordatella, Lepto', notes: 'None' }
-            ];
-
-            const immunisationEditTable = document.getElementById('editImmunisationTableBody');
-            immunisationEditTable.innerHTML = '';
-            immunisationHistory.forEach((record, index) => {
-                const row = `
-                    <tr>
-                        <td><input type="date" placeholder="${record.date}" id="edit-date-${index}" required></td>
-                        <td><input type="text" placeholder="${record.vaccination}" id="edit-vaccination-${index}" required></td>
-                        <td><input type="text" placeholder="${record.notes}" id="edit-notes-${index}"></td>
-                    </tr>
-                `;
-                immunisationEditTable.innerHTML += row;
-            });
-        }
-
-        // Add new row to immunisation table
-        function addNewRow() {
-            const immunisationEditTable = document.getElementById('editImmunisationTableBody');
-            const rowCount = immunisationEditTable.getElementsByTagName('tr').length;
-            const newRow = `
-                <tr>
-                    <td><input type="date" id="edit-date-${rowCount}" required></td>
-                    <td><input type="text" id="edit-vaccination-${rowCount}" required></td>
-                    <td><input type="text" id="edit-notes-${rowCount}"></td>
-                </tr>
-            `;
-            immunisationEditTable.innerHTML += newRow;
-        }
-
-        // Save Immunisation History
-        function saveImmunisationHistory() {
-            const immunisationEditTable = document.getElementById('editImmunisationTableBody');
-            const rows = immunisationEditTable.getElementsByTagName('tr');
-            const updatedImmunisationHistory = [];
-
-            for (let i = 0; i < rows.length; i++) {
-                const date = document.getElementById(`edit-date-${i}`).value || document.getElementById(`edit-date-${i}`).placeholder;
-                const vaccination = document.getElementById(`edit-vaccination-${i}`).value || document.getElementById(`edit-vaccination-${i}`).placeholder;
-                const notes = document.getElementById(`edit-notes-${i}`).value || document.getElementById(`edit-notes-${i}`).placeholder;
-
-                updatedImmunisationHistory.push({ date, vaccination, notes });
-            }
-
-            localStorage.setItem('immunisationHistory', JSON.stringify(updatedImmunisationHistory));
-            alert("Immunisation history updated successfully!");
-            window.location.reload();
-        }
-
-        // Cancel edit for immunisation history
-        function cancelEditImmunisation() {
-            document.getElementById("editImmunisationMode").style.display = "none";
-            document.getElementById("viewImmunisationMode").style.display = "block";
-        }
-
-        // Edit Surgery History
-        function editSurgeryHistory() {
-            document.getElementById("viewSurgeryMode").style.display = "none";
-            document.getElementById("editSurgeryMode").style.display = "block";
-
-            const surgeryHistory = JSON.parse(localStorage.getItem('surgeryHistory')) || [
-                { date: '20/10/2006', surgery: 'Neutering', notes: 'None' },
-                { date: '10/08/2007', surgery: 'Dental Cleaning', notes: 'None' }
-            ];
-
-            const surgeryEditTable = document.getElementById('editSurgeryTableBody');
-            surgeryEditTable.innerHTML = '';
-            surgeryHistory.forEach((record, index) => {
-                const row = `
-                    <tr>
-                        <td><input type="date" placeholder="${record.date}" id="edit-surgery-date-${index}" required></td>
-                        <td><input type="text" placeholder="${record.surgery}" id="edit-surgery-${index}" required></td>
-                        <td><input type="text" placeholder="${record.notes}" id="edit-surgery-notes-${index}"></td>
-                    </tr>
-                `;
-                surgeryEditTable.innerHTML += row;
-            });
-        }
-
-        // Add new row to surgery table
-        function addNewSurgeryRow() {
-            const surgeryEditTable = document.getElementById('editSurgeryTableBody');
-            const rowCount = surgeryEditTable.getElementsByTagName('tr').length;
-            const newRow = `
-                <tr>
-                    <td><input type="date" id="edit-surgery-date-${rowCount}" required></td>
-                    <td><input type="text" id="edit-surgery-${rowCount}" required></td>
-                    <td><input type="text" id="edit-surgery-notes-${rowCount}"></td>
-                </tr>
-            `;
-            surgeryEditTable.innerHTML += newRow;
-        }
-
-        // Save Surgery History
-        function saveSurgeryHistory() {
-            const surgeryEditTable = document.getElementById('editSurgeryTableBody');
-            const rows = surgeryEditTable.getElementsByTagName('tr');
-            const updatedSurgeryHistory = [];
-
-            for (let i = 0; i < rows.length; i++) {
-                const date = document.getElementById(`edit-surgery-date-${i}`).value || document.getElementById(`edit-surgery-date-${i}`).placeholder;
-                const surgery = document.getElementById(`edit-surgery-${i}`).value || document.getElementById(`edit-surgery-${i}`).placeholder;
-                const notes = document.getElementById(`edit-surgery-notes-${i}`).value || document.getElementById(`edit-surgery-notes-${i}`).placeholder;
-
-                updatedSurgeryHistory.push({ date, surgery, notes });
-            }
-
-            localStorage.setItem('surgeryHistory', JSON.stringify(updatedSurgeryHistory));
-            alert("Surgery history updated successfully!");
-            window.location.reload();
-        }
-
-        // Cancel edit for surgery history
-        function cancelEditSurgery() {
-            document.getElementById("editSurgeryMode").style.display = "none";
-            document.getElementById("viewSurgeryMode").style.display = "block";
-        }
-
-        window.onload = loadPetProfile;
-    </script>
-</head>
-<body>
-
-<div class="header">
-    <a href="/">
-        <img src="/images/logo.png" alt="Logo" class="logo">
-    </a>
-    <a href="login" class="profile-link">
-        <img src="/images/profile.png" alt="Profile" class="profile-icon">
-    </a>
-</div>
-
-<div class="container">
-    <h1>Pet Profile</h1>
-
-    <!-- View Mode for Pet Information -->
-    <div id="viewPetInfoMode">
-        <div class="pet-profile-card">
-            <div class="pet-info-box">
-                <div class="pet-info-header">
-                    Pet Information
-                    <img src="/images/edit-icon.png" class="edit-icon" onclick="editPetInfo()" alt="Edit">
-                </div>
-                <div class="pet-info-content">
-                    <div class="pet-picture">
-                        <img id="pet-picture" src="/images/pet-placeholder.jpeg" alt="Pet Picture">
-                    </div>
-                    <div class="pet-details">
-                        <p><strong>Pet Name:</strong> <span id="petName"></span></p>
-                        <p><strong>Pet Age:</strong> <span id="petAge"></span></p>
-                        <p><strong>Birth Date:</strong> <span id="birthDate"></span></p>
-                        <p><strong>Species:</strong> <span id="species"></span></p>
-                        <p><strong>Breed:</strong> <span id="breed"></span></p>
-                        <p><strong>Gender:</strong> <span id="gender"></span></p>
-                        <p><strong>Weight:</strong> <span id="weight"></span></p>
-                        <p><strong>Color:</strong> <span id="color"></span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <link rel="stylesheet" href="/css/petProfile.css" />
+    <script></script>
+  </head>
+  <body>
+    <div class="header">
+      <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+      </a>
+      <a href="/" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+      </a>
     </div>
 
-    <!-- Edit Mode for Pet Information -->
-    <div id="editPetInfoMode" class="hidden">
-        <form id="petProfileForm" enctype="multipart/form-data" onsubmit="savePetProfile(); return false;">
-            <div class="pet-profile-card">
-                <div class="pet-info-box">
-                    <div class="pet-info-header">
-                        Edit Pet Information
-                    </div>
-                    <div class="pet-info-content">
-                        <div class="pet-picture">
-                            <img id="edit-petPicturePreview" src="/images/pet-placeholder.jpeg" alt="Pet Picture">
-                            <input type="file" id="edit-petPicture" name="petPicture" accept="image/*">
-                        </div>
-                        <div class="pet-details">
-                            <p><strong>Pet Name:</strong> <input type="text" id="edit-petName" required></p>
-                            <p><strong>Pet Age:</strong> <input type="number" id="edit-petAge" required></p>
-                            <p><strong>Birth Date:</strong> <input type="date" id="edit-birthDate" required></p>
-                            <p><strong>Species:</strong> <input type="text" id="edit-species" required></p>
-                            <p><strong>Breed:</strong> <input type="text" id="edit-breed" required></p>
-                            <p><strong>Gender:</strong>
-                                <select id="edit-gender">
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </p>
-                            <p><strong>Weight:</strong> <input type="text" id="edit-weight" required></p>
-                            <p><strong>Color:</strong> <input type="text" id="edit-color" required></p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="cancelEdit('petInfo')">Cancel</button>
-                    <button type="submit">Save Changes</button>
-                </div>
-            </div>
+    <div class="container">
+      <h1>Pet Profile</h1>
 
+      <!-- View Mode for Pet Information -->
+      <div id="viewPetInfoMode">
+        <div class="pet-profile-card">
+          <div class="pet-info-box">
+            <div class="pet-info-header">
+              Pet Information
+              <img
+                src="/images/edit-icon.png"
+                class="edit-icon"
+                onclick="editPetInfo()"
+                alt="Edit"
+              />
+            </div>
+            <div class="pet-info-content">
+              <div class="pet-picture">
+                <img
+                  id="pet-picture"
+                  src="/images/pet-placeholder.jpeg"
+                  alt="Pet Picture"
+                />
+              </div>
+              <div class="pet-details">
+                <p>
+                  <strong>Pet Name:</strong> <span th:text="${pet.name}"></span>
+                </p>
+                <p>
+                  <strong>Birth Date: </strong>
+                  <span th:text="${pet.birthDate}"></span>
+                </p>
+                <p>
+                  <strong>Species: </strong>
+                  <span th:text="${pet.species}"></span>
+                </p>
+                <p>
+                  <strong>Breed: </strong>
+                  <span th:text="${pet.breed}"></span>
+                </p>
+                <p>
+                  <strong>Gender: </strong>
+                  <span th:text="${pet.gender}"></span>
+                </p>
+                <p>
+                  <strong>Weight: </strong>
+                  <span th:text="${pet.weight}"></span>
+                  kg
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode for Pet Information -->
+      <div id="editPetInfoMode" class="hidden">
+        <form
+          id="petProfileForm"
+          enctype="multipart/form-data"
+          onsubmit="savePetProfile(); return false;"
+        >
+          <div class="pet-profile-card">
+            <div class="pet-info-box">
+              <div class="pet-info-header">Edit Pet Information</div>
+              <div class="pet-info-content">
+                <div class="pet-details">
+                  <p>
+                    <strong>Pet Name:</strong>
+                    <input type="text" id="edit-petName" required />
+                  </p>
+                  <p>
+                    <strong>Pet Age:</strong>
+                    <input type="number" id="edit-petAge" required />
+                  </p>
+                  <p>
+                    <strong>Birth Date:</strong>
+                    <input type="date" id="edit-birthDate" required />
+                  </p>
+                  <p>
+                    <strong>Species:</strong>
+                    <input type="text" id="edit-species" required />
+                  </p>
+                  <p>
+                    <strong>Breed:</strong>
+                    <input type="text" id="edit-breed" required />
+                  </p>
+                  <p>
+                    <strong>Gender:</strong>
+                    <select id="edit-gender">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </p>
+                  <p>
+                    <strong>Weight:</strong>
+                    <input type="text" id="edit-weight" required />
+                  </p>
+                  <p>
+                    <strong>Color:</strong>
+                    <input type="text" id="edit-color" required />
+                  </p>
+                </div>
+              </div>
+              <button type="button" onclick="cancelEdit('petInfo')">
+                Cancel
+              </button>
+              <button type="submit">Save Changes</button>
+            </div>
+          </div>
         </form>
-    </div>
+      </div>
 
-    <!-- View Mode for Medication -->
-    <div id="viewMedicationMode">
+      <!-- View Mode for Medication -->
+      <div id="viewMedicationMode">
         <div class="pet-profile-card">
-            <div class="pet-info-box">
-                <div class="pet-info-header">
-                    Pet Medication
-                    <img src="/images/edit-icon.png" class="edit-icon" onclick="editMedication()" alt="Edit">
-                </div>
-                <div class="pet-info-content">
-                    <div class="medication-picture">
-                        <img src="/images/medication.jpg" alt="Medication Picture">
-                    </div>
-                    <div class="medication-details">
-                        <p><strong id="medName">Frusemide 20mg</strong></p>
-                        <p><strong>Dosage:</strong> <span id="medDosage"></span></p>
-                        <p><strong>Duration:</strong> <span id="medDuration"></span></p>
-                        <p><strong>Frequency:</strong> <span id="medFrequency"></span></p>
-                        <p><strong>Time Remaining:</strong> <span id="timeRemaining"></span></p>
-                    </div>
-                </div>
+          <div class="pet-info-box">
+            <div class="pet-info-header">
+              Pet Medication
+              <img
+                src="/images/edit-icon.png"
+                class="edit-icon"
+                onclick="editMedication()"
+                alt="Edit"
+              />
             </div>
+            <div class="pet-info-content">
+              <div class="medication-details">
+                <div th:if="${#lists.isEmpty(prescribedMedications)}">
+                  <p>No medications prescribed.</p>
+                </div>
+                <div th:if="${!#lists.isEmpty(prescribedMedications)}">
+                  <ol>
+                    <li th:each="medication : ${prescribedMedications}">
+                      <p>
+                        <strong>Name:</strong>
+                        <span th:text="${medication.medicine.name}"></span>
+                      </p>
+                      <p>
+                        <strong>Dosage:</strong>
+                        <span th:text="${medication.dosage}"></span>
+                      </p>
+                      <p>
+                        <strong>Daily Frequency:</strong>
+                        <span th:text="${medication.dailyFrequency}"></span>
+                      </p>
+                      <p>
+                        <strong>Duration:</strong>
+                        <span th:text="${medication.duration}"></span>
+                        days
+                      </p>
+                      <p>
+                        <strong>Instruction:</strong>
+                        <span th:text="${medication.instruction}"></span>
+                      </p>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Edit Mode for Medication -->
-    <div id="editMedicationMode" class="hidden">
+      <!-- Edit Mode for Medication -->
+      <div id="editMedicationMode" class="hidden">
         <form id="medicationForm" onsubmit="saveMedication(); return false;">
-            <div class="pet-profile-card">
-                <div class="pet-info-box">
-                    <div class="pet-info-header">
-                        Edit Pet Medication
-                    </div>
-                    <div class="pet-info-content">
-                        <div class="medication-picture">
-                            <img src="/images/medication.jpg" alt="Medication Picture">
-                        </div>
-                        <div class="medication-details">
-                            <p><strong>Medication Name:</strong> <input type="text" id="edit-medName" required></p>
-                            <p><strong>Dosage:</strong> <input type="text" id="edit-medDosage" required></p>
-                            <p><strong>Duration:</strong> <input type="text" id="edit-medDuration" required></p>
-                            <p><strong>Frequency:</strong> <input type="text" id="edit-medFrequency" required></p>
-                            <p><strong>Time Remaining:</strong> <input type="text" id="edit-timeRemaining" required></p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="cancelEdit('medication')">Cancel</button>
-                    <button type="submit">Save Changes</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- View Mode for Health Concerns -->
-    <div id="viewHealthConcernsMode">
-        <div class="pet-profile-card">
+          <div class="pet-profile-card">
             <div class="pet-info-box">
-                <div class="pet-info-header">
-                    Health Concerns
-                    <img src="/images/edit-icon.png" class="edit-icon" onclick="editHealthConcerns()" alt="Edit">
+              <div class="pet-info-header">Edit Pet Medication</div>
+              <div class="pet-info-content">
+                <div class="medication-picture">
+                  <img src="/images/medication.jpg" alt="Medication Picture" />
                 </div>
-                <div class="pet-info-content">
-                    <div class="pet-details">
-                        <p><strong>Allergies:</strong> <span id="allergies"></span></p>
-                        <p><strong>Existing Conditions:</strong> <span id="existingConditions"></span></p>
-                        <p><strong>Veterinarian:</strong> <span id="veterinarian"></span></p>
-                    </div>
+                <div class="medication-details">
+                  <p>
+                    <strong>Medication Name:</strong>
+                    <input type="text" id="edit-medName" required />
+                  </p>
+                  <p>
+                    <strong>Dosage:</strong>
+                    <input type="text" id="edit-medDosage" required />
+                  </p>
+                  <p>
+                    <strong>Duration:</strong>
+                    <input type="text" id="edit-medDuration" required />
+                  </p>
+                  <p>
+                    <strong>Frequency:</strong>
+                    <input type="text" id="edit-medFrequency" required />
+                  </p>
+                  <p>
+                    <strong>Time Remaining:</strong>
+                    <input type="text" id="edit-timeRemaining" required />
+                  </p>
                 </div>
+              </div>
+              <button type="button" onclick="cancelEdit('medication')">
+                Cancel
+              </button>
+              <button type="submit">Save Changes</button>
             </div>
-        </div>
-    </div>
+          </div>
+        </form>
+      </div>
 
-    <!-- Edit Mode for Health Concerns -->
-    <div id="editHealthConcernsMode" class="hidden">
+      <!-- View Mode for Health Concerns -->
+      <div id="viewHealthConcernsMode">
+        <div class="pet-profile-card">
+          <div class="pet-info-box">
+            <div class="pet-info-header">
+              Health Concerns
+              <img
+                src="/images/edit-icon.png"
+                class="edit-icon"
+                onclick="editHealthConcerns()"
+                alt="Edit"
+              />
+            </div>
+            <div class="pet-info-content">
+              <div class="pet-details">
+                <p>
+                  <strong>Allergies:</strong>
+                  <span th:text="${pet.allergies}"></span>
+                </p>
+                <p>
+                  <strong>Existing Conditions:</strong>
+                  <span th:text="${pet.existingConditions}"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode for Health Concerns -->
+      <div id="editHealthConcernsMode" class="hidden">
         <form onsubmit="saveHealthConcerns(); return false;">
-            <div class="pet-profile-card">
-                <div class="pet-info-box">
-                    <div class="pet-info-header">
-                        Edit Health Concerns
-                    </div>
-                    <div class="pet-info-content">
-                        <div class="pet-details">
-                            <p><strong>Allergies:</strong> <input type="text" id="edit-allergies" required></p>
-                            <p><strong>Existing Conditions:</strong> <input type="text" id="edit-existingConditions" required></p>
-                            <p><strong>Veterinarian:</strong> <input type="text" id="edit-veterinarian" required></p>
-                        </div>
-                    </div>
-                    <button type="button" onclick="cancelEdit('healthConcerns')">Cancel</button>
-                    <button type="submit">Save Changes</button>
+          <div class="pet-profile-card">
+            <div class="pet-info-box">
+              <div class="pet-info-header">Edit Health Concerns</div>
+              <div class="pet-info-content">
+                <div class="pet-details">
+                  <p>
+                    <strong>Allergies:</strong>
+                    <input type="text" id="edit-allergies" required />
+                  </p>
+                  <p>
+                    <strong>Existing Conditions:</strong>
+                    <input type="text" id="edit-existingConditions" required />
+                  </p>
                 </div>
+              </div>
+              <button type="button" onclick="cancelEdit('healthConcerns')">
+                Cancel
+              </button>
+              <button type="submit">Save Changes</button>
             </div>
+          </div>
         </form>
-    </div>
+      </div>
 
-    <!-- View Mode for Owner's Information -->
-    <div id="viewOwnerInfoMode">
+      <!-- View Mode for Owner's Information -->
+      <div id="viewOwnerInfoMode">
         <div class="owner-profile-card">
-            <div class="owner-info-box">
-                <div class="owner-info-header">
-                    Owner's Information
-                </div>
-                <div class="owner-info-content">
-                    <div class="owner-details">
-                        <p><strong>Name:</strong> Sum Ting Wong</p>
-                        <p><strong>Phone:</strong> +61450588688</p>
-                        <p><strong>Home Address:</strong> 1945 Wong Street, Seymour, VIC, 3660</p>
-                        <p><strong>Email Address:</strong> wongemail@gmail.com</p>
-                    </div>
-                </div>
+          <div class="owner-info-box">
+            <div class="owner-info-header">Owner's Information</div>
+            <div class="owner-info-content">
+              <div class="owner-details">
+                <p>
+                  <strong>Name: </strong
+                  ><span
+                    th:text="${pet.petOwner.user.firstName} + ' ' + ${pet.petOwner.user.lastName}"
+                  ></span>
+                </p>
+                <p>
+                  <strong>Phone: </strong
+                  ><span th:text="${pet.petOwner.user.phoneNumber}"></span>
+                </p>
+                <p>
+                  <strong>Home Address: </strong>
+                  <span
+                    th:text="${address.street} + ' ' + ${address.suburb} + ' ' + ${address.postcode} + ' ' + ${address.state}"
+                  ></span>
+                </p>
+                <p>
+                  <strong>Email: </strong>
+                  <span th:text="${pet.petOwner.user.email}"></span>
+                </p>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- View Mode for Immunisation History -->
-    <div id="viewImmunisationMode">
+      <!-- View Mode for Immunisation History -->
+      <div id="viewImmunisationMode">
         <div class="immunisation-profile-card">
-            <div class="immunisation-info-box">
-                <div class="immunisation-info-header">
-                    Immunisation History
-                    <img src="/images/edit-icon.png" class="edit-icon" onclick="editImmunisationHistory()" alt="Edit">
-                </div>
-                <div class="immunisation-info-content">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Vaccination</th>
-                            <th>Notes</th>
-                        </tr>
-                        </thead>
-                        <tbody id="immunisationTableBody"></tbody>
-                    </table>
-                </div>
+          <div class="immunisation-info-box">
+            <div class="immunisation-info-header">
+              Immunisation History
+              <img
+                src="/images/edit-icon.png"
+                class="edit-icon"
+                onclick="editImmunisationHistory()"
+                alt="Edit"
+              />
             </div>
+            <div class="immunisation-info-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Vaccination</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="immunisation : ${immunisationHistories}">
+                    <td
+                      class="immunisation-date-column"
+                      th:text="${immunisation.date}"
+                    ></td>
+                    <td
+                      class="immunisation-name-column"
+                      th:text="${immunisation.name}"
+                    ></td>
+                    <td th:text="${immunisation.notes}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Edit Mode for Immunisation History -->
-    <div id="editImmunisationMode" class="hidden">
+      <!-- Edit Mode for Immunisation History -->
+      <div id="editImmunisationMode" class="hidden">
         <form onsubmit="saveImmunisationHistory(); return false;">
-            <div class="immunisation-profile-card">
-                <div class="immunisation-info-box">
-                    <div class="immunisation-info-header">
-                        Edit Immunisation History
-                    </div>
-                    <div class="immunisation-info-content">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Vaccination</th>
-                                <th>Notes</th>
-                            </tr>
-                            </thead>
-                            <tbody id="editImmunisationTableBody"></tbody>
-                        </table>
-                    </div>
-                    <button type="button" onclick="addNewRow()">Add New Row</button>
-                    <button type="button" onclick="cancelEditImmunisation()">Cancel</button>
-                    <button type="submit">Save Changes</button>
-                </div>
+          <div class="immunisation-profile-card">
+            <div class="immunisation-info-box">
+              <div class="immunisation-info-header">
+                Edit Immunisation History
+              </div>
+              <div class="immunisation-info-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Vaccination</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody id="editImmunisationTableBody"></tbody>
+                </table>
+              </div>
+              <button type="button" onclick="addNewRow()">Add New Row</button>
+              <button type="button" onclick="cancelEditImmunisation()">
+                Cancel
+              </button>
+              <button type="submit">Save Changes</button>
             </div>
+          </div>
         </form>
-    </div>
+      </div>
 
-    <!-- View Mode for Surgery History -->
-    <div id="viewSurgeryMode">
+      <!-- View Mode for Surgery History -->
+      <div id="viewSurgeryMode">
         <div class="surgery-profile-card">
-            <div class="surgery-info-box">
-                <div class="surgery-info-header">
-                    Surgery History
-                    <img src="/images/edit-icon.png" class="edit-icon" onclick="editSurgeryHistory()" alt="Edit">
-                </div>
-                <div class="surgery-info-content">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Surgery Type/Name</th>
-                            <th>Notes</th>
-                        </tr>
-                        </thead>
-                        <tbody id="surgeryTableBody"></tbody>
-                    </table>
-                </div>
+          <div class="surgery-info-box">
+            <div class="surgery-info-header">
+              Surgery History
+              <img
+                src="/images/edit-icon.png"
+                class="edit-icon"
+                onclick="editSurgeryHistory()"
+                alt="Edit"
+              />
             </div>
+            <div class="surgery-info-content">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Surgery Name</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tr th:each="surgery : ${surgeryHistories}">
+                  <td
+                    class="surgery-date-column"
+                    th:text="${surgery.date}"
+                  ></td>
+                  <td
+                    class="surgery-name-column"
+                    th:text="${surgery.name}"
+                  ></td>
+                  <td th:text="${surgery.notes}"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- Edit Mode for Surgery History -->
-    <div id="editSurgeryMode" class="hidden">
+      <!-- Edit Mode for Surgery History -->
+      <div id="editSurgeryMode" class="hidden">
         <form onsubmit="saveSurgeryHistory(); return false;">
-            <div class="surgery-profile-card">
-                <div class="surgery-info-box">
-                    <div class="surgery-info-header">
-                        Edit Surgery History
-                    </div>
-                    <div class="surgery-info-content">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Surgery Type/Name</th>
-                                <th>Notes</th>
-                            </tr>
-                            </thead>
-                            <tbody id="editSurgeryTableBody"></tbody>
-                        </table>
-                    </div>
-                    <button type="button" onclick="addNewSurgeryRow()">Add New Row</button>
-                    <button type="button" onclick="cancelEditSurgery()">Cancel</button>
-                    <button type="submit">Save Changes</button>
-                </div>
+          <div class="surgery-profile-card">
+            <div class="surgery-info-box">
+              <div class="surgery-info-header">Edit Surgery History</div>
+              <div class="surgery-info-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Surgery Type/Name</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody id="editSurgeryTableBody"></tbody>
+                </table>
+              </div>
+              <button type="button" onclick="addNewSurgeryRow()">
+                Add New Row
+              </button>
+              <button type="button" onclick="cancelEditSurgery()">
+                Cancel
+              </button>
+              <button type="submit">Save Changes</button>
             </div>
-
+          </div>
         </form>
+      </div>
     </div>
-
-</div>
-
-</body>
+  </body>
 </html>

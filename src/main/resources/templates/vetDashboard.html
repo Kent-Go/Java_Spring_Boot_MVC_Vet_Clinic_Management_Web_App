@@ -108,9 +108,12 @@
               <strong>Breed:</strong>
               <span th:text="${appointment.pet.breed}"></span>
             </p>
+            <hr />
             <p>
               <strong>Owner:</strong>
-              <span th:text="${appointment.pet.petOwner.user.name}"></span>
+              <span
+                th:text="${appointment.pet.petOwner.user.firstName + ' ' + appointment.pet.petOwner.user.lastName}"
+              ></span>
             </p>
             <p>
               <strong>Gender:</strong>
@@ -118,15 +121,20 @@
             </p>
             <p>
               <strong>Email:</strong>
-              <span th:text="${appointment.pet.petOwner.user.name}"></span>
+              <span th:text="${appointment.pet.petOwner.user.email}"></span>
             </p>
             <p>
-              <strong>Number:</strong> +<span
+              <strong>Number:</strong>
+              <span
                 th:text="${appointment.pet.petOwner.user.phoneNumber}"
               ></span>
             </p>
-            <button>Pet Details</button>
-            <button>Owner Details</button>
+            <div class="button-container">
+              <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
+                <button>Pet Details</button>
+              </a>
+              <button>Owner Details</button>
+            </div>
           </div>
         </div>
       </div>
