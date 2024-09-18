@@ -22,9 +22,16 @@
                 }
 
                 if (selectedSlot) {
-                    const selectedTime = selectedSlot.getAttribute('data-time');
+                    // const selectedTime = selectedSlot.getAttribute('data-time');
+                    const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId');
+                    const selectedPetId = localStorage.getItem('selectedPetId');
+                    const selectedVetId = localStorage.getItem('selectedVetId');
+                    const selectedAppointmentDate = localStorage.getItem('selectedAppointmentDate');
+                    const selectedAppointmentTime = localStorage.getItem('selectedAppointmentTime');
+                    const selectedAppointmentTypeDuration = localStorage.getItem('selectedAppointmentTypeDuration');
+
                     // Redirect to confirmation page
-                    window.location.href = `/appointment/new/confirmation`;
+                    window.location.href = `/appointment/new/confirmation?selectedAppointmentTypeId=${selectedAppointmentTypeId}&selectedPetId=${selectedPetId}&selectedVetId=${selectedVetId}&selectedAppointmentDate=${selectedAppointmentDate}&selectedAppointmentTime=${selectedAppointmentTime}&selectedAppointmentTypeDuration=${selectedAppointmentTypeDuration}`;
                 } else {
                     alert('Please select a time to continue.');
                 }
