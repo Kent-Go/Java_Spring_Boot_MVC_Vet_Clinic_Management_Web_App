@@ -6,12 +6,13 @@
     <link rel="stylesheet" href="/css/confirmAppointment.css">
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            
             document.querySelector('.back-button').addEventListener('click', function () {
-                window.history.back();
+                const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId');
+                const selectedVetId = localStorage.getItem('selectedVetId');
+                window.location.href = `/appointment/new/select_date_time?vetId=${selectedVetId}&appointmentTypeId=${selectedAppointmentTypeId}`;
             });
         });
-        
+
         function confirmAppointment() {
             // Retrieve values from local storage
             document.getElementById('selectedAppointmentTypeId').value = localStorage.getItem('selectedAppointmentTypeId');
@@ -22,6 +23,28 @@
             document.getElementById('selectedAppointmentTypeDuration').value = localStorage.getItem('selectedAppointmentTypeDuration');
             document.getElementById('userId').value = localStorage.getItem('userId');
             document.getElementById('petOwnerId').value = localStorage.getItem('petOwnerId');
+
+            // clear local storage relevant data
+            if (localStorage.getItem('selectedPetId')) {
+                localStorage.removeItem('selectedPetId');
+            }
+            if (localStorage.getItem('selectedAppointmentTypeId')) {
+                localStorage.removeItem('selectedAppointmentTypeId');
+            }
+            if (localStorage.getItem('selectedAppointmentTypeDuration')) {
+                localStorage.removeItem('selectedAppointmentTypeDuration');
+            }
+            if (localStorage.getItem('selectedVetId')) {
+                localStorage.removeItem('selectedVetId');
+            }
+            if (localStorage.getItem('selectedAppointmentDate')) {
+                localStorage.removeItem('selectedAppointmentDate');
+            }
+            if (localStorage.getItem('selectedAppointmentTime')) {
+                localStorage.removeItem('selectedAppointmentTime');
+            }
+
+            alert('Your appointment is now confirmed. Thank you.');
 
             // Submit the form
             document.getElementById('confirmAppointmentForm').submit();
