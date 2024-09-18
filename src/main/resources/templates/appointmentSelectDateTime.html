@@ -80,7 +80,6 @@
                 .then((response) => response.json())
                 .then((data) => {
                     if (data  && data.availability) {
-                        messageElement.textContent = 'Time available:';
                         // retrieve startTime and endTime
                         const vetStartTime = data.availability.startTime;
                         const vetEndTime = data.availability.endTime;
@@ -176,19 +175,26 @@
         }
 
         function displayStartTimeSlot(availableStartTime) {
-            const timeContainer = document.getElementById('time-container');
+            const messageElement = document.querySelector('.time-availability-message');
+            if (availableStartTime.length > 0) {
+                messageElement.textContent = 'Time available:';
+                const timeContainer = document.getElementById('time-container');
 
-            // display all available time slot in box
-            availableStartTime.forEach(slot => {
-                const slotElement = document.createElement('div');
-                slotElement.className = 'time-slot';
-                slotElement.dataset.time = slot;
-                slotElement.textContent = convertTo12HourFormat(slot);
-                timeContainer.appendChild(slotElement);
-            });
+                // display all available time slot in box
+                availableStartTime.forEach(slot => {
+                    const slotElement = document.createElement('div');
+                    slotElement.className = 'time-slot';
+                    slotElement.dataset.time = slot;
+                    slotElement.textContent = convertTo12HourFormat(slot);
+                    timeContainer.appendChild(slotElement);
+                });
 
-            // Add click event to the time slots
-            addClickEventToTimeSlots();
+                // Add click event to the time slots
+                addClickEventToTimeSlots();
+            }
+            else {
+                messageElement.textContent = 'No time availability found. Please select a new date.';
+            }
         }
         
     </script>
