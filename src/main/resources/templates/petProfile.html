@@ -115,11 +115,20 @@
       }
 
       // Function to cancel editing and switch back to view mode
-      function cancelEdit() {
-        document.getElementById("editMedicationMode").classList.add("hidden");
-        document
-          .getElementById("viewMedicationMode")
-          .classList.remove("hidden");
+      function cancelEdit(mode) {
+        if (mode === "petMedication") {
+          document.getElementById("editMedicationMode").classList.add("hidden");
+          document
+            .getElementById("viewMedicationMode")
+            .classList.remove("hidden");
+        } else if (mode === "healthConcerns") {
+          document
+            .getElementById("editHealthConcernsMode")
+            .classList.add("hidden");
+          document
+            .getElementById("viewHealthConcernsMode")
+            .classList.remove("hidden");
+        }
       }
 
       function deleteMedication(medicationId) {
@@ -163,6 +172,15 @@
               alert("An error occurred while deleting medication.");
             });
         }
+      }
+
+      function editHealthConcerns() {
+        document
+          .getElementById("viewHealthConcernsMode")
+          .classList.add("hidden");
+        document
+          .getElementById("editHealthConcernsMode")
+          .classList.remove("hidden");
       }
 
       // Ensure hidden fields are updated when form is submitted
@@ -521,7 +539,8 @@
                     <button type="submit">Save Changes</button>
                     <button
                       type="button"
-                      th:attr="onclick='deleteMedication(' + ${medication.id} + ')'">
+                      th:attr="onclick='deleteMedication(' + ${medication.id} + ')'"
+                    >
                       Delete Medication
                     </button>
                     <hr style="margin-top: 1rem" />
@@ -533,7 +552,7 @@
 
           <button
             type="button"
-            onclick="cancelEdit()"
+            onclick="cancelEdit('petMedication')"
             style="margin-bottom: 2rem"
           >
             Cancel
@@ -572,7 +591,11 @@
 
       <!-- Edit Mode for Health Concerns -->
       <div id="editHealthConcernsMode" class="hidden">
-        <form onsubmit="saveHealthConcerns(); return false;">
+        <form
+          action="/updateHealthConcerns"
+          method="POST"
+        >
+          <input type="hidden" name="petId" th:value="${pet.id}" />
           <div class="pet-profile-card">
             <div class="pet-info-box">
               <div class="pet-info-header">Edit Health Concerns</div>
@@ -580,11 +603,23 @@
                 <div class="pet-details">
                   <p>
                     <strong>Allergies:</strong>
-                    <input type="text" id="edit-allergies" required />
+                    <input
+                      type="text"
+                      id="edit-allergies"
+                      name="allergies"
+                      th:value="${pet.allergies}"
+                      class="large-textbox"
+                    />
                   </p>
                   <p>
                     <strong>Existing Conditions:</strong>
-                    <input type="text" id="edit-existingConditions" required />
+                    <input
+                      type="text"
+                      id="edit-existingConditions"
+                      name="existingConditions"
+                      th:value="${pet.existingConditions}"
+                      class="large-textbox"
+                    />
                   </p>
                 </div>
               </div>

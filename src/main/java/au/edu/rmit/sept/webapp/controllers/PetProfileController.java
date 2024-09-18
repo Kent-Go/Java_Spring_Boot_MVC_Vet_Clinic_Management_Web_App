@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.ui.Model;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Address;
@@ -260,6 +261,31 @@ public class PetProfileController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "Error deleting medication: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // Method to handle form submission for editing pet's allergies and existing
+    // conditions
+    @PostMapping("/updateHealthConcerns")
+    public RedirectView updateHealthConcerns(
+            @RequestParam("petId") int petId,
+            @RequestParam(value = "allergies", required = false) String allergies,
+            @RequestParam(value = "existingConditions", required = false) String existingConditions) {
+        try {
+            // Use empty strings if null
+            if (allergies == null) {
+                allergies = "";
+            }
+            if (existingConditions == null) {
+                existingConditions = "";
+            }
+
+            petService.updatePetAllergiesAndExistingConditionsByPetID(petId, allergies, existingConditions);
+            return new RedirectView("/petProfile?petId=" + petId);
+        } catch (Exception e) {
+            // Handle error and redirect to an error page or the same page with error
+            // message
+            return new RedirectView("/petProfile?petId=" + petId + "&error=" + e.getMessage());
         }
     }
 }

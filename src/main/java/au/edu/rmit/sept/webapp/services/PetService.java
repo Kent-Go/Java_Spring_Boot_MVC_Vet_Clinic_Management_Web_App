@@ -19,4 +19,7 @@ public interface PetService {
 
     // Update a pet
     public Pet updatePet(Pet pet);
+
+    // Update a pet's allergies and existing conditions by pet ID
+    public Pet updatePetAllergiesAndExistingConditionsByPetID(int petID, String allergies, String existingConditions);
 }
