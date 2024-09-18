@@ -1,6 +1,7 @@
 package au.edu.rmit.sept.webapp.models;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -60,6 +61,10 @@ public class Pet {
     @JoinColumn(name = "pet_owner_id", insertable = false, updatable = false)
     private PetOwner petOwner;
 
+    // Calculated field for age
+    @Transient
+    private int age;
+
     // Getters and Setters
     // Pet ID
     public int getId() {
@@ -86,6 +91,7 @@ public class Pet {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+        this.age = calculateAge();
     }
 
     // Species
@@ -124,6 +130,7 @@ public class Pet {
         this.weight = weight;
     }
 
+
     // Allergies
     public String getAllergies() {
         return allergies;
@@ -151,17 +158,19 @@ public class Pet {
         this.petOwnerID = petOwnerID;
     }
 
-    // Set Pet Owner entity
     public PetOwner getPetOwner() {
         return petOwner;
     }
 
-    // Get Pet Owner entity
     public void setPetOwner(PetOwner petOwner) {
         this.petOwner = petOwner;
     }
 
-    // Constructors
+    public int getAge() {
+        return age;
+    }
+
+    // Constructor
     public Pet() {
     }
 
@@ -174,5 +183,14 @@ public class Pet {
         this.gender = gender;
         this.weight = weight;
         this.petOwnerID = petOwnerID;
+        this.age = calculateAge();  // Calculate age at instantiation
+    }
+
+    // Helper method to calculate age
+    private int calculateAge() {
+        if (birthDate != null) {
+            return Period.between(birthDate, LocalDate.now()).getYears();
+        }
+        return 0;
     }
 }

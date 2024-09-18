@@ -1,0 +1,180 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Arial", sans-serif;
+    background-color: #f5f5f5;
+}
+
+.header {
+    width: 100%;
+    background-color: #007bff;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header img.logo {
+    width: 50px;
+    height: auto;
+    margin-left: 15px;
+}
+
+.profile-link {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white; /* White background to match the icon style */
+    padding: 5px;
+}
+
+.nav-bar {
+    background-color: #d3edf8;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-bar a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-bar a:hover,
+.nav-bar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.search-bar-container {
+    margin: 20px 0;
+    text-align: right;
+}
+
+#searchInput {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+/* Patients Table Styling */
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.patients-table th, .patients-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.patients-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.patients-table td {
+    background-color: #f9f9f9;
+}
+
+/* Modal Popup Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%; /* Could be more or less depending on screen size */
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal input {
+    margin: 10px 5px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 24px);
+}
+
+.modal button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.add-patient-icon-container {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.add-patient-icon {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.add-patient-icon:hover {
+    opacity: 0.8;
+}
