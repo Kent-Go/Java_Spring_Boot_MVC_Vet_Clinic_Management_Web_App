@@ -8,10 +8,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             const vetCards = document.querySelectorAll('.vet-card');
             const urlParams = new URLSearchParams(window.location.search);
-            const petId = urlParams.get('petId');
-            const petName = urlParams.get('petName');
             const appointmentTypeId = urlParams.get('appointmentTypeId');
-            const appointmentTypeName = urlParams.get('appointmentTypeName');
 
             // Make the entire card clickable
             vetCards.forEach(card => {
@@ -28,11 +25,12 @@
             document.querySelector('.continue-button').addEventListener('click', function () {
                 const selectedCard = document.querySelector('.vet-card.selected');
                 if (selectedCard) {
-                    const vetId = selectedCard.getAttribute('data-vet-id');
-                    const vetName = selectedCard.querySelector('h3').textContent;
+                    const selectedVetId = selectedCard.getAttribute('data-vet-id');
+
+                    localStorage.setItem('selectedVetId', selectedVetId)
 
                     // Redirect to the vetSchedule page with the selected vet ID
-                    window.location.href = `/appointment/time?vetId=${vetId}&vetName=${encodeURIComponent(vetName)}&appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&petId=${petId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_date_time?vetId=${selectedVetId}&appointmentTypeId=${appointmentTypeId}`;
                 } else {
                     alert('Please select a veterinarian to continue.');
                 }
@@ -41,7 +39,7 @@
             // Back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
                 // Redirect back to the appointment type selection page
-                window.location.href = `/appointment/type?petId=${petId}&petName=${encodeURIComponent(petName)}`;
+                window.location.href = `/appointment/new/select_appointment_type`;
             });
         });
     </script>
@@ -61,9 +59,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select a Veterinarian:</h3>
 
-    <div th:each="vet : ${vets}" class="vet-card" th:data-vet-id="${vet.id}">
-        <h3 th:text="${vet.title}">Dr Jude Bellingham</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <div th:each="vetAppointmentTypeOffered : ${vetAppointmentTypeOffereds}" class="vet-card" th:data-vet-id="${vetAppointmentTypeOffered.vet.id}">
+        <h3 th:text="${vetAppointmentTypeOffered.vet.title + ' ' + vetAppointmentTypeOffered.vet.user.firstName + ' ' + vetAppointmentTypeOffered.vet.user.lastName}"></h3>
+        <p th:text="${vetAppointmentTypeOffered.vet.languagesSpoken}"></p>
+        <p th:text="${vetAppointmentTypeOffered.vet.selfDescription}"></p>
     </div>
 </div>
 
