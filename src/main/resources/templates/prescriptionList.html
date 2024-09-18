@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prescription List</title>
+    <link rel="stylesheet" href="/css/prescriptionList.css" />
+</head>
+<body>
+<!-- Header Section -->
+<div class="header">
+    <a href="/">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+    </a>
+    <a href="#" class="profile-link">
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+    </a>
+</div>
+
+<!-- Navbar Section -->
+<div class="nav-bar">
+    <a href="/">Home</a>
+    <a href="/pets">Pets</a>
+    <a href="/articles">Articles & Videos</a>
+    <a href="/consultation">Consultation</a>
+    <a href="/prescriptions" class="active">Prescriptions</a>
+</div>
+
+<!-- Main Content Section -->
+<div class="container">
+    <h1>My Pet Medications</h1>
+
+    <!-- List of Prescriptions -->
+    <div th:each="prescription : ${prescriptions}">
+        <div class="prescription-card">
+            <!-- Display Medicine Name and Quantity -->
+            <h2 th:text="${prescription.medicine.name + ' ' + prescription.medicine.quantity}">Medicine Name</h2>
+
+            <!-- Display Dosage and Frequency -->
+            <p>
+                Feed <span th:text="${prescription.dosage}">X</span> tablets
+                <span th:text="${prescription.dailyFrequency} + ' times a day'">times a day</span>
+                for <span th:text="${prescription.duration}">Y</span> days.
+            </p>
+
+            <!-- Instructions -->
+            <p>Instructions: <span th:text="${prescription.instruction}"></span></p>
+
+            <!-- Remaining Time -->
+            <p>Time remaining for treatment: <span th:text="${prescription.duration}"></span> days</p>
+
+            <!-- For: Pet's Name -->
+            <p>For: <span th:text="'Princess'"></span></p>
+
+            <!-- Refill Button -->
+            <a href="/refillPrescription" class="request-refill-btn">
+                <img src="/images/shopping-cart.png" alt="Cart" class="cart-icon" />
+                Request refill
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
