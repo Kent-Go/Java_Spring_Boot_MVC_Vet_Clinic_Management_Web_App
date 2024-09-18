@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import au.edu.rmit.sept.webapp.services.AppointmentTypeService;
 import au.edu.rmit.sept.webapp.services.PetService;
 import au.edu.rmit.sept.webapp.services.VetService;
 import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.AppointmentService;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Vet;
 import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.models.Appointment;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,8 +37,11 @@ public class ScheduleAppointmentConfirmationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @GetMapping("appointment/new/confirmation")
-    public String confirmAppointment(
+    public String displayAppointment(
         @RequestParam("selectedAppointmentTypeId") int selectedAppointmentTypeId,
         @RequestParam("selectedPetId") int selectedPetId,
         @RequestParam("selectedVetId") int selectedVetId,
@@ -71,5 +77,26 @@ public class ScheduleAppointmentConfirmationController {
         model.addAttribute("vetTitleName", vetTitleName);
 
         return "appointmentConfirmation"; // Return the view name
+    }
+
+    @PostMapping("appointment/new/confirmation")
+    public String confirmAppointment(
+        @RequestParam("selectedAppointmentTypeId") int selectedAppointmentTypeId,
+        @RequestParam("selectedPetId") int selectedPetId,
+        @RequestParam("selectedVetId") int selectedVetId,
+        @RequestParam("selectedAppointmentDate") LocalDate selectedAppointmentDate,
+        @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
+        @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
+        @RequestParam("userId") int userId,
+        @RequestParam("petOwnerId") int petOwnerId,
+        Model model) {
+
+        // get appointment end time by adding selectedAppointmentTypeDuration
+        LocalTime selectedAppointmentEndTime = selectedAppointmentTime.plusMinutes(selectedAppointmentTypeDuration);
+
+        Appointment appointment = new Appointment(selectedAppointmentDate, selectedAppointmentTime, selectedAppointmentEndTime, selectedVetId, selectedPetId, selectedAppointmentTypeId);
+        appointmentService.createAppointment(appointment);
+
+        return "redirect:/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
     }
 }

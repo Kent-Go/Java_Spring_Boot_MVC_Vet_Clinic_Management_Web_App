@@ -5,53 +5,27 @@
     <title>Confirm Appointment</title>
     <link rel="stylesheet" href="/css/confirmAppointment.css">
     <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const appointmentTypeName = document.querySelector('.appointment-type-name');
-        //     const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId');
+        document.addEventListener('DOMContentLoaded', function () {
             
-        //     // fetch appointment type details using id
-        //     fetch(`/api/appointment_type/${selectedAppointmentTypeId}`)
-        //         .then((response) => response.json())
-        //         .then((data) => {
-        //             appointmentTypeName.textContent = data.name;
-        //         })
-        //         .catch((error) => {
-        //             console.error('Error fetching appointment type:', error);
-        //         });
-            
-        //     const petInfo = document.querySelector('.pet-info');
-        //     const selectedPetId = localStorage.getItem('selectedPetId');
-            
-        //     // fetch pet details using id
-        //     fetch(`/api/pet/${selectedPetId}`)
-        //         .then((response) => response.json())
-        //         .then((data) => {
-        //             petInfo.textContent = data.name + ' (' + data.gender + ' ' + data.breed + ')';
-        //         })
-        //         .catch((error) => {
-        //             console.error('Error fetching pet:', error);
-        //         });
-            
-        //     // Display appointment date
-        //     const appointmentDate = document.querySelector('.appointment-date');
-        //     const selectedAppointmentDate = localStorage.getItem('selectedAppointmentDate');
-        //     const selectedAppointmentDateObj = new Date(selectedAppointmentDate);
-        //     const selectedAppointmentDateDay = selectedAppointmentDateObj.getDate();
-        //     const selectedAppointmentDateMonth = selectedAppointmentDateObj.toLocaleString('default', { month: 'long' });
-        //     const selectedAppointmentDateYear = selectedAppointmentDateObj.getFullYear();
-        //     appointmentDate.textContent = `${selectedAppointmentDateDay} ${selectedAppointmentDateMonth} ${selectedAppointmentDateYear}`;
+            document.querySelector('.back-button').addEventListener('click', function () {
+                window.history.back();
+            });
+        });
+        
+        function confirmAppointment() {
+            // Retrieve values from local storage
+            document.getElementById('selectedAppointmentTypeId').value = localStorage.getItem('selectedAppointmentTypeId');
+            document.getElementById('selectedPetId').value = localStorage.getItem('selectedPetId');
+            document.getElementById('selectedVetId').value = localStorage.getItem('selectedVetId');
+            document.getElementById('selectedAppointmentDate').value = localStorage.getItem('selectedAppointmentDate');
+            document.getElementById('selectedAppointmentTime').value = localStorage.getItem('selectedAppointmentTime');
+            document.getElementById('selectedAppointmentTypeDuration').value = localStorage.getItem('selectedAppointmentTypeDuration');
+            document.getElementById('userId').value = localStorage.getItem('userId');
+            document.getElementById('petOwnerId').value = localStorage.getItem('petOwnerId');
 
-        //     document.querySelector('.back-button').addEventListener('click', function () {
-        //         window.history.back();
-        //     });
-    
-        //     document.querySelector('.confirm-button').addEventListener('click', function () {
-        //         // Simulate confirmation of the appointment
-        //         alert('Appointment confirmed!');
-        //         // Redirect to a confirmation or home page
-        //         window.location.href = '/home';
-        //     });
-        // });
+            // Submit the form
+            document.getElementById('confirmAppointmentForm').submit();
+        }
     </script>
 </head>
 <body>
@@ -79,7 +53,22 @@
 
     <div class="buttons">
         <button type="button" class="back-button">Back</button>
-        <button type="button" class="confirm-button">Confirm</button>
+        <form
+            id="confirmAppointmentForm"
+            enctype="multipart/form-data"
+            th:action="@{/appointment/new/confirmation}"
+            method="POST"
+        >
+            <input type="hidden" name="selectedAppointmentTypeId" id="selectedAppointmentTypeId" />
+            <input type="hidden" name="selectedPetId" id="selectedPetId" />
+            <input type="hidden" name="selectedVetId" id="selectedVetId" />
+            <input type="hidden" name="selectedAppointmentDate" id="selectedAppointmentDate" />
+            <input type="hidden" name="selectedAppointmentTime" id="selectedAppointmentTime" />
+            <input type="hidden" name="selectedAppointmentTypeDuration" id="selectedAppointmentTypeDuration" />
+            <input type="hidden" name="userId" id="userId" />
+            <input type="hidden" name="petOwnerId" id="petOwnerId" />
+            <button type="button" class="confirm-button" onclick="confirmAppointment();">Confirm</button>
+        </form>
     </div>
 </div>
 
