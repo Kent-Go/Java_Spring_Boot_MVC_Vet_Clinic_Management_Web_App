@@ -119,8 +119,8 @@ h1 {
 
 /* Edit icon styling */
 .edit-icon {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 }
 
@@ -208,4 +208,55 @@ li {
 .surgery-name-column {
   width: 1%;
   white-space: nowrap;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.large-textbox {
+  width: 100%;
+  max-width: 75%;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Ensure the table occupies full width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style for table cells */
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Style for the date input to be as small as possible */
+input[type="date"] {
+  width: 120px; 
+  box-sizing: border-box; 
+  max-width: 100%;
+}
+
+/* Optional: Add some margin and border styling for visual clarity */
+input[type="date"] {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid #ccc;
+}
+
+#editImmunisationTableBody td input[type="text"],
+#editSurgeryTableBody td input[type="text"] {
+  width: 95%;
 }

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
+    public Medicine findByName(String name);
 }

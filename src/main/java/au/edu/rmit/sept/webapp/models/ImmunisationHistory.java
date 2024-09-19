@@ -94,4 +94,15 @@ public class ImmunisationHistory {
     public void setPet(Pet pet) {
         this.pet = pet;
     }
+
+    // Constructors
+    public ImmunisationHistory() {
+    }
+
+    public ImmunisationHistory(String name, LocalDate date, String notes, int petID) {
+        this.name = name;
+        this.date = date;
+        this.notes = notes;
+        this.petID = petID;
+    }
 }

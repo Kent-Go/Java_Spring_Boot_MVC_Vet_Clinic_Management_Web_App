@@ -18,9 +18,21 @@ public class SurgeryHistoryServiceImpl implements SurgeryHistoryService {
         this.surgeryHistoryRepository = surgeryHistoryRepository;
     }
 
+    // Get surgery history by pet ID sorted by date
     @Override
     public List<SurgeryHistory> getSurgeryHistoryByPetID(int petID) {
-        return surgeryHistoryRepository.findByPetID(petID)
+        return surgeryHistoryRepository.findByPetIDOrderByDateAsc(petID)
                 .orElseThrow(() -> new RuntimeException("Surgery History not found"));
+    }
+
+    @Override
+    public SurgeryHistory getSurgeryHistoryByID(int id) {
+        return surgeryHistoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Surgery History not found"));
+    }
+
+    @Override
+    public SurgeryHistory saveOrUpdateSurgeryHistory(SurgeryHistory surgeryHistory) {
+        return surgeryHistoryRepository.save(surgeryHistory);
     }
 }

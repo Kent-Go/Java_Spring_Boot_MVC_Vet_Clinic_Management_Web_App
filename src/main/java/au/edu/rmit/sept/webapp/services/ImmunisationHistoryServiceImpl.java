@@ -18,9 +18,20 @@ public class ImmunisationHistoryServiceImpl implements ImmunisationHistoryServic
         this.immunisationHistoryRepository = immunisationHistoryRepository;
     }
 
+    // Get immunisation history by pet ID sorted by date
     @Override
     public List<ImmunisationHistory> getImmunisationHistoryByPetID(int petID) {
-        return immunisationHistoryRepository.findByPetID(petID)
+        return immunisationHistoryRepository.findByPetIDOrderByDateAsc(petID)
                 .orElseThrow(() -> new RuntimeException("Immunisation History not found"));
+    }
+
+    @Override
+    public ImmunisationHistory saveOrUpdateImmunisationHistory(ImmunisationHistory immunisationHistory) {
+        return immunisationHistoryRepository.save(immunisationHistory);
+    }
+
+    @Override
+    public ImmunisationHistory getImmunisationHistoryByID(int id) {
+        return immunisationHistoryRepository.findById(id).orElse(null);
     }
 }
