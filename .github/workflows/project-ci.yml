@@ -2,7 +2,7 @@ name: Team Group-P08-03 CI tasks
 on:
   push:
     branches:
-      - test/petProfileInformation
+      - testingCI
 
 jobs:
   build:
