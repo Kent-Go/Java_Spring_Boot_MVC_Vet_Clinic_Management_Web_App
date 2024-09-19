@@ -44,8 +44,9 @@ public class VetDashboardController {
             @RequestParam(value = "vetId", required = false) Integer vetId, Model model) {
 
         // Default or handle missing parameters as needed
-        if (userId == null || vetId == null) {
-            // Handle or provide default values
+        if (vetId == null) {
+            model.addAttribute("errorMessage", "Vet ID is missing");
+            return "errorPage"; // Make sure this template exists in src/main/resources/templates/
         }
 
         // Add attributes to the model
@@ -53,7 +54,8 @@ public class VetDashboardController {
         model.addAttribute("vetId", vetId);
 
         // Get current week start date
-        LocalDate startDate = LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+        LocalDate startDate = LocalDate.now()
+                .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
         model.addAttribute("weekStart", startDate);
 
         // get today date
