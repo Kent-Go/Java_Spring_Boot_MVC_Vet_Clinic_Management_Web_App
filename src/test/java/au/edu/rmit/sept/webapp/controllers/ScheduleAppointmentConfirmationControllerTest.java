@@ -88,7 +88,7 @@ class ScheduleAppointmentConfirmationControllerTest {
                 .andExpect(model().attribute("appointmentTypeName", "General Clinical Consultation"))
                 .andExpect(model().attribute("petInfo", "Rocky (Male - Chihuahua)"))
                 .andExpect(model().attribute("appointmentDate", "19 September 2024"))
-                .andExpect(model().attribute("appointmentTime", "10:00 am"))
+                .andExpect(model().attribute("appointmentTime", "10:00 AM"))
                 .andExpect(model().attribute("vetTitleName", "Dr. Jude Bellingham"));
     }
 
