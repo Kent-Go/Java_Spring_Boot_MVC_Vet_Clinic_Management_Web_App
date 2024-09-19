@@ -1,12 +1,10 @@
 package au.edu.rmit.sept.webapp.services;
 
-import java.time.LocalDate;
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.VetAppointmentTypeOffered;
 import au.edu.rmit.sept.webapp.repositories.VetAppointmentTypeOfferedRepository;
 
