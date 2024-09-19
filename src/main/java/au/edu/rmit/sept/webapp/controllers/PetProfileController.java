@@ -308,23 +308,24 @@ public class PetProfileController {
         String[] immunisationIDSplit = immunisationId.split(",");
         String[] immunisationDateSplit = immunisationDate.split(",");
 
-        // Split name and instruction using '|'
+        // Split name and notes using '|'
         String[] immunisationNameSplit = immunisationName.split("\\|,");
         String[] immunisationNotesSplit = immunisationNotes.split("\\|,");
 
-        // If the name or instruction contains '|', then change it to ""
+        // If the name or notes contains '|', then change it to ""
         for (int i = 0; i < immunisationNameSplit.length; i++) {
             if (immunisationNameSplit[i].contains("|")) {
                 immunisationNameSplit[i] = immunisationNameSplit[i].replace("|", "");
             }
         }
 
+        // Ensure the other arrays have the same length
         for (int i = 0; i < immunisationNotesSplit.length; i++) {
             if (immunisationNotesSplit[i].contains("|")) {
                 immunisationNotesSplit[i] = immunisationNotesSplit[i].replace("|", "");
             }
         }
-        
+
         // Ensure the other arrays have the same length
         if (immunisationDateSplit.length != immunisationNameSplit.length
                 || immunisationNameSplit.length != immunisationNotesSplit.length) {
@@ -409,8 +410,23 @@ public class PetProfileController {
         // Split the input strings by ',' to get the individual values
         String[] surgeryIDSplit = surgeryId.split(",");
         String[] surgeryDateSplit = surgeryDate.split(",");
-        String[] surgeryNameSplit = surgeryName.split(",");
-        String[] surgeryNotesSplit = surgeryNotes.split(",");
+
+        // Split name and notes using '|'
+        String[] surgeryNameSplit = surgeryName.split("\\|,");
+        String[] surgeryNotesSplit = surgeryNotes.split("\\|,");
+
+        // If the name or notes contains '|', then change it to ""
+        for (int i = 0; i < surgeryNameSplit.length; i++) {
+            if (surgeryNameSplit[i].contains("|")) {
+                surgeryNameSplit[i] = surgeryNameSplit[i].replace("|", "");
+            }
+        }
+
+        for (int i = 0; i < surgeryNotesSplit.length; i++) {
+            if (surgeryNotesSplit[i].contains("|")) {
+                surgeryNotesSplit[i] = surgeryNotesSplit[i].replace("|", "");
+            }
+        }
 
         // Ensure the other arrays have the same length
         if (surgeryDateSplit.length != surgeryNameSplit.length
@@ -441,10 +457,6 @@ public class PetProfileController {
 
             // Fetch the pet by ID
             Pet pet = petService.getPetByPetID(petId);
-
-            // Print the length of the surgery list
-            System.out.println("--------------------");
-            System.out.println("Surgery List Length: " + surgeryList.size());
 
             // For each surgery in the list, update or create them
             for (Map<String, Object> surgeryMap : surgeryList) {
@@ -479,10 +491,6 @@ public class PetProfileController {
 
                 // Save the new or updated immunisation history
                 surgeryHistoryService.saveOrUpdateSurgeryHistory(surgeryHistory);
-
-                // Print the generated ID after saving (for new entries)
-                System.out.println("--------------------");
-                System.out.println("Surgery ID (after save): " + surgeryHistory.getId());
             }
 
             // Redirect back to the pet's profile after successful update

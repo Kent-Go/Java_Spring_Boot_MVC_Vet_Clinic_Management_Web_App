@@ -109,8 +109,8 @@
           } else if (form === "surgery") {
             row.innerHTML = `
         <td><input type="date" name="surgeryDate" required /></td>
-        <td><input type="text" name="surgeryName" required /></td>
-        <td><input type="text" name="surgeryNotes" required /></td>
+        <td><input type="text" name="surgeryNameDisplay" required /></td>
+        <td><input type="text" name="surgeryNotesDisplay" required /></td>
       `;
           }
 
@@ -179,6 +179,55 @@
                 .appendChild(notesHidden);
             }
           });
+        } 
+        else if (form === 'surgery'){
+          const rows = document.querySelectorAll(
+            "#editSurgeryTableBody tr"
+          );
+
+          // Remove existing hidden inputs to prevent duplication
+          document
+            .querySelectorAll(
+              "input[name='surgeryName'], input[name='surgeryNotes']"
+            )
+            .forEach((input) => input.remove());
+
+          // Iterate over each row to add new hidden inputs
+          rows.forEach((row, index) => {
+            const nameInput = row.querySelector(
+              "input[name='surgeryNameDisplay']"
+            );
+            const notesInput = row.querySelector(
+              "input[name='surgeryNotesDisplay']"
+            );
+
+            if (nameInput && notesInput) {
+              // Check and append the delimiter if not already present
+              const nameValue = nameInput.value.endsWith("|")
+                ? nameInput.value
+                : nameInput.value + "|";
+              const notesValue = notesInput.value.endsWith("|")
+                ? notesInput.value
+                : notesInput.value + "|";
+
+              // Create and append the hidden input fields
+              const nameHidden = document.createElement("input");
+              nameHidden.type = "hidden";
+              nameHidden.name = "surgeryName";
+              nameHidden.value = nameValue;
+              document
+                .getElementById("editSurgeryForm")
+                .appendChild(nameHidden);
+
+              const notesHidden = document.createElement("input");
+              notesHidden.type = "hidden";
+              notesHidden.name = "surgeryNotes";
+              notesHidden.value = notesValue;
+              document
+                .getElementById("editSurgeryForm")
+                .appendChild(notesHidden);
+            }
+          });
         }
       }
 
@@ -190,10 +239,7 @@
           return;
         }
 
-        console.log("medicationId:", medicationId); // Log the medicationId value for debugging
-
         const petId = petIdElement.value;
-        console.log("petId:", petId); // Log the petId value for debugging
 
         if (!medicationId) {
           console.error("medicationId is not defined.");
@@ -261,6 +307,15 @@
         if (editImmunisationForm) {
           editImmunisationForm.addEventListener("submit", function (event) {
             updateHiddenFields("immunisation"); // Update hidden fields before form submission
+          });
+        }
+
+        var editSurgeryForm = document.getElementById(
+          "editSurgeryForm"
+        );
+        if (editSurgeryForm) {
+          editSurgeryForm.addEventListener("submit", function (event) {
+            updateHiddenFields("surgery"); // Update hidden fields before form submission
           });
         }
       });
@@ -899,7 +954,7 @@
                       <td>
                         <input
                           type="text"
-                          name="surgeryName"
+                          name="surgeryNameDisplay"
                           th:value="${surgery.name}"
                           required
                         />
@@ -907,7 +962,7 @@
                       <td>
                         <input
                           type="text"
-                          name="surgeryNotes"
+                          name="surgeryNotesDisplay"
                           th:value="${surgery.notes}"
                           required
                         />
