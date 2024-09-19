@@ -1,0 +1,187 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.header {
+    width: 100%;
+    background-color: #007bff;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header img.logo {
+    width: 50px;
+    height: auto;
+    margin-left: 15px;
+}
+
+.profile-link {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: white;
+    padding: 5px;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: #d3edf8;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    margin: 0 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Articles section */
+.articles-section {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.articles-section h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    padding: 5px 0;
+}
+
+.main-article {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-article img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.main-article-content {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 300px;
+}
+
+.sub-articles {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.sub-article {
+    width: 32%; /* Ensure three sub-articles fit within the parent */
+    margin-bottom: 20px; /* Space between each sub-article */
+    text-align: center; /* Center-align the title text */
+}
+
+.sub-article img {
+    width: 100%; /* Full width to match the container */
+    height: 200px; /* Consistent height */
+    object-fit: cover; /* Cover the container without stretching */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.sub-article-title {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    padding: 10px 0; /* Padding for the text box */
+    border-radius: 0 0 8px 8px; /* Rounded corners on the bottom */
+    margin-top: -5px; /* Slight overlap for a seamless look */
+    font-size: 18px; /* Adjust font size */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+/* What's New section */
+.whats-new-section {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.whats-new-section h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Set up the container to align articles vertically */
+.whats-new-container {
+    display: flex;
+    flex-direction: column; /* Stack articles vertically */
+    gap: 20px; /* Space between articles */
+}
+
+/* Flex to place image and text side by side */
+.whats-new-article {
+    display: flex; /* Align image and text side by side */
+    align-items: center; /* Center vertically */
+}
+
+.whats-new-article img {
+    width: 40%; /* Adjust width as needed */
+    border-radius: 8px;
+    margin-right: 20px; /* Space between image and text */
+}
+
+.whats-new-content {
+    flex: 1; /* Take up remaining space */
+}
+
+.whats-new-article h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+.whats-new-article p {
+    margin-top: 10px;
+    color: #555;
+}
