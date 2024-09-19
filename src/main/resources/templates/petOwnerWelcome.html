@@ -4,7 +4,32 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pet Owner Welcome Page</title>
-        <link rel="stylesheet" href="/css/ownerDashboard.css" />
+        <link rel="stylesheet" href="/css/ownerWelcome.css" />
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Fetch the userId from the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlUserID = urlParams.get("userId");
+                const urlPetOwnerID = urlParams.get("petOwnerId");
+
+                // Check if userId is not already stored
+                if (urlUserID && !localStorage.getItem("userId")) {
+                    localStorage.setItem("userId", urlUserID);
+                }
+
+                // Check if petOwnerId is not already stored
+                if (urlPetOwnerID && !localStorage.getItem("petOwnerId")) {
+                    localStorage.setItem("petOwnerId", urlPetOwnerID);
+                }
+
+                // Schedule new appointment button logic
+                document.querySelector('.new-schedule-btn').addEventListener('click', function () {
+                    const petOwnerID = localStorage.getItem("petOwnerId");
+                    // redirect to select pet page
+                    window.location.href = `appointment/new/select_pet?petOwnerId=${petOwnerID}`;
+                });
+            });
+        </script>
     </head>
 <body>
     <div class="header">
@@ -35,7 +60,7 @@
         <h1>Welcome John Johnny Jr.</h1>
         <div class="appointment-header">
             <h2>Upcoming Appointment</h2>
-            <button class="schedule-btn">Schedule New Appointment</button>
+            <button type="button" class="new-schedule-btn">Schedule New Appointment</button>
         </div>
             
     </div>

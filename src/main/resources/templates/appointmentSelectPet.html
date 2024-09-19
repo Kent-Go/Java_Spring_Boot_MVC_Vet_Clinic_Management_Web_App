@@ -7,6 +7,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const petCards = document.querySelectorAll('.pet-card');
+            const userId = localStorage.getItem('userId');
+            const petOwnerId = localStorage.getItem('petOwnerId');
 
             // Add click event listener for pet card selection
             petCards.forEach(card => {
@@ -25,11 +27,37 @@
                 if (selectedCard) {
                     const selectedPetId = selectedCard.getAttribute('data-pet-id');
                     const petName = selectedCard.querySelector('.pet-info h2').textContent;
+                    localStorage.setItem('selectedPetId', selectedPetId);
                     // Redirect to appointment type page with selected pet ID
-                    window.location.href = `/appointment/type?petId=${selectedPetId}&petName=${encodeURIComponent(petName)}`;
+                    // window.location.href = `/appointment/new/select_appointment_type?petId=${selectedPetId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_appointment_type`;
                 } else {
                     alert('Please select a pet to continue.');
                 }
+            });
+
+            document.querySelector('.back-button').addEventListener('click', function () {
+                // clear local storage relevant data
+                if (localStorage.getItem('selectedPetId')) {
+                    localStorage.removeItem('selectedPetId');
+                }
+                if (localStorage.getItem('selectedAppointmentTypeId')) {
+                    localStorage.removeItem('selectedAppointmentTypeId');
+                }
+                if (localStorage.getItem('selectedAppointmentTypeDuration')) {
+                    localStorage.removeItem('selectedAppointmentTypeDuration');
+                }
+                if (localStorage.getItem('selectedVetId')) {
+                    localStorage.removeItem('selectedVetId');
+                }
+                if (localStorage.getItem('selectedAppointmentDate')) {
+                    localStorage.removeItem('selectedAppointmentDate');
+                }
+                if (localStorage.getItem('selectedAppointmentTime')) {
+                    localStorage.removeItem('selectedAppointmentTime');
+                }
+                // Redirect to the select pet page
+                window.location.href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
             });
         });
     </script>
@@ -39,7 +67,7 @@
     <a href="/">
         <img src="/images/logo.png" alt="Logo" class="logo">
     </a>
-    <a href="login" class="profile-link">
+    <a href="/login" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon">
     </a>
 </div>
@@ -49,7 +77,7 @@
     <h3>Select Your Pet:</h3>
     <div class="pet-selection">
         <div th:each="pet : ${pets}" class="pet-card" th:data-pet-id="${pet.id}">
-            <img th:src="${pet.species == 'dog' ? '/images/dog.png' :
+            <!-- <img th:src="${pet.species == 'dog' ? '/images/dog.png' :
                           pet.species == 'cat' ? '/images/cat.png' :
                           pet.species == 'bird' ? '/images/bird.png' :
                           pet.species == 'bunny' ? '/images/bunny.png' :
@@ -57,8 +85,9 @@
                           pet.species == 'fish' ? '/images/fish.png' :
                           pet.species == 'horse' ? '/images/horse.png' :
                           pet.species == 'turtle' ? '/images/turtle.png' :
-                          pet.species == 'chicken' ? '/images/chicken.png' : '/images/pet-placeholder.png'}"
-                 alt="Pet Image" class="pet-image"/>
+                          pet.species == 'chicken' ? '/images/chicken.png' : '/images/pet-placeholder.png'}" -->
+                <img
+                alt="Pet Image" class="pet-image"/>
 
             <div class="pet-info">
                 <h2 th:text="${pet.name}">Pet Name</h2>

@@ -1,50 +1,60 @@
 package au.edu.rmit.sept.webapp.models;
 
 import java.time.LocalDate;
+import java.time.Period;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Transient;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pet")
 public class Pet {
-    //Primary key - Pet ID
+    // Primary key - Pet ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    //Pet name
+    // Pet name
     @Column(name = "name")
     private String name;
 
-    //Birth date
+    // Birth date
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    //Species
+    // Species
     @Column(name = "species")
     private String species;
 
-    //Breed
+    // Breed
     @Column(name = "breed")
     private String breed;
 
-    //Gender
+    // Gender
     @Column(name = "gender")
     private String gender;
 
-    //Weight
+    // Weight
     @Column(name = "weight")
     private float weight;
 
-    //Foreign key - Pet Owner ID
+    // Allergies
+    @Column(name = "allergies")
+    private String allergies;
+
+    // Existing conditions
+    @Column(name = "existing_conditions")
+    private String existingConditions;
+
+    // Foreign key - Pet Owner ID
     @Column(name = "pet_owner_id")
     private int petOwnerID;
 
@@ -52,8 +62,12 @@ public class Pet {
     @JoinColumn(name = "pet_owner_id", insertable = false, updatable = false)
     private PetOwner petOwner;
 
-    //Getters and Setters
-    //Pet ID
+    // Calculated field for age
+    @Transient
+    private int age;
+
+    // Getters and Setters
+    // Pet ID
     public int getId() {
         return id;
     }
@@ -62,7 +76,7 @@ public class Pet {
         this.id = id;
     }
 
-    //Name
+    // Name
     public String getName() {
         return name;
     }
@@ -71,16 +85,17 @@ public class Pet {
         this.name = name;
     }
 
-    //Birth Date
-    public LocalDate getBirthDate(){
+    // Birth Date
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate){
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+        this.age = calculateAge();
     }
 
-    //Species
+    // Species
     public String getSpecies() {
         return species;
     }
@@ -89,7 +104,7 @@ public class Pet {
         this.species = species;
     }
 
-    //Breed
+    // Breed
     public String getBreed() {
         return breed;
     }
@@ -98,8 +113,8 @@ public class Pet {
         this.breed = breed;
     }
 
-    //Gender
-    public String getGender(){
+    // Gender
+    public String getGender() {
         return gender;
     }
 
@@ -107,7 +122,7 @@ public class Pet {
         this.gender = gender;
     }
 
-    //Weight
+    // Weight
     public float getWeight() {
         return weight;
     }
@@ -116,7 +131,26 @@ public class Pet {
         this.weight = weight;
     }
 
-    //Pet Owner ID
+
+    // Allergies
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    // Existing Conditions
+    public String getExistingConditions() {
+        return existingConditions;
+    }
+
+    public void setExistingConditions(String existingConditions) {
+        this.existingConditions = existingConditions;
+    }
+
+    // Pet Owner ID
     public int getPetOwnerID() {
         return petOwnerID;
     }
@@ -125,21 +159,24 @@ public class Pet {
         this.petOwnerID = petOwnerID;
     }
 
-    // Set Pet Owner entity
     public PetOwner getPetOwner() {
         return petOwner;
     }
 
-    // Get Pet Owner entity
     public void setPetOwner(PetOwner petOwner) {
         this.petOwner = petOwner;
     }
 
-    // Constructors
+    public int getAge() {
+        return age;
+    }
+
+    // Constructor
     public Pet() {
     }
 
-    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight, int petOwnerID) {
+    public Pet(String name, LocalDate birthDate, String species, String breed, String gender, float weight,
+            int petOwnerID) {
         this.name = name;
         this.birthDate = birthDate;
         this.species = species;
@@ -147,5 +184,14 @@ public class Pet {
         this.gender = gender;
         this.weight = weight;
         this.petOwnerID = petOwnerID;
+        this.age = calculateAge();  // Calculate age at instantiation
+    }
+
+    // Helper method to calculate age
+    private int calculateAge() {
+        if (birthDate != null) {
+            return Period.between(birthDate, LocalDate.now()).getYears();
+        }
+        return 0;
     }
 }

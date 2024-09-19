@@ -14,25 +14,25 @@ import jakarta.persistence.GenerationType;
 @Entity
 @Table(name = "surgery_history")
 public class SurgeryHistory {
-    //Primary key - ID
+    // Primary key - ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    //Name of surgery
+    // Name of surgery
     @Column(name = "name")
     private String name;
 
-    //Date of surgery
+    // Date of surgery
     @Column(name = "date")
     private LocalDate date;
 
-    //Extra notes
+    // Extra notes
     @Column(name = "notes")
     private String notes;
 
-    //Foreign key - Pet ID
+    // Foreign key - Pet ID
     @Column(name = "pet_id")
     private int petID;
 
@@ -41,7 +41,7 @@ public class SurgeryHistory {
     private Pet pet;
 
     // Getters and Setters
-    //ID
+    // ID
     public int getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class SurgeryHistory {
         this.id = id;
     }
 
-    //Name
+    // Name
     public String getName() {
         return name;
     }
@@ -59,16 +59,16 @@ public class SurgeryHistory {
         this.name = name;
     }
 
-    //Date
+    // Date
     public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date){
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    //Notes
+    // Notes
     public String getNotes() {
         return notes;
     }
@@ -77,7 +77,7 @@ public class SurgeryHistory {
         this.notes = notes;
     }
 
-    //Pet ID
+    // Pet ID
     public int getPetID() {
         return petID;
     }
@@ -86,7 +86,7 @@ public class SurgeryHistory {
         this.petID = petID;
     }
 
-    //Pet
+    // Pet
     public Pet getPet() {
         return pet;
     }

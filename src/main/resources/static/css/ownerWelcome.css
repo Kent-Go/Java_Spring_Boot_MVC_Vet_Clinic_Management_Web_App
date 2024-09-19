@@ -84,7 +84,7 @@ html, body {
     margin-top: 20px;
 }
 
-.schedule-btn {
+.new-schedule-btn {
     background-color: #007bff;
     color: white;
     border: none;
@@ -94,8 +94,8 @@ html, body {
     cursor: pointer;
 }
 
-.schedule-btn:hover {
-    background-color: #0056b3;
+.new-schedule-btn:hover {
+    background-color: #0056b3; /* Slightly darker color on hover */
 }
 
 .appointment-container {
