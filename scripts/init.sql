@@ -4,7 +4,7 @@
 -- Create database
 -- CREATE DATABASE IF NOT EXISTS VetCare;
 
----------------- Create Tables ----------------
+-- Create Tables -- 
 -- User --
 CREATE TABLE IF NOT EXISTS user(
 	id INT AUTO_INCREMENT PRIMARY KEY,
