@@ -103,8 +103,8 @@
           if (form === "immunisation") {
             row.innerHTML = `
         <td><input type="date" name="immunisationDate" required /></td>
-        <td><input type="text" name="immunisationName" required /></td>
-        <td><input type="text" name="immunisationNotes" required /></td>
+        <td><input type="text" name="immunisationNameDisplay" required /></td>
+        <td><input type="text" name="immunisationNotesDisplay" required /></td>
       `;
           } else if (form === "surgery") {
             row.innerHTML = `
@@ -121,15 +121,65 @@
       }
 
       // Function to update hidden fields with delimiter before form submission
-      function updateHiddenFields() {
-        var nameValue = document.getElementById("nameDisplay").value;
-        var instructionValue =
-          document.getElementById("instructionDisplay").value;
+      function updateHiddenFields(form) {
+        if (form === "medication") {
+          var nameValue = document.getElementById("nameDisplay").value;
+          var instructionValue =
+            document.getElementById("instructionDisplay").value;
 
-        // Append the delimiter and set it to the hidden field
-        document.getElementById("nameHidden").value = nameValue + "|";
-        document.getElementById("instructionHidden").value =
-          instructionValue + "|";
+          // Append the delimiter and set it to the hidden field
+          document.getElementById("nameHidden").value = nameValue + "|";
+          document.getElementById("instructionHidden").value =
+            instructionValue + "|";
+        } else if (form === "immunisation") {
+          const rows = document.querySelectorAll(
+            "#editImmunisationTableBody tr"
+          );
+
+          // Remove existing hidden inputs to prevent duplication
+          document
+            .querySelectorAll(
+              "input[name='immunisationName'], input[name='immunisationNotes']"
+            )
+            .forEach((input) => input.remove());
+
+          // Iterate over each row to add new hidden inputs
+          rows.forEach((row, index) => {
+            const nameInput = row.querySelector(
+              "input[name='immunisationNameDisplay']"
+            );
+            const notesInput = row.querySelector(
+              "input[name='immunisationNotesDisplay']"
+            );
+
+            if (nameInput && notesInput) {
+              // Check and append the delimiter if not already present
+              const nameValue = nameInput.value.endsWith("|")
+                ? nameInput.value
+                : nameInput.value + "|";
+              const notesValue = notesInput.value.endsWith("|")
+                ? notesInput.value
+                : notesInput.value + "|";
+
+              // Create and append the hidden input fields
+              const nameHidden = document.createElement("input");
+              nameHidden.type = "hidden";
+              nameHidden.name = "immunisationName";
+              nameHidden.value = nameValue;
+              document
+                .getElementById("editImmunisationForm")
+                .appendChild(nameHidden);
+
+              const notesHidden = document.createElement("input");
+              notesHidden.type = "hidden";
+              notesHidden.name = "immunisationNotes";
+              notesHidden.value = notesValue;
+              document
+                .getElementById("editImmunisationForm")
+                .appendChild(notesHidden);
+            }
+          });
+        }
       }
 
       function deleteMedication(medicationId) {
@@ -198,10 +248,19 @@
         var editMedicationForm = document.getElementById("editMedicationForm");
         if (editMedicationForm) {
           editMedicationForm.addEventListener("submit", function (event) {
-            updateHiddenFields();
+            updateHiddenFields("medication");
             if (!validateEditMedication()) {
               event.preventDefault(); // Prevent form submission if validation fails
             }
+          });
+        }
+
+        var editImmunisationForm = document.getElementById(
+          "editImmunisationForm"
+        );
+        if (editImmunisationForm) {
+          editImmunisationForm.addEventListener("submit", function (event) {
+            updateHiddenFields("immunisation"); // Update hidden fields before form submission
           });
         }
       });
@@ -733,7 +792,7 @@
                       <td>
                         <input
                           type="text"
-                          name="immunisationName"
+                          name="immunisationNameDisplay"
                           th:value="${immunisation.name}"
                           required
                         />
@@ -741,7 +800,7 @@
                       <td>
                         <input
                           type="text"
-                          name="immunisationNotes"
+                          name="immunisationNotesDisplay"
                           th:value="${immunisation.notes}"
                           required
                         />
