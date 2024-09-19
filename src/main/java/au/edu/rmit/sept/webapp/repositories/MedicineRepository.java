@@ -4,4 +4,5 @@ import au.edu.rmit.sept.webapp.models.Medicine;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
+    public Medicine findByName(String name);
 }
