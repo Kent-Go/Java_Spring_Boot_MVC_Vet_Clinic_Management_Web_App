@@ -1,51 +1,63 @@
 package au.edu.rmit.sept.webapp.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "prescribed_medication")
 public class PrescribedMedication {
-    //Primary key - ID
+    // Primary key - ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    //Dosage for medication (e.g. how many tablets)
+    // Dosage for medication (e.g. how many tablets)
     @Column(name = "dosage")
     private int dosage;
 
-    //Daily frequency
+    // Daily frequency
     @Column(name = "daily_frequency")
     private int dailyFrequency;
 
-    //Duration of taking the medication - in days
+    // Duration of taking the medication - in days
     @Column(name = "duration")
     private int duration;
 
-    //Instructions for medication
+    // Instructions for medication
     @Column(name = "instruction")
     private String instruction;
 
-    //Foreign key - Medicine ID
+    // Foreign key - Medicine ID
     @Column(name = "medicine_id")
     private int medicineID;
 
-    //Foreign key - Order ID
+    @OneToOne
+    @JoinColumn(name = "medicine_id", insertable = false, updatable = false)
+    private Medicine medicine;
+
+    // Foreign key - Order ID
     @Column(name = "order_id")
     private int orderID;
 
-    //Foreign key - Appointment ID
+    // Foreign key - Appointment ID
     @Column(name = "appointment_id")
     private int appointmentID;
 
+    // Appointment can have multiple prescribed medications
+    @ManyToOne
+    @JoinColumn(name = "appointment_id", insertable = false, updatable = false)
+    private Appointment appointment;
+
     // Getters and Setters
-    //ID(primary key)
+    // ID(primary key)
     public int getId() {
         return id;
     }
@@ -54,7 +66,7 @@ public class PrescribedMedication {
         this.id = id;
     }
 
-    //Dosage
+    // Dosage
     public int getDosage() {
         return dosage;
     }
@@ -63,7 +75,7 @@ public class PrescribedMedication {
         this.dosage = dosage;
     }
 
-    //Daily frequency
+    // Daily frequency
     public int getDailyFrequency() {
         return dailyFrequency;
     }
@@ -72,7 +84,7 @@ public class PrescribedMedication {
         this.dailyFrequency = dailyFrequency;
     }
 
-    //Duration
+    // Duration
     public int getDuration() {
         return duration;
     }
@@ -81,7 +93,7 @@ public class PrescribedMedication {
         this.duration = duration;
     }
 
-    //Instruction
+    // Instruction
     public String getInstruction() {
         return instruction;
     }
@@ -90,7 +102,7 @@ public class PrescribedMedication {
         this.instruction = instruction;
     }
 
-    //Medicine ID
+    // Medicine ID
     public int getMedicineID() {
         return medicineID;
     }
@@ -99,7 +111,7 @@ public class PrescribedMedication {
         this.medicineID = medicineID;
     }
 
-    //Order ID
+    // Order ID
     public int getOrderID() {
         return orderID;
     }
@@ -108,7 +120,7 @@ public class PrescribedMedication {
         this.orderID = orderID;
     }
 
-    //Appointment ID
+    // Appointment ID
     public int getAppointmentID() {
         return appointmentID;
     }
@@ -117,4 +129,37 @@ public class PrescribedMedication {
         this.appointmentID = appointmentID;
     }
 
+    // Medicine
+    public Medicine getMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(Medicine medicine) {
+        this.medicine = medicine;
+    }
+
+    // Appointment
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointmentType(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
+    // Default no-argument constructor required by JPA
+    public PrescribedMedication() {
+    }
+
+    // Constructor without ID because it is auto-generated
+    public PrescribedMedication(int dosage, int dailyFrequency, int duration, String instruction, int medicineID,
+            int orderID, int appointmentID) {
+        this.dosage = dosage;
+        this.dailyFrequency = dailyFrequency;
+        this.duration = duration;
+        this.instruction = instruction;
+        this.medicineID = medicineID;
+        this.orderID = orderID;
+        this.appointmentID = appointmentID;
+    }
 }

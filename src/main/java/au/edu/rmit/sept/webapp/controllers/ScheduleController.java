@@ -1,10 +1,10 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.Locale;
-import java.util.Collection;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.time.temporal.WeekFields;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,7 @@ import au.edu.rmit.sept.webapp.services.AppointmentService;
 
 @Controller
 public class ScheduleController {
+
     @Autowired
     private AppointmentService appointmentService;
 
@@ -25,7 +26,8 @@ public class ScheduleController {
     public String showSchedulePage(@RequestParam("vetId") int vetId,
             @RequestParam(value = "weekStart", required = false) String weekStart,
             Model model) {
-        // Determine the week start date
+        // Determine the start date of the week, default to current week's Monday if not
+        // provided
         LocalDate startDate = (weekStart != null) ? LocalDate.parse(weekStart)
                 : LocalDate.now().with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endDate = startDate.plusDays(6);
@@ -34,23 +36,22 @@ public class ScheduleController {
         Collection<Appointment> appointments = appointmentService.getAppointmentsByVetAndWeek(vetId, startDate,
                 endDate);
 
-        // Format the startDate to a string in YYYY-MM-DD format
+        // Calculate the day of the week for each appointment and set it to appointment
+        appointments.forEach(appointment -> {
+            String dayOfWeek = appointment.getDate().getDayOfWeek()
+                    .getDisplayName(java.time.format.TextStyle.SHORT, Locale.ENGLISH);
+            appointment.setDayOfWeek(dayOfWeek);
+        });
+
+        // Format the week start and end dates for display
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedWeekStart = startDate.format(formatter);
-
-        // Format the day of the week based on the date
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("E", Locale.ENGLISH);
-
-        // Store the day of the week in each appointment
-        for (Appointment appointment : appointments) {
-            // Assuming appointment.getDate() returns a LocalDate
-            String dayOfWeek = appointment.getDate().format(dayFormatter);
-            appointment.setDayOfWeek(dayOfWeek); // Store this in the Appointment class
-        }
+        String formattedWeekEnd = endDate.format(formatter);
 
         // Add attributes to the model
         model.addAttribute("appointments", appointments);
         model.addAttribute("weekStart", formattedWeekStart);
+        model.addAttribute("weekEnd", formattedWeekEnd);
         model.addAttribute("vetId", vetId);
 
         return "schedule"; // Return the schedule.html template

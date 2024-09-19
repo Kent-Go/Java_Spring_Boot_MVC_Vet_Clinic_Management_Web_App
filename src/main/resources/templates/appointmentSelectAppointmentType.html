@@ -7,6 +7,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const typeCards = document.querySelectorAll('.appointment-type-card');
+            const petOwnerId = localStorage.getItem('petOwnerId');
 
             // Make the entire card clickable
             typeCards.forEach(card => {
@@ -23,15 +24,17 @@
             document.querySelector('.continue-button').addEventListener('click', function () {
                 const selectedCard = document.querySelector('.appointment-type-card.selected');
                 const urlParams = new URLSearchParams(window.location.search);
-                const petId = urlParams.get('petId');
-                const petName = urlParams.get('petName');
 
                 if (selectedCard) {
-                    const appointmentTypeId = selectedCard.getAttribute('data-appointment-type-id');
+                    const selectedAppointmentTypeId = selectedCard.getAttribute('data-appointment-type-id');
                     const appointmentTypeName = selectedCard.querySelector('h3').textContent;
+                    const selectedAppointmentTypeDuration = selectedCard.querySelector('p').textContent.split(' ')[0];
+
+                    localStorage.setItem('selectedAppointmentTypeId', selectedAppointmentTypeId);
+                    localStorage.setItem('selectedAppointmentTypeDuration', selectedAppointmentTypeDuration);
 
                     // Redirect to the vet list page with the selected appointment type ID
-                    window.location.href = `/appointment/vetList?appointmentTypeId=${appointmentTypeId}&appointmentTypeName=${encodeURIComponent(appointmentTypeName)}&petId=${petId}&petName=${encodeURIComponent(petName)}`;
+                    window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}`;
                 } else {
                     alert('Please select an appointment type to continue.');
                 }
@@ -40,7 +43,7 @@
             // Back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
                 // Redirect to the select pet page
-                window.location.href = `/appointment/selectPet`;
+                window.location.href = `/appointment/new/select_pet?petOwnerId=${petOwnerId}`;
             });
         });
     </script>
@@ -51,7 +54,7 @@
     <a href="/">
         <img src="/images/logo.png" alt="Logo">
     </a>
-    <a href="login" class="profile-link">
+    <a href="/login" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon">
     </a>
 </div>
@@ -60,10 +63,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select an Appointment Type:</h3>
 
-    <div th:each="appointmentType : ${appointmentTypes}" class="appointment-type-card" th:data-appointment-type-id="${appointmentType['id']}">
-        <h3 th:text="${appointmentType['name']}">General Clinical Consultation</h3>
-        <p th:text="${appointmentType['duration']} + ' min'">30 min</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    <div th:each="appointmentType : ${appointmentTypes}" class="appointment-type-card" th:data-appointment-type-id="${appointmentType.id}">
+        <h3 th:text="${appointmentType.name}"></h3>
+        <p th:text="${appointmentType.duration} + ' min'"></p>
+        <p th:text="${appointmentType.description}"></p>
     </div>
 </div>
 

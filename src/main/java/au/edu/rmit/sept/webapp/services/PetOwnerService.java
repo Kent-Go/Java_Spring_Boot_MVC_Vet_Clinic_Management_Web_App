@@ -9,8 +9,11 @@ public interface PetOwnerService {
   public Collection<PetOwner> getAllPetOwners();
 
   // Get a pet owner by their ID
-  public PetOwner getPetOwnerByPetOwnerID(int userID);
+  public PetOwner getPetOwnerByPetOwnerID(int petOwnerID);
 
   // Create a new pet owner
   public PetOwner createPetOwner(PetOwner petOwner);  
+
+  // Get a pet owner by their user ID
+  public PetOwner getPetOwnerByUserID(int userID);
 }
