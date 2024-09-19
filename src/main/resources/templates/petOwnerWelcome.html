@@ -33,44 +33,94 @@
     </head>
 <body>
     <div class="header">
-        <a href="/">
-          <img src="/images/logo.png" alt="Logo" class="logo" />
-        </a>
+      <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" id="logo-link">
+        <img src="/images/logo.png" alt="Logo" class="logo" />
+      </a>
+      <!-- FIX THIS ONCE PET OWNER PROFILE PAGE IS DONE -->
+      <a
+        th:href="@{/profile(vetId=${vetId})}"
+        id="profile-link"
+        class="profile-link"
+      >
+        <img src="/images/profile.png" alt="Profile" class="profile-icon" />
+      </a>
     </div>
 
     <div class="navbar">
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a th:href="@{/petList}">Pets</a></li>
-            <li><a href="/trendsHome">Articles & Videos</a></li>
-            <li><a href="#consultation">Consultation</a></li>
-            <li><a th:href="@{/prescriptions}">Prescriptions</a></li>
-            <li><a href="#faq">FAQ</a></li>
-        </ul>
+      <ul>
+        <li>
+          <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" class="active"
+            >Home</a
+          >
+        </li>
+        <li><a th:href="@{/petList}">Pets</a></li>
+        <li><a href="/trendsHome">Articles & Videos</a></li>
+        <li><a href="#consultation">Consultation</a></li>
+        <li><a href="#prescriptions">Prescriptions</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
     </div>
 
+    <div class="welcome-text-container">
+
+    </div>
+    
     <div class="welcome-text">
         <h1>Welcome John Johnny Jr.</h1>
         <div class="appointment-header">
             <h2>Upcoming Appointment</h2>
             <button type="button" class="new-schedule-btn">Schedule New Appointment</button>
         </div>
-            
     </div>
-      
-    <div class="appointment-container">
-        <h4>Appointment Type: General Clinical Consultation</h4>
-        <h4>Pet: Johnny (Male Chihuahua - Cream)</h4>
-        <h4>Date: 2 September 2024</h4>
-        <h4>Time: 11:00 AM</h4>
-        <h4>Veterinarian: Dr Jude Bellingham</h4>
-        
+
+    <div
+      th:if="${upcomingAppointments != null && !upcomingAppointments.isEmpty()}"
+      class="appointments-container"
+    >
+      <!-- Loop through each upcoming appointment -->
+      <div
+        th:each="appointment : ${upcomingAppointments}"
+        class="appointment-container"
+      >
+        <h4>
+          Appointment Type:
+          <span th:text="${appointment.appointmentType.name}"></span>
+        </h4>
+        <h4>
+          Pet:
+          <span
+            th:text="${appointment.pet.name} + ' (' + ${appointment.pet.gender} + ' - ' + ${appointment.pet.breed} + ')'"
+          ></span>
+        </h4>
+        <h4>
+          Date:
+          <span th:text="${appointment.date}"></span>
+        </h4>
+        <h4>
+          Time:
+          <span
+            th:text="${appointment.startTime} + ' - ' + ${appointment.endTime}"
+          ></span>
+        </h4>
+        <h4>
+          Veterinarian:
+          <span
+            th:text="${appointment.vet.title} + ' ' + ${appointment.vet.user.firstName} + ' ' + ${appointment.vet.user.lastName}"
+          ></span>
+        </h4>
+
         <div class="appointment-actions">
-            <button class="reschedule-btn">Reschedule</button>
-            <button class="cancel-btn">Cancel</button>
+          <button class="reschedule-btn">Reschedule</button>
+          <button class="cancel-btn">Cancel</button>
         </div>
-        
+      </div>
     </div>
-</body>
+
+    <div
+      th:if="${upcomingAppointments == null || upcomingAppointments.isEmpty()}"
+      class="no-appointments"
+    >
+      <p>No upcoming appointments.</p>
+    </div>
+  </body>
 </html>
-<!-- http://localhost:8080/petOwnerWelcome -->
