@@ -51,8 +51,8 @@ class ScheduleAppointmentConfirmationControllerTest {
     @MockBean
     private AppointmentService appointmentService;
 
+    // Test rendering the appointmentConfirmation page
     @Test
-    // Test the details of appointment display
     void testDisplayAppointment() throws Exception {
         // Mock the behavior of AppointmentTypeService to return an appointment type
         AppointmentType appointmentType = new AppointmentType("General Clinical Consultation", 30, "This service involves a comprehensive assessment of your pet’s overall health. The veterinarian will discuss any concerns you have, review your pet’s medical history, and provide recommendations for preventive care or treatment.");
@@ -92,8 +92,8 @@ class ScheduleAppointmentConfirmationControllerTest {
                 .andExpect(model().attribute("vetTitleName", "Dr. Jude Bellingham"));
     }
 
+    // Test post method in the appointmentConfirmation page
     @Test
-    // Test the post method of confirming appointment
     void testConfirmAppointment() throws Exception {
         // Perform a POST request to /appointment/new/confirmation with the required parameters
         mockMvc.perform(post("/appointment/new/confirmation")

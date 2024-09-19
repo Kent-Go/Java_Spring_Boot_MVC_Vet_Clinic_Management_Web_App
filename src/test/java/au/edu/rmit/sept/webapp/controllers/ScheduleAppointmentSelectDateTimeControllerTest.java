@@ -14,8 +14,8 @@ class ScheduleAppointmentSelectDateTimeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
     // Test rendering the appointmentSelectDateTime page
+    @Test
     void testDisplayDateTime() throws Exception {
         // Perform a GET request to /appointment/new/select_date_time with vetId and appointmentTypeId parameters
         mockMvc.perform(get("/appointment/new/select_date_time")
