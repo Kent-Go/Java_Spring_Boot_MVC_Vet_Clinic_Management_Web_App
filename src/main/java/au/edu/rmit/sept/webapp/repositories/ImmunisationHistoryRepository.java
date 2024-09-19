@@ -7,5 +7,5 @@ import au.edu.rmit.sept.webapp.models.ImmunisationHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ImmunisationHistoryRepository extends JpaRepository<ImmunisationHistory, Integer> {
-    Optional<List<ImmunisationHistory>> findByPetID(int petID);
+    Optional<List<ImmunisationHistory>> findByPetIDOrderByDateAsc(int petID);
 }
