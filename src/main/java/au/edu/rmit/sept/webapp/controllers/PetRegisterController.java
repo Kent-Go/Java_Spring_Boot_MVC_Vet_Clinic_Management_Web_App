@@ -4,6 +4,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.support.SessionStatus;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.models.Address;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,7 +40,8 @@ public class PetRegisterController {
     }
 
     @PostMapping("/petRegister")
-    public String registerPet(
+    @ResponseBody
+    public ArrayList<Pet> registerPet(
             @RequestParam("petName") String[] petName,
             @RequestParam("dob") LocalDate[] dob,
             @RequestParam("gender") String[] gender,
@@ -52,22 +55,11 @@ public class PetRegisterController {
             SessionStatus sessionStatus,
             Model model) {
 
-        /*for(int i = 0; i < petName.length; i++){
-            System.out.println("=====");
-            System.out.println("Name: " + petName[i]);
-            System.out.println("DOB: " + dob[i]);
-            System.out.println("Gender: " + gender[i]);
-            System.out.println("Species: " + petType[i]);
-            System.out.println("Color: " + color[i]);
-            System.out.println("Weight: " + weight[i]);
-            System.out.println("Allergies: " + allergies[i]);
-            System.out.println("Conditions: " + condition[i]);
-            System.out.println("=====");
-        }*/
         // Retrieve user, address, and petOwner from session
         User user = (User) model.getAttribute("user");
         PetOwner petOwner = (PetOwner) model.getAttribute("petOwner");
         Address address = (Address) model.getAttribute("address");
+        ArrayList<Pet> addedPets = new ArrayList<Pet>();
         
         if (user != null && petOwner != null && address != null) {
             // Save address and petOwner to database
@@ -84,19 +76,19 @@ public class PetRegisterController {
                 pet.setGender(gender[i]);
                 pet.setSpecies(petType[i]);
                 pet.setBreed(breed[i]);
+                pet.setWeight(weight[i]);
                 pet.setPetOwnerID(owner.getId());
-
+                pet.setAllergies(allergies[i]);
+                pet.setExistingConditions(condition[i]);
+                
+                addedPets.add(pet);
                 petService.createPet(pet); // Add your code to save pet
             }
 
             // Clear session
             sessionStatus.setComplete();
-
-            // Redirect to a success page or profile
-            return "redirect:/profile";
-        } else {
-            // Redirect to an error page or homepage
-            return "redirect:/error";
         }
+
+        return addedPets;
     }
 }

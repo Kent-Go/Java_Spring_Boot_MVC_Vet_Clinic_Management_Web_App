@@ -14,6 +14,8 @@
         // Collect all required fields
         var requiredFields = document.querySelectorAll("[required]");
 
+        // Needs more robust validation probably
+        
         // Loop through required fields to check if any are empty
         for (var i = 0; i < requiredFields.length; i++) {
           if (!requiredFields[i].value) {
@@ -25,6 +27,9 @@
       }
 
       function extractFields(fieldName){
+        //Extracts all the values of a specific type from the form
+        //and puts them into an array.
+        //e.g. - takes all the pet names and produces an array of all of them.
         var fieldElements = document.getElementsByClassName(fieldName);
         var values = [];
 
@@ -37,8 +42,9 @@
 
       async function saveForm() {
         if (validateForm()) {
-
-          //
+          //To submit the form and add pets to the database,
+          //we create a FormData object which holds all the fields
+          //and an array with the corresponding data.
           var formData = new FormData();
 
           formData.append("petName", extractFields("petName"));
@@ -52,19 +58,22 @@
           formData.append("allergies", extractFields("allergies"));
           formData.append("existingCondition", extractFields("existingCondition"));
 
+          //Because the form is dynamic, we cannot submit it directly through html.
+          //We cannot account for the varying number of fields, after all.
+          //Instead, we have to make a post request with the form data to add the pets to the database.
           try{
             const response = await fetch("/petRegister", {
               method: "POST",
               body: formData
             })
+
+            //Redirect the user to the welcome page through javascript.
+            window.location.replace("/petOwnerWelcome");
           }
 
           catch (e) {
             console.error(e);
           }
-          // Submit the form programmatically
-          //document.querySelector("form").submit();
-          //formData.submit();
         }
       }
 
