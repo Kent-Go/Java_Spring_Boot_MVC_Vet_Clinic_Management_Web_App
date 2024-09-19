@@ -17,6 +17,7 @@ import au.edu.rmit.sept.webapp.repositories.SurgeryHistoryRepository;
 
 @SpringBootTest
 public class SurgeryHistoryServiceImplTest {
+    
     // Mock the repository
     @MockBean
     private SurgeryHistoryRepository surgeryHistoryRepository;
