@@ -389,4 +389,99 @@ public class PetProfileController {
             return new RedirectView("/petProfile?petId=" + petId + "&error=" + e.getMessage());
         }
     }
+
+    // Method to handle form submission for adding a new surgery history
+    @PostMapping("/updateSurgeryHistory")
+    public RedirectView updateSurgeryHistory(
+            @RequestParam("petId") int petId,
+            @RequestParam("surgeryId") String surgeryId,
+            @RequestParam("surgeryDate") String surgeryDate,
+            @RequestParam("surgeryName") String surgeryName,
+            @RequestParam("surgeryNotes") String surgeryNotes) {
+
+        // Split the input strings by ',' to get the individual values
+        String[] surgeryIDSplit = surgeryId.split(",");
+        String[] surgeryDateSplit = surgeryDate.split(",");
+        String[] surgeryNameSplit = surgeryName.split(",");
+        String[] surgeryNotesSplit = surgeryNotes.split(",");
+
+        // Ensure the other arrays have the same length
+        if (surgeryDateSplit.length != surgeryNameSplit.length
+                || surgeryNameSplit.length != surgeryNotesSplit.length) {
+            return new RedirectView("/petProfile?petId=" + petId + "&error=Inconsistent%20data%20lengths");
+        }
+
+        try {
+            // Loop through the split values and append them to a list
+            List<Map<String, Object>> surgeryList = new ArrayList<>();
+            for (int i = 0; i < surgeryDateSplit.length; i++) {
+                Map<String, Object> surgeryMap = new HashMap<>();
+
+                // Handle surgery ID: check if it exists (for existing records)
+                if (i < surgeryIDSplit.length && surgeryIDSplit[i] != null
+                        && !surgeryIDSplit[i].isEmpty()) {
+                    surgeryMap.put("surgeryId", Integer.parseInt(surgeryIDSplit[i]));
+                } else {
+                    // No ID for new rows
+                    surgeryMap.put("surgeryId", null);
+                }
+
+                surgeryMap.put("surgeryDate", LocalDate.parse(surgeryDateSplit[i]));
+                surgeryMap.put("surgeryName", surgeryNameSplit[i]);
+                surgeryMap.put("surgeryNotes", surgeryNotesSplit[i]);
+                surgeryList.add(surgeryMap);
+            }
+
+            // Fetch the pet by ID
+            Pet pet = petService.getPetByPetID(petId);
+
+            // Print the length of the surgery list
+            System.out.println("--------------------");
+            System.out.println("Surgery List Length: " + surgeryList.size());
+
+            // For each surgery in the list, update or create them
+            for (Map<String, Object> surgeryMap : surgeryList) {
+                SurgeryHistory surgeryHistory = null;
+
+                // Check if the surgery ID exists (for existing entries)
+                Integer surgeryID = (Integer) surgeryMap.get("surgeryId");
+
+                if (surgeryID != null) {
+                    try {
+                        // Try to fetch the existing surgery history by ID
+                        surgeryHistory = surgeryHistoryService.getSurgeryHistoryByID(surgeryID);
+                    } catch (Exception e) {
+                        // Log if the ID was invalid (for debugging)
+                        System.out.println(
+                                "No surgery found for ID: " + surgeryID + " - Creating a new entry.");
+                    }
+                }
+
+                // If no existing surgery is found or it's a new entry, create a new
+                // instance
+                if (surgeryHistory == null) {
+                    surgeryHistory = new SurgeryHistory();
+                }
+
+                // Update the fields for the immunisation history
+                surgeryHistory.setDate((LocalDate) surgeryMap.get("surgeryDate"));
+                surgeryHistory.setName((String) surgeryMap.get("surgeryName"));
+                surgeryHistory.setNotes((String) surgeryMap.get("surgeryNotes"));
+                surgeryHistory.setPetID(pet.getId());
+                surgeryHistory.setPet(pet);
+
+                // Save the new or updated immunisation history
+                surgeryHistoryService.saveOrUpdateSurgeryHistory(surgeryHistory);
+
+                // Print the generated ID after saving (for new entries)
+                System.out.println("--------------------");
+                System.out.println("Surgery ID (after save): " + surgeryHistory.getId());
+            }
+
+            // Redirect back to the pet's profile after successful update
+            return new RedirectView("/petProfile?petId=" + petId);
+        } catch (Exception e) {
+            return new RedirectView("/petProfile?petId=" + petId + "&error=" + e.getMessage());
+        }
+    }
 }
