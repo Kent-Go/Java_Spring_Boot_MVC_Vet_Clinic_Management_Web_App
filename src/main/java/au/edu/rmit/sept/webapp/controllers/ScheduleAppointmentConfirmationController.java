@@ -21,6 +21,10 @@ import au.edu.rmit.sept.webapp.models.Appointment;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoField;
+import java.util.Locale;
 
 @Controller
 public class ScheduleAppointmentConfirmationController {
@@ -62,8 +66,13 @@ public class ScheduleAppointmentConfirmationController {
         String appointmentDate = selectedAppointmentDate.format(dateFormatter);
 
         // convert time into 12 hour format
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
-        String appointmentTime = selectedAppointmentTime.format(timeFormatter);
+        DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
+        .appendPattern("h:mm ")
+        .appendText(ChronoField.AMPM_OF_DAY, TextStyle.SHORT)
+        .toFormatter(Locale.ENGLISH)
+        .withLocale(Locale.ENGLISH);
+
+        String appointmentTime = selectedAppointmentTime.format(timeFormatter).toUpperCase();
 
         // get vet title and name
         Vet vet = vetService.getVetByVetID(selectedVetId);
