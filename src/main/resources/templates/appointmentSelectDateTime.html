@@ -45,6 +45,9 @@
             });
         });
 
+        // set minimum date to today's date when selecting date
+        document.getElementById('appointment-date').min = new Date().toISOString().split('T')[0];
+
         // function for adding onclick event for time slot
         function addClickEventToTimeSlots() {
             const timeSlots = document.querySelectorAll('.time-slot');
@@ -216,7 +219,7 @@
     <h3>Select Date and Time:</h3>
 
     <!-- Date Picker (For the sake of simplicity, using a simple date input) -->
-    <input type="date" id="appointment-date" name="appointment-date" value="2024-09-29" onchange="handleDateChange()">
+    <input type="date" id="appointment-date" name="appointment-date" min="2024-09-19" value="2024-09-29" onchange="handleDateChange()">
     
     <h3 class="time-availability-message"></h3>
 
