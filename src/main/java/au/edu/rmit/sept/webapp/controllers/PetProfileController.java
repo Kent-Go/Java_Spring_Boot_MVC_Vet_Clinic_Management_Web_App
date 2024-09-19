@@ -69,7 +69,7 @@ public class PetProfileController {
     // Display the pet profile page
     @GetMapping("/petProfile")
     public String showPetProfile(@RequestParam("petId") int petId,
-            @RequestParam(value = "editMode", defaultValue = "false") boolean editMode, 
+            @RequestParam(value = "editMode", defaultValue = "false") boolean editMode,
             @RequestParam(value = "editMedicationMode", defaultValue = "false") boolean editMedicationMode,
             @RequestParam(value = "editHealthConcernsMode", defaultValue = "false") boolean editHealthConcernsMode,
             @RequestParam(value = "editImmunisationMode", defaultValue = "false") boolean editImmunisationMode,
@@ -124,12 +124,11 @@ public class PetProfileController {
         model.addAttribute("prescribedMedications", prescribedMedications);
 
         // Add flags to the model to determine if the page is in edit mode
-        model.addAttribute("editMode", editMode); 
+        model.addAttribute("editMode", editMode);
         model.addAttribute("editMedicationMode", editMedicationMode);
         model.addAttribute("editHealthConcernsMode", editHealthConcernsMode);
         model.addAttribute("editImmunisationMode", editImmunisationMode);
         model.addAttribute("editSurgeryMode", editSurgeryMode);
-
 
         return "petProfile"; // This refers to the petProfile.html page
     }
@@ -292,6 +291,101 @@ public class PetProfileController {
         } catch (Exception e) {
             // Handle error and redirect to an error page or the same page with error
             // message
+            return new RedirectView("/petProfile?petId=" + petId + "&error=" + e.getMessage());
+        }
+    }
+
+    // Method to handle form submission for adding a new immunisation history
+    @PostMapping("/updateImmunisationHistory")
+    public RedirectView updateImmunisationHistory(
+            @RequestParam("petId") int petId,
+            @RequestParam("immunisationId") String immunisationId,
+            @RequestParam("immunisationDate") String immunisationDate,
+            @RequestParam("immunisationName") String immunisationName,
+            @RequestParam("immunisationNotes") String immunisationNotes) {
+
+        // Split the input strings by ',' to get the individual values
+        String[] immunisationIDSplit = immunisationId.split(",");
+        String[] immunisationDateSplit = immunisationDate.split(",");
+        String[] immunisationNameSplit = immunisationName.split(",");
+        String[] immunisationNotesSplit = immunisationNotes.split(",");
+
+        // Ensure the other arrays have the same length
+        if (immunisationDateSplit.length != immunisationNameSplit.length
+                || immunisationNameSplit.length != immunisationNotesSplit.length) {
+            return new RedirectView("/petProfile?petId=" + petId + "&error=Inconsistent%20data%20lengths");
+        }
+
+        try {
+            // Loop through the split values and append them to a list
+            List<Map<String, Object>> immunisationList = new ArrayList<>();
+            for (int i = 0; i < immunisationDateSplit.length; i++) {
+                Map<String, Object> immunisationMap = new HashMap<>();
+
+                // Handle immunisation ID: check if it exists (for existing records)
+                if (i < immunisationIDSplit.length && immunisationIDSplit[i] != null
+                        && !immunisationIDSplit[i].isEmpty()) {
+                    immunisationMap.put("immunisationId", Integer.parseInt(immunisationIDSplit[i]));
+                } else {
+                    // No ID for new rows
+                    immunisationMap.put("immunisationId", null);
+                }
+
+                immunisationMap.put("immunisationDate", LocalDate.parse(immunisationDateSplit[i]));
+                immunisationMap.put("immunisationName", immunisationNameSplit[i]);
+                immunisationMap.put("immunisationsNotes", immunisationNotesSplit[i]);
+                immunisationList.add(immunisationMap);
+            }
+
+            // Fetch the pet by ID
+            Pet pet = petService.getPetByPetID(petId);
+
+            // Print the length of the immunisation list
+            System.out.println("--------------------");
+            System.out.println("Immunisation List Length: " + immunisationList.size());
+
+            // For each immunisation in the list, update or create them
+            for (Map<String, Object> immunisationMap : immunisationList) {
+                ImmunisationHistory immunisationHistory = null;
+
+                // Check if the immunisation ID exists (for existing entries)
+                Integer immunisationID = (Integer) immunisationMap.get("immunisationId");
+
+                if (immunisationID != null) {
+                    try {
+                        // Try to fetch the existing immunisation history by ID
+                        immunisationHistory = immunisationHistoryService.getImmunisationHistoryByID(immunisationID);
+                    } catch (Exception e) {
+                        // Log if the ID was invalid (for debugging)
+                        System.out.println(
+                                "No immunisation found for ID: " + immunisationID + " - Creating a new entry.");
+                    }
+                }
+
+                // If no existing immunisation is found or it's a new entry, create a new
+                // instance
+                if (immunisationHistory == null) {
+                    immunisationHistory = new ImmunisationHistory();
+                }
+
+                // Update the fields for the immunisation history
+                immunisationHistory.setDate((LocalDate) immunisationMap.get("immunisationDate"));
+                immunisationHistory.setName((String) immunisationMap.get("immunisationName"));
+                immunisationHistory.setNotes((String) immunisationMap.get("immunisationsNotes"));
+                immunisationHistory.setPetID(pet.getId());
+                immunisationHistory.setPet(pet);
+
+                // Save the new or updated immunisation history
+                immunisationHistoryService.saveOrUpdateImmunisationHistory(immunisationHistory);
+
+                // Print the generated ID after saving (for new entries)
+                System.out.println("--------------------");
+                System.out.println("Immunisation ID (after save): " + immunisationHistory.getId());
+            }
+
+            // Redirect back to the pet's profile after successful update
+            return new RedirectView("/petProfile?petId=" + petId);
+        } catch (Exception e) {
             return new RedirectView("/petProfile?petId=" + petId + "&error=" + e.getMessage());
         }
     }

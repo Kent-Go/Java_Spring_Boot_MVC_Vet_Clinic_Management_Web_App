@@ -63,9 +63,9 @@
         const row = document.createElement("tr");
 
         row.innerHTML = `
-          <td><input type="date" name="immunisations[].date" required /></td>
-          <td><input type="text" name="immunisations[].name" required /></td>
-          <td><input type="text" name="immunisations[].notes" /></td>
+          <td><input type="date" name="immunisationDate" required /></td>
+          <td><input type="text" name="immunisationName" required /></td>
+          <td><input type="text" name="immunisationNotes" required /></td>
         `;
 
         tbody.appendChild(row);
@@ -697,8 +697,13 @@
                     >
                       <td>
                         <input
+                          type="hidden"
+                          name="immunisationId"
+                          th:value="${immunisation.id}"
+                        />
+                        <input
                           type="date"
-                          name="immunisations[${iterStat.index}].date"
+                          name="immunisationDate"
                           th:value="${immunisation.date}"
                           required
                         />
@@ -706,7 +711,7 @@
                       <td>
                         <input
                           type="text"
-                          name="immunisations[${iterStat.index}].name"
+                          name="immunisationName"
                           th:value="${immunisation.name}"
                           required
                         />
@@ -714,8 +719,9 @@
                       <td>
                         <input
                           type="text"
-                          name="immunisations[${iterStat.index}].notes"
+                          name="immunisationNotes"
                           th:value="${immunisation.notes}"
+                          required
                         />
                       </td>
                     </tr>
