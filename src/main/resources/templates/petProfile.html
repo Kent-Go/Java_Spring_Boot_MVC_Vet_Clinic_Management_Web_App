@@ -47,12 +47,41 @@
         }
       }
 
-      // Function to validate the pet profile form
-      function validatePetProfile() {
-        const weight = document.getElementById("edit-weight").value;
-        if (weight <= 0) {
-          alert("Please enter a positive number for the weight.");
-          return false;
+      // Function to validate form
+      function validateForm(form) {
+        if (form === "medication") {
+          const dosageElements = document.getElementsByName("dosage");
+          const frequencyElements = document.getElementsByName("frequency");
+          const durationElements = document.getElementsByName("duration");
+
+          // Function to validate inputs
+          function validateInputs(elements) {
+            for (let i = 0; i < elements.length; i++) {
+              const value = parseFloat(elements[i].value);
+              if (isNaN(value) || value <= 0) {
+                return false;
+              }
+            }
+            return true;
+          }
+
+          // Validate all dosage, frequency, and duration elements
+          const isDosageValid = validateInputs(dosageElements);
+          const isFrequencyValid = validateInputs(frequencyElements);
+          const isDurationValid = validateInputs(durationElements);
+
+          if (!isDosageValid || !isFrequencyValid || !isDurationValid) {
+            alert(
+              "Please enter positive numbers for all dosage, daily frequency, and duration values."
+            );
+            return false;
+          }
+        } else if (form === "basicInformation") {
+          const weight = document.getElementById("edit-weight").value;
+          if (weight <= 0) {
+            alert("Please enter a positive number for the weight.");
+            return false;
+          }
         }
         return true;
       }
@@ -81,34 +110,6 @@
         document.getElementById("nameHidden").value = nameValue + "|";
         document.getElementById("instructionHidden").value =
           instructionValue + "|";
-      }
-
-      // Function to validate medication details form
-      function validateEditMedication() {
-        const dosage = parseFloat(
-          document.getElementById("edit-medDosage").value
-        );
-        const frequency = parseFloat(
-          document.getElementById("edit-medFrequency").value
-        );
-        const duration = parseFloat(
-          document.getElementById("edit-medDuration").value
-        );
-
-        if (
-          isNaN(dosage) ||
-          dosage <= 0 ||
-          isNaN(frequency) ||
-          frequency <= 0 ||
-          isNaN(duration) ||
-          duration <= 0
-        ) {
-          alert(
-            "Please enter positive numbers for the dosage, daily frequency, and duration."
-          );
-          return false;
-        }
-        return true;
       }
 
       function deleteMedication(medicationId) {
@@ -273,7 +274,7 @@
           action="/updatePetProfile"
           method="POST"
           enctype="multipart/form-data"
-          onsubmit="return validatePetProfile()"
+          onsubmit="return validateForm('basicInformation');"
         >
           <input type="hidden" name="petId" th:value="${pet.id}" />
           <!-- Hidden input for petId -->
@@ -419,7 +420,7 @@
           id="editMedicationForm"
           th:action="@{/updateMedication}"
           method="POST"
-          onsubmit="return validateEditMedication();"
+          onsubmit="return validateForm('medication');"
         >
           <input type="hidden" name="petId" th:value="${pet.id}" />
 
@@ -461,7 +462,7 @@
                     <p>
                       <strong>Dosage:</strong>
                       <input
-                        type="text"
+                        type="number"
                         name="dosage"
                         th:value="${medication.dosage}"
                         required
@@ -470,7 +471,7 @@
                     <p>
                       <strong>Daily Frequency:</strong>
                       <input
-                        type="text"
+                        type="number"
                         name="frequency"
                         th:value="${medication.dailyFrequency}"
                         required
@@ -479,7 +480,7 @@
                     <p>
                       <strong>Duration:</strong>
                       <input
-                        type="text"
+                        type="number"
                         name="duration"
                         th:value="${medication.duration}"
                         required
@@ -674,7 +675,7 @@
           id="editImmunisationForm"
           action="/updateImmunisationHistory"
           method="POST"
-          onsubmit="return validateImmunisationForm()"
+          onsubmit="return validateForm('immunisation');"
         >
           <input type="hidden" name="petId" th:value="${pet.id}" />
           <div class="immunisation-profile-card">
@@ -704,6 +705,7 @@
                         <input
                           type="date"
                           name="immunisationDate"
+                          id="edit-immunisationDate"
                           th:value="${immunisation.date}"
                           required
                         />
