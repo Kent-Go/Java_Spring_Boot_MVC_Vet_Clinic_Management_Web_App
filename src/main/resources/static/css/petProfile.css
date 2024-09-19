@@ -229,3 +229,34 @@ button {
 a {
   text-decoration: none;
 }
+
+/* Ensure the table occupies full width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style for table cells */
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Style for the date input to be as small as possible */
+input[type="date"] {
+  width: 120px; 
+  box-sizing: border-box; 
+  max-width: 100%;
+}
+
+/* Optional: Add some margin and border styling for visual clarity */
+input[type="date"] {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid #ccc;
+}
+
+#editImmunisationTableBody td input[type="text"],
+#editSurgeryTableBody td input[type="text"] {
+  width: 95%;
+}

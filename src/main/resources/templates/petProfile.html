@@ -86,18 +86,38 @@
         return true;
       }
 
-      // Function to add a new row to the immunisation history table
-      function addNewRow() {
-        const tbody = document.getElementById("editImmunisationTableBody");
-        const row = document.createElement("tr");
+      // Function to add a new row to the immunisation or surgery history table
+      function addNewRow(form) {
+        let tbody; // Define tbody outside the if-else blocks
 
-        row.innerHTML = `
-          <td><input type="date" name="immunisationDate" required /></td>
-          <td><input type="text" name="immunisationName" required /></td>
-          <td><input type="text" name="immunisationNotes" required /></td>
-        `;
+        if (form === "immunisation") {
+          tbody = document.getElementById("editImmunisationTableBody");
+        } else if (form === "surgery") {
+          tbody = document.getElementById("editSurgeryTableBody");
+        }
 
-        tbody.appendChild(row);
+        if (tbody) {
+          // Ensure tbody is defined
+          const row = document.createElement("tr");
+
+          if (form === "immunisation") {
+            row.innerHTML = `
+        <td><input type="date" name="immunisationDate" required /></td>
+        <td><input type="text" name="immunisationName" required /></td>
+        <td><input type="text" name="immunisationNotes" required /></td>
+      `;
+          } else if (form === "surgery") {
+            row.innerHTML = `
+        <td><input type="date" name="surgeryDate" required /></td>
+        <td><input type="text" name="surgeryName" required /></td>
+        <td><input type="text" name="surgeryNotes" required /></td>
+      `;
+          }
+
+          tbody.appendChild(row);
+        } else {
+          console.error("Table body element not found for form type: " + form);
+        }
       }
 
       // Function to update hidden fields with delimiter before form submission
@@ -730,7 +750,9 @@
                   </tbody>
                 </table>
               </div>
-              <button type="button" onclick="addNewRow()">Add New Row</button>
+              <button type="button" onclick="addNewRow('immunisation')">
+                Add New Row
+              </button>
               <a th:href="@{/petProfile(petId=${pet.id})}">
                 <button type="button">Cancel</button>
               </a>
@@ -780,7 +802,13 @@
 
       <!-- Edit Mode for Surgery History -->
       <div th:if="${editSurgeryMode}">
-        <form onsubmit="saveSurgeryHistory(); return false;">
+        <form
+          id="editSurgeryForm"
+          action="/updateSurgeryHistory"
+          method="POST"
+          onsubmit="return validateForm('surgery');"
+        >
+          <input type="hidden" name="petId" th:value="${pet.id}" />
           <div class="surgery-profile-card">
             <div class="surgery-info-box">
               <div class="surgery-info-header">Edit Surgery History</div>
@@ -793,10 +821,43 @@
                       <th>Notes</th>
                     </tr>
                   </thead>
-                  <tbody id="editSurgeryTableBody"></tbody>
+                  <tbody id="editSurgeryTableBody">
+                    <tr th:each="surgery, iterStat : ${surgeryHistories}">
+                      <td>
+                        <input
+                          type="hidden"
+                          name="surgeryId"
+                          th:value="${surgery.id}"
+                        />
+                        <input
+                          type="date"
+                          name="surgeryDate"
+                          id="edit-surgeryDate"
+                          th:value="${surgery.date}"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="surgeryName"
+                          th:value="${surgery.name}"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          name="surgeryNotes"
+                          th:value="${surgery.notes}"
+                          required
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
-              <button type="button" onclick="addNewSurgeryRow()">
+              <button type="button" onclick="addNewRow('surgery')">
                 Add New Row
               </button>
               <a th:href="@{/petProfile(petId=${pet.id})}">
