@@ -8,9 +8,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import au.edu.rmit.sept.webapp.models.VetAvailability;
 
+@Repository
 public interface VetAvailabilityRepository extends JpaRepository<VetAvailability, Integer> {
     //Find availability using vet_id and date
     @Query("SELECT va FROM VetAvailability va " +
