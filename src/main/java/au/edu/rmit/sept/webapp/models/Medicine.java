@@ -24,6 +24,16 @@ public class Medicine {
     @Column(name = "price")
     private String price;
 
+    public Medicine() {
+    }
+
+    // Argument constructor
+    public Medicine(int id, String name, String quantity, String price) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+    }
     // Getters and Setters
     public Integer getId() {
         return id;
