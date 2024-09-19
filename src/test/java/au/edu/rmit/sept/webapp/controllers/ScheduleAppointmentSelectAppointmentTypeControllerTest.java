@@ -36,7 +36,7 @@ class ScheduleAppointmentSelectAppointmentTypeControllerTest {
     // Test rendering the appointmentSelectAppointmentType page
     @Test
     void testDisplayAppointmentType() throws Exception {
-        // Mock the behavior of PetService to return a list of pets
+        // Mock the behavior of AppointmentTypeService to return a list of vet
         Collection<AppointmentType> appointmentTypes = Arrays.asList(
             new AppointmentType("General Clinical Consultation", 30, "This service involves a comprehensive assessment of your pet’s overall health. The veterinarian will discuss any concerns you have, review your pet’s medical history, and provide recommendations for preventive care or treatment."),
             new AppointmentType("Physical Examination", 45, "During a physical examination, the veterinarian will thoroughly check your pet’s body, including the eyes, ears, mouth, skin, and coat. This helps in identifying any signs of illness or abnormalities early on."),
@@ -47,7 +47,8 @@ class ScheduleAppointmentSelectAppointmentTypeControllerTest {
         when(AppointmentTypeService.getAllAppointmentType()).thenReturn(appointmentTypes);
 
         // Perform a GET request to /appointment/new/select_appointment_type
-        mockMvc.perform(get("/appointment/new/select_appointment_type"))
+        mockMvc.perform(get("/appointment/new/select_appointment_type")
+                .param("appointmentTypeId", "1"))
                 .andExpect(status().isOk()) // Expect the status to be OK
                 .andExpect(view().name("appointmentSelectAppointmentType")) // Expect the view to be appointmentSelectAppointmentType
                 .andExpect(model().attributeExists("appointmentTypes")) // Expect the model to have an attribute "appointmentTypes"
