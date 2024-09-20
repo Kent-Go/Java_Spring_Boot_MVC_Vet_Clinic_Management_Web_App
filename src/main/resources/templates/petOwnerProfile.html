@@ -18,11 +18,14 @@
         // Get the back button
         const backButton = document.querySelector(".back-button");
 
+        // Get edit profile and log out buttons
+        const buttons = document.querySelector(".profile-actions");
+
         if (petOwnerID && userID) {
           // Set the value of the hidden user id input field
-          document.getElementById('edit-userId').value = userID;
+          document.getElementById("edit-userId").value = userID;
           // Set the value of the hidden pet owner id input field
-          document.getElementById('edit-petOwnerId').value = petOwnerID;
+          document.getElementById("edit-petOwnerId").value = petOwnerID;
 
           // Show Pet Owner Navbar
           petOwnerNavbar.style.display = "flex";
@@ -31,6 +34,9 @@
 
           // Hide back button
           backButton.style.display = "none";
+
+          // Display the edit and logout buttons
+          buttons.style.display = "flex";
 
           const petOwnerDashboardLink = document.querySelector(
             "#pet-owner-dashboard-link"
@@ -59,6 +65,9 @@
           // Show back button
           backButton.style.display = "block";
 
+          // Hide edit and logout buttons
+          buttons.style.display = "none";
+
           // Update Vet Links
           const vetLogoLink = document.getElementById("vetLogoLink");
           const vetProfileLink = document.getElementById("vetProfileLink");
@@ -83,45 +92,6 @@
         document.getElementById("editMode").style.display = "none";
         document.getElementById("viewMode").style.display = "block";
       }
-
-      // async function saveProfile() {
-      //   const userID = localStorage.getItem("userId");
-      //   const petOwnerID = localStorage.getItem("petOwnerId");
-
-      //   const formData = {
-      //     firstName: document.getElementById("edit-firstname").value,
-      //     lastName: document.getElementById("edit-lastname").value,
-      //     birthDate: document.getElementById("edit-dob").value,
-      //     gender: document.getElementById("edit-gender").value,
-      //     phone: document.getElementById("edit-phone").value,
-      //     email: document.getElementById("edit-email").value,
-      //     street: document.getElementById("edit-streetAddress").value,
-      //     suburb: document.getElementById("edit-suburb").value,
-      //     state: document.getElementById("edit-state").value,
-      //     postcode: document.getElementById("edit-postcode").value,
-      //   };
-
-      //   try {
-      //     const response = await fetch(
-      //       `/petOwnerProfile?petOwnerId=${petOwnerID}`,
-      //       {
-      //         method: "POST",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //         body: JSON.stringify(formData),
-      //       }
-      //     );
-
-      //     if (response.ok) {
-      //       location.reload();
-      //     } else {
-      //       console.error("Error saving profile.");
-      //     }
-      //   } catch (error) {
-      //     console.error("Error saving edited profile:", error);
-      //   }
-      // }
 
       function logout() {
         window.location.href = "/login";
@@ -163,7 +133,7 @@
     </div>
 
     <div class="profile-container">
-      <h1>Profile Details</h1>
+      <h1>Pet Owner Profile Details</h1>
       <div class="profile-card">
         <div id="viewMode">
           <!-- <div class="profile-picture">
@@ -197,7 +167,7 @@
 
             <h3>Address</h3>
             <p>
-              <strong>Street Address:</strong>
+              <strong>Street:</strong>
               <span th:text="${address.street}"></span>
             </p>
             <p>
@@ -245,9 +215,24 @@
             </div>
             <div class="profile-info">
               <p>
-                <input type="hidden" name="edit-userId" id="edit-userId" value="" />
-                <input type="hidden" name="edit-petOwnerId" id="edit-petOwnerId" value="" />
-                <input type="hidden" name="edit-password" id="edit-password" th:value="${user.password}"/>
+                <input
+                  type="hidden"
+                  name="edit-userId"
+                  id="edit-userId"
+                  value=""
+                />
+                <input
+                  type="hidden"
+                  name="edit-petOwnerId"
+                  id="edit-petOwnerId"
+                  value=""
+                />
+                <input
+                  type="hidden"
+                  name="edit-password"
+                  id="edit-password"
+                  th:value="${user.password}"
+                />
 
                 <strong>First Name:</strong
                 ><input
@@ -282,10 +267,14 @@
               </p>
               <p>
                 <strong>Gender:</strong>
-                <select id="edit-gender" name="gender" th:field="*{user.gender}">
-                    <option th:value="Male">Male</option>
-                    <option th:value="Female">Female</option>
-                    <option th:value="Others">Others</option>
+                <select
+                  id="edit-gender"
+                  name="gender"
+                  th:field="*{user.gender}"
+                >
+                  <option th:value="Male">Male</option>
+                  <option th:value="Female">Female</option>
+                  <option th:value="Others">Others</option>
                 </select>
               </p>
               <p>
@@ -313,7 +302,7 @@
 
               <h3>Address</h3>
               <p>
-                <strong>Street Address:</strong
+                <strong>Street:</strong
                 ><input
                   type="text"
                   id="edit-streetAddress"
