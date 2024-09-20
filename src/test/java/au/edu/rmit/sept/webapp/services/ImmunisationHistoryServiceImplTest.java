@@ -16,7 +16,7 @@ import au.edu.rmit.sept.webapp.models.ImmunisationHistory;
 import au.edu.rmit.sept.webapp.repositories.ImmunisationHistoryRepository;
 
 @SpringBootTest
-public class ImmunisationHistoryServiceImplTest {
+class ImmunisationHistoryServiceImplTest {
 
     // Mock the repository
     @MockBean
@@ -28,7 +28,7 @@ public class ImmunisationHistoryServiceImplTest {
 
     // Test the getImmunisationHistoryByID method with valid ID
     @Test
-    public void testGetImmunisationHistoryByID() {
+    void testGetImmunisationHistoryByID() {
         int validId = 1;
 
         // Create a sample ImmunisationHistory object
@@ -49,7 +49,7 @@ public class ImmunisationHistoryServiceImplTest {
 
     // Test the getImmunisationHistoryByPetID method with valid data
     @Test
-    public void testGetImmunisationHistoryByPetID() {
+    void testGetImmunisationHistoryByPetID() {
         int validPetID = 1;
 
         // Create a sample ImmunisationHistory object
@@ -70,7 +70,7 @@ public class ImmunisationHistoryServiceImplTest {
 
     // Test the getImmunisationHistoryByPetID method with not found
     @Test
-    public void testGetImmunisationHistoryByPetIDNoRecordsFound() {
+    void testGetImmunisationHistoryByPetIDNoRecordsFound() {
         int nonExistentPetID = 999;
 
         // Mock the repository to return an empty Optional when searching by pet ID
@@ -91,7 +91,7 @@ public class ImmunisationHistoryServiceImplTest {
 
     // Test the saveOrUpdateImmunisationHistory method with valid data
     @Test
-    public void testSaveOrUpdateImmunisationHistory() {
+    void testSaveOrUpdateImmunisationHistory() {
         // Create a new ImmunisationHistory object
         ImmunisationHistory immunisationHistory = new ImmunisationHistory();
         immunisationHistory.setPetID(1); // Assuming a Pet with ID 1 exists
@@ -116,7 +116,7 @@ public class ImmunisationHistoryServiceImplTest {
 
     // Test the getImmunisationHistoryByID method with a non-existent ID
     @Test
-    public void testGetImmunisationHistoryByIDNotFound() {
+    void testGetImmunisationHistoryByIDNotFound() {
         // Test for a non-existent immunisation record with ID 999
         int nonExistentID = 999;
 

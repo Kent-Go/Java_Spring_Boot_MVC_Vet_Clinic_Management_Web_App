@@ -15,9 +15,9 @@ import java.time.LocalDate;
 import au.edu.rmit.sept.webapp.models.SurgeryHistory;
 import au.edu.rmit.sept.webapp.repositories.SurgeryHistoryRepository;
 
-@SpringBootTest
-public class SurgeryHistoryServiceImplTest {
-    
+@SpringBootTest 
+class SurgeryHistoryServiceImplTest {
+
     // Mock the repository
     @MockBean
     private SurgeryHistoryRepository surgeryHistoryRepository;
@@ -28,7 +28,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the getSurgeryHistoryByPetID method with no records
     @Test
-    public void testGetSurgeryHistoryByPetIDNoRecordsFound() {
+    void testGetSurgeryHistoryByPetIDNoRecordsFound() {
         int nonExistentPetID = 999;
 
         when(surgeryHistoryRepository.findByPetIDOrderByDateAsc(nonExistentPetID))
@@ -43,7 +43,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the getSurgeryHistoryByPetID method with records
     @Test
-    public void testGetSurgeryHistoryByPetIDWithRecords() {
+    void testGetSurgeryHistoryByPetIDWithRecords() {
         int petID = 1;
         List<SurgeryHistory> mockSurgeryHistories = List.of(
                 new SurgeryHistory("Surgery A", LocalDate.of(2024, 1, 1), "This is a surgery", 1),
@@ -61,7 +61,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the getSurgeryHistoryByID method with a non-existent ID
     @Test
-    public void testGetSurgeryHistoryByIDNoRecordFound() {
+    void testGetSurgeryHistoryByIDNoRecordFound() {
         int nonExistentID = 999;
 
         when(surgeryHistoryRepository.findById(nonExistentID))
@@ -76,7 +76,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the getSurgeryHistoryByID method with a valid ID
     @Test
-    public void testGetSurgeryHistoryByIDWithRecord() {
+    void testGetSurgeryHistoryByIDWithRecord() {
         int id = 1;
         // Create a SurgeryHistory object with a known ID
         SurgeryHistory mockSurgeryHistory = new SurgeryHistory("Surgery A", LocalDate.of(2024, 1, 1), "N/A", 1);
@@ -101,7 +101,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with valid data
     @Test
-    public void testSaveOrUpdateSurgeryHistory() {
+    void testSaveOrUpdateSurgeryHistory() {
         SurgeryHistory surgeryHistory = new SurgeryHistory();
         surgeryHistory.setPetID(1);
         surgeryHistory.setName("Surgery A");
@@ -118,7 +118,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with an existing ID and modified name
     @Test
-    public void testSaveOrUpdateSurgeryHistoryNameWithExistingID() {
+    void testSaveOrUpdateSurgeryHistoryNameWithExistingID() {
         // Setup
         int id = 1;
         SurgeryHistory existingSurgeryHistory = new SurgeryHistory();
@@ -149,7 +149,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with a new ID
     @Test
-    public void testSaveOrUpdateSurgeryHistoryNameWithNewID() {
+    void testSaveOrUpdateSurgeryHistoryNameWithNewID() {
         // Setup
         SurgeryHistory newSurgeryHistory = new SurgeryHistory();
         newSurgeryHistory.setPetID(1);
@@ -171,7 +171,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with an existing ID and modified date
     @Test
-    public void testSaveOrUpdateSurgeryHistoryDateWithExistingID() {
+    void testSaveOrUpdateSurgeryHistoryDateWithExistingID() {
         // Setup
         int id = 1;
         SurgeryHistory existingSurgeryHistory = new SurgeryHistory();
@@ -203,7 +203,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with a new ID
     @Test
-    public void testSaveOrUpdateSurgeryHistoryDateWithNewID() {
+    void testSaveOrUpdateSurgeryHistoryDateWithNewID() {
         // Setup
         SurgeryHistory newSurgeryHistory = new SurgeryHistory();
         newSurgeryHistory.setPetID(1);
@@ -226,7 +226,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with an existing ID and modified pet ID
     @Test
-    public void testSaveOrUpdateSurgeryHistoryPetIDWithExistingID() {
+    void testSaveOrUpdateSurgeryHistoryPetIDWithExistingID() {
         // Setup
         int id = 1;
         SurgeryHistory existingSurgeryHistory = new SurgeryHistory();
@@ -257,7 +257,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with a new ID
     @Test
-    public void testSaveOrUpdateSurgeryHistoryPetIDWithNewID() {
+    void testSaveOrUpdateSurgeryHistoryPetIDWithNewID() {
         // Setup
         SurgeryHistory newSurgeryHistory = new SurgeryHistory();
         newSurgeryHistory.setPetID(1);
@@ -279,7 +279,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with an existing ID and modified notes
     @Test
-    public void testSaveOrUpdateSurgeryHistoryNotesWithExistingID() {
+    void testSaveOrUpdateSurgeryHistoryNotesWithExistingID() {
         // Setup
         int id = 1;
         SurgeryHistory existingSurgeryHistory = new SurgeryHistory();
@@ -311,7 +311,7 @@ public class SurgeryHistoryServiceImplTest {
 
     // Test the saveOrUpdateSurgeryHistory method with a new ID
     @Test
-    public void testSaveOrUpdateSurgeryHistoryNotesWithNewID() {
+    void testSaveOrUpdateSurgeryHistoryNotesWithNewID() {
         // Setup
         SurgeryHistory newSurgeryHistory = new SurgeryHistory();
         newSurgeryHistory.setPetID(1);

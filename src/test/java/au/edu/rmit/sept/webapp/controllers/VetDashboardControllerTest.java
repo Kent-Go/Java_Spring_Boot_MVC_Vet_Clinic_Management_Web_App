@@ -31,7 +31,7 @@ import java.util.Collections;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class VetDashboardControllerTest {
+class VetDashboardControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,7 +54,7 @@ public class VetDashboardControllerTest {
     // Test displaying the vet dashboard with valid parameters and confirming the
     // model attributes are set correctly
     @Test
-    public void testShowVetDashboardWithValidParams() throws Exception {
+    void testShowVetDashboardWithValidParams() throws Exception {
         // Mock data
         Integer userId = 1;
         Integer vetId = 1;
@@ -118,7 +118,7 @@ public class VetDashboardControllerTest {
 
     // Test displaying the vet dashboard with missing userId in the request
     @Test
-    public void testShowVetDashboardWithInvalidUserId() throws Exception {
+    void testShowVetDashboardWithInvalidUserId() throws Exception {
         // Mock data
         Integer vetId = 1;
 
@@ -133,7 +133,7 @@ public class VetDashboardControllerTest {
 
     // Test displaying the vet dashboard with invalid vetId in the request
     @Test
-    public void testShowVetDashboardWithInvalidVetId() throws Exception {
+    void testShowVetDashboardWithInvalidVetId() throws Exception {
         // Mock data
         Integer userId = 1;
 
@@ -147,7 +147,7 @@ public class VetDashboardControllerTest {
     // Test displaying the vet dashboard with invalid userId and vetId in the
     // request
     @Test
-    public void testShowVetDashboardWithInvalidUserIdAndVetId() throws Exception {
+    void testShowVetDashboardWithInvalidUserIdAndVetId() throws Exception {
         // Perform the GET request with missing both userId and vetId
         mockMvc.perform(get("/vetDashboard")
                 .param("userId", "invalid")
@@ -158,7 +158,7 @@ public class VetDashboardControllerTest {
     // Test displaying the vet dashboard with missing userId and vetId in the
     // request
     @Test
-    public void testShowVetDashboardWithMissingVetIdAndUserId() throws Exception {
+    void testShowVetDashboardWithMissingVetIdAndUserId() throws Exception {
         mockMvc.perform(get("/vetDashboard"))
                 .andExpect(status().isOk()) // Check for 200 OK status
                 .andExpect(view().name("errorPage")) // Expect the errorPage view
@@ -168,7 +168,7 @@ public class VetDashboardControllerTest {
 
     // Test displaying the vet dashboard with missing vetId
     @Test
-    public void testShowVetDashboardWithMissingVetId() throws Exception {
+    void testShowVetDashboardWithMissingVetId() throws Exception {
         mockMvc.perform(get("/vetDashboard")
                 .param("userId", "1"))
                 .andExpect(view().name("errorPage")) // Expect the errorPage view
