@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.models.Order;
 import au.edu.rmit.sept.webapp.models.Address;
 import au.edu.rmit.sept.webapp.models.Medicine;
 import au.edu.rmit.sept.webapp.models.Appointment;
@@ -29,6 +30,7 @@ import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
 import au.edu.rmit.sept.webapp.services.PetService;
 import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.OrderService;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.MedicineService;
@@ -44,6 +46,9 @@ public class PetProfileController {
 
     @Autowired
     private PetService petService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private AddressService addressService;
@@ -203,54 +208,101 @@ public class PetProfileController {
         String[] frequencySplit = frequency.split(",");
         String[] durationSplit = duration.split(",");
 
-        // Loop through the split values and append them to a list
-        List<Map<String, Object>> prescriptionList = new ArrayList<>();
-        for (int i = 0; i < medicationIdSplit.length; i++) {
-            Map<String, Object> medicationMap = new HashMap<>();
-            try {
-                medicationMap.put("medicationId", Integer.parseInt(medicationIdSplit[i]));
+        try {
+            // Loop through the split values and append them to a list
+            List<Map<String, Object>> medicationList = new ArrayList<>();
+            for (int i = 0; i < nameSplit.length; i++) {
+                Map<String, Object> medicationMap = new HashMap<>();
+
+                // Handle immunisation ID: check if it exists (for existing records)
+                if (i < medicationIdSplit.length && medicationIdSplit[i] != null
+                        && !medicationIdSplit[i].isEmpty()) {
+                    medicationMap.put("medicationId", Integer.parseInt(medicationIdSplit[i]));
+                } else {
+                    // No ID for new rows
+                    medicationMap.put("medicationId", null);
+                }
+
                 medicationMap.put("name", nameSplit[i]);
                 medicationMap.put("dosage", Integer.parseInt(dosageSplit[i]));
                 medicationMap.put("frequency", Integer.parseInt(frequencySplit[i]));
                 medicationMap.put("duration", Integer.parseInt(durationSplit[i]));
                 medicationMap.put("instruction", instructionSplit[i]);
-            } catch (NumberFormatException e) {
-                // Handle the case where parsing fails
-                e.printStackTrace();
-                continue;
-            }
-            prescriptionList.add(medicationMap);
-        }
-
-        // For each medication in the list, update the prescribed medication
-        for (Map<String, Object> medicationMap : prescriptionList) {
-            // Check if the medicine exists
-            Medicine medicine = medicineService.getMedicineByName((String) medicationMap.get("name"));
-
-            if (medicine == null) {
-                // If the medicine does not exist, pass a message to the html to display an
-                // error
-                return "redirect:/petProfile?petId=" + petId + "&error=Medicine does not exist!";
+                medicationList.add(medicationMap);
             }
 
-            // Get the prescribed medication by ID
-            PrescribedMedication prescribedMedication = prescribedMedicationService
-                    .getPrescribedMedicationByID((int) medicationMap.get("medicationId"));
+            // For each medication in the list, update the prescribed medication
+            for (Map<String, Object> medicationMap : medicationList) {
+                PrescribedMedication prescribedMedication = null;
 
-            // Update the prescribed medication
-            prescribedMedication.setDosage((int) medicationMap.get("dosage"));
-            prescribedMedication.setDailyFrequency((int) medicationMap.get("frequency"));
-            prescribedMedication.setDuration((int) medicationMap.get("duration"));
-            prescribedMedication.setInstruction((String) medicationMap.get("instruction"));
-            prescribedMedication.setMedicineID(medicine.getId());
-            prescribedMedication.setMedicine(medicine);
+                // Check if the medicine exists
+                Medicine medicine = medicineService.getMedicineByName((String) medicationMap.get("name"));
 
-            // Save the updated prescribed medication
-            prescribedMedicationService.updatePrescribedMedication(prescribedMedication);
+                if (medicine == null) {
+                    // If the medicine does not exist, pass a message to the html to display an
+                    // error
+                    return "redirect:/petProfile?petId=" + petId + "&error=Medicine does not exist!";
+                }
+
+                // Check if the medication ID exists (for existing entries)
+                Integer medicationID = (Integer) medicationMap.get("medicationId");
+
+                // If medication ID exists, fetch the existing prescribed medication
+                if (medicationID != null) {
+                    try {
+                        // Try to fetch the existing prescribed medication by ID
+                        prescribedMedication = prescribedMedicationService
+                                .getPrescribedMedicationByID(medicationID);
+                    } catch (Exception e) {
+                        // Log if the ID was invalid (for debugging)
+                        System.out.println("No medication found for ID: " + medicationID + " - Creating a new entry.");
+                    }
+                }
+
+                Order order = null;
+
+                // If no existing prescription is found or it's a new entry, create a new
+                // instance of prescribed medication and order
+                if (prescribedMedication == null) {
+                    prescribedMedication = new PrescribedMedication();
+                    order = new Order(LocalDate.now(), "Pending");
+                    orderService.createOrder(order);
+
+                    prescribedMedication.setOrderID(order.getId());
+
+                    // Check if the pet has an appointment today
+                    // If the pet has an appointment today, set the appointment ID
+                    Collection<Appointment> appointments = appointmentService.getAppointmentByPetID(petId);
+                    for (Appointment appointment : appointments) {
+                        if (appointment.getDate().equals(LocalDate.now())) {
+                            prescribedMedication.setAppointmentID(appointment.getId());
+                            break;
+                        }
+                    }
+
+                    // If the pet does not have an appointment today, return an error
+                    if (prescribedMedication.getAppointmentID() == 0) {
+                        return "redirect:/petProfile?petId=" + petId + "&error=No appointment today!";
+                    }
+                }
+
+                // Update the fields for the prescribed medication for existing and new entries
+                prescribedMedication.setDosage((int) medicationMap.get("dosage"));
+                prescribedMedication.setDailyFrequency((int) medicationMap.get("frequency"));
+                prescribedMedication.setDuration((int) medicationMap.get("duration"));
+                prescribedMedication.setInstruction((String) medicationMap.get("instruction"));
+                prescribedMedication.setMedicineID(medicine.getId());
+                prescribedMedication.setMedicine(medicine);
+
+                // Save the updated prescribed medication
+                prescribedMedicationService.updatePrescribedMedication(prescribedMedication);
+            }
+
+            // Redirect back to the pet's profile after successful update
+            return "redirect:/petProfile?petId=" + petId;
+        } catch (Exception e) {
+            return "redirect:/petProfile?petId=" + petId + "&error=" + e.getMessage();
         }
-
-        // Redirect back to the pet's profile after successful update
-        return "redirect:/petProfile?petId=" + petId;
     }
 
     // Method to handle deletion of medication

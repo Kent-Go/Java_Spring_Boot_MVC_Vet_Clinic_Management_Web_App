@@ -131,7 +131,6 @@ h1 {
 .owner-info-content,
 .immunisation-info-content,
 .surgery-info-content {
-  display: flex;
   align-items: flex-start;
 }
 
@@ -159,7 +158,6 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   border: 1px solid #007bff;
-  width: 100%;
 }
 
 /* Paragraphs inside the details section */
@@ -259,4 +257,15 @@ input[type="date"] {
 #editImmunisationTableBody td input[type="text"],
 #editSurgeryTableBody td input[type="text"] {
   width: 95%;
+}
+
+#newMedicationContainer {
+  clear: both; /* Ensures it starts on a new line */
+}
+
+.medication-card {
+  background-color: #f0f9ff;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
 }
