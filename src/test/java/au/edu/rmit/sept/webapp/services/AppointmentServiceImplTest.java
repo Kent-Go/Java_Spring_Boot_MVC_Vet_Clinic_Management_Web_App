@@ -88,6 +88,47 @@ public class AppointmentServiceImplTest {
 
     }
 
+    // Test get appointments for a specific vet within a week range and order by date and start time
+    @Test
+    public void testGetAppointmentsByVetAndWeek() {
+        // Create a few Appointment objects with the same vetID and within the date range
+        Appointment appointment1 = new Appointment(LocalDate.of(2024, 9, 25), LocalTime.of(10, 0), LocalTime.of(11, 30), 1, 1, 1);
+        Appointment appointment2 = new Appointment(LocalDate.of(2024, 9, 27), LocalTime.of(15, 0), LocalTime.of(16, 0), 1, 2, 2);
+        Appointment appointment3 = new Appointment(LocalDate.of(2024, 9, 27), LocalTime.of(11, 0), LocalTime.of(11, 45), 1, 7, 3);
+        Appointment appointment4 = new Appointment(LocalDate.of(2024, 9, 29), LocalTime.of(15, 0), LocalTime.of(16, 30), 1, 3, 4);
+        Appointment appointment5 = new Appointment(LocalDate.of(2024, 9, 29), LocalTime.of(12, 0), LocalTime.of(13, 0), 1, 6, 3);
+        Appointment appointment6 = new Appointment(LocalDate.of(2024, 9, 29), LocalTime.of(16, 30), LocalTime.of(17, 0), 1, 5, 1);
+
+        // Mock the findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc method to return a list of appointments
+        List<Appointment> appointments = Arrays.asList(appointment1, appointment3, appointment2, appointment5, appointment4, appointment6);
+        when(appointmentRepository.findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc(1, LocalDate.of(2024, 9, 23), LocalDate.of(2024, 9, 29))).thenReturn(appointments);
+
+        // Call the getAppointmentsByVetAndWeek method and verify the result
+        Collection<Appointment> result = appointmentService.getAppointmentsByVetAndWeek(1, LocalDate.of(2024, 9, 23), LocalDate.of(2024, 9, 29));
+        assertEquals(6, result.size());
+
+        // Verify that the findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc method is called exactly once with the correct parameters
+        verify(appointmentRepository, times(1)).findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc(1, LocalDate.of(2024, 9, 23), LocalDate.of(2024, 9, 29));
+
+        // Check the order of the appointments in the result
+        Appointment[] resultArray = result.toArray(new Appointment[0]);
+        assertEquals(appointment1, resultArray[0]);
+        assertEquals(appointment3, resultArray[1]);
+        assertEquals(appointment2, resultArray[2]);
+        assertEquals(appointment5, resultArray[3]);
+        assertEquals(appointment4, resultArray[4]);
+        assertEquals(appointment6, resultArray[5]);
+
+        // Check the order of the appointments in the result using date and start time
+        for (int i = 0; i < resultArray.length - 1; i++) {
+            assertTrue(
+                resultArray[i].getDate().isBefore(resultArray[i + 1].getDate()) || 
+                (resultArray[i].getDate().isEqual(resultArray[i + 1].getDate()) && resultArray[i].getStartTime().isBefore(resultArray[i + 1].getStartTime()))
+            );
+        }
+        
+    }
+
     // Test get appointment based on pet id
     @Test
     public void testGetAppointmentByPetID() {
