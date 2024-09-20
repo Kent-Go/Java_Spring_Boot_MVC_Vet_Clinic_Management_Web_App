@@ -354,6 +354,26 @@
 
       // Ensure hidden fields are updated when form is submitted
       document.addEventListener("DOMContentLoaded", function () {
+        const backButton = document.getElementById("backButton"); // Referencing the button by its Id
+
+        // If vetId is in local storage, set the back button to redirect to the vet dashboard
+        if (localStorage.getItem("vetId")) {
+          if (backButton) {
+            backButton.addEventListener("click", function () {
+              window.location.href = "/vetDashboard?userId=" + localStorage.getItem("userId") + "&vetId=" + localStorage.getItem("vetId");
+            });
+          }
+        }
+
+        // If petOwnerId is in local storage, set the back button to redirect to the pet owner welcome page
+        if (localStorage.getItem("petOwnerId")) {
+          if (backButton) {
+            backButton.addEventListener("click", function () {
+              window.location.href = "/petOwnerWelcome?userId=" + localStorage.getItem("userId");
+            });
+          }
+        }        
+
         // Function to get query parameters from the URL
         function getQueryParams() {
           const params = new URLSearchParams(window.location.search);
@@ -1069,5 +1089,7 @@
         </form>
       </div>
     </div>
+    <!-- Back button to go to the previous page -->
+    <button class="back-button" id="backButton">Back</button>
   </body>
 </html>
