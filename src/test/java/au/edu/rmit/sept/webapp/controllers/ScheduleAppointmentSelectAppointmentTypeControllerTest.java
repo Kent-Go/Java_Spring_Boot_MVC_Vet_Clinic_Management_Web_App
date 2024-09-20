@@ -1,24 +1,18 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import au.edu.rmit.sept.webapp.models.AppointmentType;
-import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.services.AppointmentTypeService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.Mockito.when;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Arrays;
 

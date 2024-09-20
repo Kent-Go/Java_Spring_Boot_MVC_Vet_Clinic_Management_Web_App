@@ -118,7 +118,11 @@
               <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
                 <button>Pet Details</button>
               </a>
-              <button>Owner Details</button>
+              <a
+                th:href="@{/petOwnerProfile(petOwnerId=${appointment.pet.petOwner.id})}"
+              >
+                <button>Pet Owner Details</button>
+              </a>
             </div>
           </div>
         </div>

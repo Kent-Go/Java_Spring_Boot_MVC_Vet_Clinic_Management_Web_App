@@ -269,3 +269,19 @@ input[type="date"] {
   border: 1px solid #007bff;
   border-radius: 5px;
 }
+
+.back-button {
+  position: fixed;        
+  bottom: 20px;           
+  left: 20px;             
+  padding: 10px 20px;     
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  opacity: 0.8;
+}

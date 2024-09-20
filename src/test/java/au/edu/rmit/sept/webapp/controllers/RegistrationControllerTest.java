@@ -11,14 +11,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RegistrationControllerTest {
+class RegistrationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     // Test for retrieving the registration page
     @Test
-    public void testShowRegistrationPage() throws Exception {
+    void testShowRegistrationPage() throws Exception {
         mockMvc.perform(get("/userRegister"))
                 .andExpect(status().isOk()) // Expect HTTP 200 OK status
                 .andExpect(view().name("register")) // Expect the view name to be "register"
