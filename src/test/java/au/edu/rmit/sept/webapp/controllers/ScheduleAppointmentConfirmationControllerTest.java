@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @WebMvcTest(ScheduleAppointmentConfirmationController.class)
 class ScheduleAppointmentConfirmationControllerTest {
