@@ -103,8 +103,6 @@
             <p>
               <strong>Gender:</strong>
               <span th:text="${appointment.pet.petOwner.user.gender}"></span>
-              <strong>Pet Owner:</strong>
-              <span th:text="${appointment.pet.petOwner.user.firstName + ' ' + appointment.pet.petOwner.user.lastName}">N/A</span>
             </p>
             <p>
               <strong>Email:</strong>
@@ -120,7 +118,9 @@
               <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
                 <button>Pet Details</button>
               </a>
-              <a th:href="@{/petOwnerProfile(petOwnerId=${appointment.pet.petOwner.id})}">
+              <a
+                th:href="@{/petOwnerProfile(petOwnerId=${appointment.pet.petOwner.id})}"
+              >
                 <button>Pet Owner Details</button>
               </a>
             </div>
