@@ -51,7 +51,7 @@
         class="active"
         >Home</a
       >
-      <a th:href="@{/patients}">Patients</a>
+      <a th:href="@{/patients(vetId=${vetId})}">Patients</a>
       <a
         th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
         class="schedule-link"

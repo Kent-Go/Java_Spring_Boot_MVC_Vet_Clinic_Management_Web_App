@@ -67,7 +67,7 @@
         id="vet-dashboard-link"
         >Home</a
       >
-      <a th:href="@{/patients}" id="patients-link">Patients</a>
+      <a th:href="@{/patients(vetId=${vetId})}" id="patients-link">Patients</a>
       <a
         th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
         id="schedule-link"
