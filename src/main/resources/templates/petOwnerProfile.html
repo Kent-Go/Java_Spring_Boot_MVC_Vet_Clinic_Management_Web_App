@@ -19,6 +19,11 @@
         const backButton = document.querySelector(".back-button");
 
         if (petOwnerID && userID) {
+          // Set the value of the hidden user id input field
+          document.getElementById('edit-userId').value = userID;
+          // Set the value of the hidden pet owner id input field
+          document.getElementById('edit-petOwnerId').value = petOwnerID;
+
           // Show Pet Owner Navbar
           petOwnerNavbar.style.display = "flex";
           petOwnerHeader.style.display = "flex";
@@ -79,44 +84,44 @@
         document.getElementById("viewMode").style.display = "block";
       }
 
-      async function saveProfile() {
-        const userID = localStorage.getItem("userId");
-        const petOwnerID = localStorage.getItem("petOwnerId");
+      // async function saveProfile() {
+      //   const userID = localStorage.getItem("userId");
+      //   const petOwnerID = localStorage.getItem("petOwnerId");
 
-        const formData = {
-          firstName: document.getElementById("edit-firstname").value,
-          lastName: document.getElementById("edit-lastname").value,
-          birthDate: document.getElementById("edit-dob").value,
-          gender: document.getElementById("edit-gender").value,
-          phone: document.getElementById("edit-phone").value,
-          email: document.getElementById("edit-email").value,
-          street: document.getElementById("edit-streetAddress").value,
-          suburb: document.getElementById("edit-suburb").value,
-          state: document.getElementById("edit-state").value,
-          postcode: document.getElementById("edit-postcode").value,
-        };
+      //   const formData = {
+      //     firstName: document.getElementById("edit-firstname").value,
+      //     lastName: document.getElementById("edit-lastname").value,
+      //     birthDate: document.getElementById("edit-dob").value,
+      //     gender: document.getElementById("edit-gender").value,
+      //     phone: document.getElementById("edit-phone").value,
+      //     email: document.getElementById("edit-email").value,
+      //     street: document.getElementById("edit-streetAddress").value,
+      //     suburb: document.getElementById("edit-suburb").value,
+      //     state: document.getElementById("edit-state").value,
+      //     postcode: document.getElementById("edit-postcode").value,
+      //   };
 
-        try {
-          const response = await fetch(
-            `/petOwnerProfile?petOwnerId=${petOwnerID}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
-            }
-          );
+      //   try {
+      //     const response = await fetch(
+      //       `/petOwnerProfile?petOwnerId=${petOwnerID}`,
+      //       {
+      //         method: "POST",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //         body: JSON.stringify(formData),
+      //       }
+      //     );
 
-          if (response.ok) {
-            location.reload();
-          } else {
-            console.error("Error saving profile.");
-          }
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
+      //     if (response.ok) {
+      //       location.reload();
+      //     } else {
+      //       console.error("Error saving profile.");
+      //     }
+      //   } catch (error) {
+      //     console.error("Error saving edited profile:", error);
+      //   }
+      // }
 
       function logout() {
         window.location.href = "/login";
@@ -218,7 +223,12 @@
         </div>
 
         <div id="editMode" style="display: none">
-          <form id="profileForm" onsubmit="saveProfile(); return false;">
+          <form
+            id="profileForm"
+            enctype="multipart/form-data"
+            th:action="@{/petOwnerProfile}"
+            method="POST"
+          >
             <div class="profile-picture">
               <img
                 id="edit-profilePicturePreview"
@@ -235,11 +245,15 @@
             </div>
             <div class="profile-info">
               <p>
+                <input type="hidden" name="edit-userId" id="edit-userId" value="" />
+                <input type="hidden" name="edit-petOwnerId" id="edit-petOwnerId" value="" />
+                <input type="hidden" name="edit-password" id="edit-password" th:value="${user.password}"/>
+
                 <strong>First Name:</strong
                 ><input
                   type="text"
                   id="edit-firstname"
-                  name="firstname"
+                  name="edit-firstname"
                   th:value="${user.firstName}"
                   placeholder="First Name"
                   required
@@ -250,7 +264,7 @@
                 ><input
                   type="text"
                   id="edit-lastname"
-                  name="lastname"
+                  name="edit-lastname"
                   th:value="${user.lastName}"
                   placeholder="Last Name"
                   required
@@ -261,20 +275,17 @@
                 ><input
                   type="date"
                   id="edit-dob"
-                  name="dob"
+                  name="edit-dob"
                   th:value="${user.birthDate}"
                   required
                 />
               </p>
               <p>
-                <strong>Gender:</strong
-                ><select id="edit-gender" name="gender">
-                  <option
-                    th:each="gender : ${genders}"
-                    th:value="${gender}"
-                    th:text="${gender}"
-                    th:selected="${gender == user.gender}"
-                  ></option>
+                <strong>Gender:</strong>
+                <select id="edit-gender" name="gender" th:field="*{user.gender}">
+                    <option th:value="Male">Male</option>
+                    <option th:value="Female">Female</option>
+                    <option th:value="Others">Others</option>
                 </select>
               </p>
               <p>
@@ -282,7 +293,7 @@
                 ><input
                   type="tel"
                   id="edit-phone"
-                  name="phone"
+                  name="edit-phone"
                   th:value="${user.phoneNumber}"
                   placeholder="Phone Number"
                   required
@@ -293,7 +304,7 @@
                 ><input
                   type="email"
                   id="edit-email"
-                  name="email"
+                  name="edit-email"
                   th:value="${user.email}"
                   placeholder="Email"
                   required
@@ -306,7 +317,7 @@
                 ><input
                   type="text"
                   id="edit-streetAddress"
-                  name="streetAddress"
+                  name="edit-streetAddress"
                   th:value="${address.street}"
                   placeholder="Street Address"
                   required
@@ -317,7 +328,7 @@
                 ><input
                   type="text"
                   id="edit-suburb"
-                  name="suburb"
+                  name="edit-suburb"
                   th:value="${address.suburb}"
                   placeholder="Suburb"
                   required
@@ -328,7 +339,7 @@
                 ><input
                   type="text"
                   id="edit-state"
-                  name="state"
+                  name="edit-state"
                   th:value="${address.state}"
                   placeholder="State"
                   required
@@ -339,7 +350,7 @@
                 ><input
                   type="text"
                   id="edit-postcode"
-                  name="postcode"
+                  name="edit-postcode"
                   th:value="${address.postcode}"
                   placeholder="Postcode"
                   required
