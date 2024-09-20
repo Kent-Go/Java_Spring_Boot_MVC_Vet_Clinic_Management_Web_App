@@ -268,6 +268,18 @@
         }
       }
 
+      // Update hidden fields with delimiter when user types in the visible input fields for adding new medication
+      function updateNewHiddenField(displayField, fieldName) {
+        // Find the corresponding hidden field based on the field name
+        const hiddenField = displayField.parentElement.querySelector(
+          `input[name=${fieldName}]`
+        );
+
+        // Update the hidden field value with the visible input's value + "|"
+        hiddenField.value = displayField.value + "|";
+      }
+
+      // Function to append new medication fields when the user clicks the "Add Medication" button
       function addNewMedicationFields() {
         // Create a new set of input fields
         const newFields = `
@@ -277,12 +289,19 @@
         </div>
         <p style="margin: 8px 0; font-size: 18px">
           <strong>Name:</strong>
-          <input
-            type="text"
-            name="name"
-            required
-            class="large-textbox"
-          />
+        <input
+          type="text"
+          name="nameDisplay"
+          required
+          class="large-textbox"
+          oninput="updateNewHiddenField(this, 'name')"
+        />
+        <!-- Hidden input with the '|' delimiter -->
+        <input
+          type="hidden"
+          name="name"
+          class="hiddenField"
+        />
         </p>
         <p style="margin: 8px 0; font-size: 18px">
           <strong>Dosage:</strong>
@@ -311,11 +330,18 @@
         <p style="margin: 8px 0; font-size: 18px">
           <strong>Instruction:</strong>
           <input
-            type="text"
-            name="instruction"
-            required
-            class="large-textbox"
-          />
+          type="text"
+          name="instructionDisplay"
+          required
+          class="large-textbox"
+          oninput="updateNewHiddenField(this, 'instruction')"
+        />
+        <!-- Hidden input with the '|' delimiter -->
+        <input
+          type="hidden"
+          name="instruction"
+          class="hiddenField"
+        />
         </p>
       </div>
     `;
