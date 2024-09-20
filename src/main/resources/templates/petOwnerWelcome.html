@@ -36,9 +36,8 @@
       <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <!-- FIX THIS ONCE PET OWNER PROFILE PAGE IS DONE -->
       <a
-        th:href="@{/profile(vetId=${vetId})}"
+        th:href="@{/petOwnerProfile(petOwnerId=${petOwner.id})}"
         id="profile-link"
         class="profile-link"
       >
