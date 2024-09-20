@@ -179,11 +179,8 @@
                 .appendChild(notesHidden);
             }
           });
-        } 
-        else if (form === 'surgery'){
-          const rows = document.querySelectorAll(
-            "#editSurgeryTableBody tr"
-          );
+        } else if (form === "surgery") {
+          const rows = document.querySelectorAll("#editSurgeryTableBody tr");
 
           // Remove existing hidden inputs to prevent duplication
           document
@@ -271,6 +268,90 @@
         }
       }
 
+      // Update hidden fields with delimiter when user types in the visible input fields for adding new medication
+      function updateNewHiddenField(displayField, fieldName) {
+        // Find the corresponding hidden field based on the field name
+        const hiddenField = displayField.parentElement.querySelector(
+          `input[name=${fieldName}]`
+        );
+
+        // Update the hidden field value with the visible input's value + "|"
+        hiddenField.value = displayField.value + "|";
+      }
+
+      // Function to append new medication fields when the user clicks the "Add Medication" button
+      function addNewMedicationFields() {
+        // Create a new set of input fields
+        const newFields = `
+      <div class="medication-card" style="margin-bottom: 1rem; padding: 20px">
+        <div class="pet-info-header">
+          Add New Medication
+        </div>
+        <p style="margin: 8px 0; font-size: 18px">
+          <strong>Name:</strong>
+        <input
+          type="text"
+          name="nameDisplay"
+          required
+          class="large-textbox"
+          oninput="updateNewHiddenField(this, 'name')"
+        />
+        <!-- Hidden input with the '|' delimiter -->
+        <input
+          type="hidden"
+          name="name"
+          class="hiddenField"
+        />
+        </p>
+        <p style="margin: 8px 0; font-size: 18px">
+          <strong>Dosage:</strong>
+          <input
+            type="number"
+            name="dosage"
+            required
+          />
+        </p>
+        <p style="margin: 8px 0; font-size: 18px">
+          <strong>Daily Frequency:</strong>
+          <input
+            type="number"
+            name="frequency"
+            required
+          />
+        </p>
+        <p style="margin: 8px 0; font-size: 18px">
+          <strong>Duration:</strong>
+          <input
+            type="number"
+            name="duration"
+            required
+          />
+        </p>
+        <p style="margin: 8px 0; font-size: 18px">
+          <strong>Instruction:</strong>
+          <input
+          type="text"
+          name="instructionDisplay"
+          required
+          class="large-textbox"
+          oninput="updateNewHiddenField(this, 'instruction')"
+        />
+        <!-- Hidden input with the '|' delimiter -->
+        <input
+          type="hidden"
+          name="instruction"
+          class="hiddenField"
+        />
+        </p>
+      </div>
+    `;
+
+        // Append the new fields to the container
+        document
+          .getElementById("newMedicationContainer")
+          .insertAdjacentHTML("beforeend", newFields);
+      }
+
       // Ensure hidden fields are updated when form is submitted
       document.addEventListener("DOMContentLoaded", function () {
         // Function to get query parameters from the URL
@@ -285,6 +366,10 @@
           const { error } = getQueryParams();
           if (error === "Medicine does not exist!") {
             alert("Medicine does not exist!");
+          } else if (error === "No appointment today!") {
+            alert(
+              "Can't add new prescription as there is no appointment today!"
+            );
           }
         }
 
@@ -310,9 +395,7 @@
           });
         }
 
-        var editSurgeryForm = document.getElementById(
-          "editSurgeryForm"
-        );
+        var editSurgeryForm = document.getElementById("editSurgeryForm");
         if (editSurgeryForm) {
           editSurgeryForm.addEventListener("submit", function (event) {
             updateHiddenFields("surgery"); // Update hidden fields before form submission
@@ -363,13 +446,6 @@
               </a>
             </div>
             <div class="pet-info-content">
-              <div class="pet-picture">
-                <img
-                  id="pet-picture"
-                  src="/images/pet-placeholder.jpeg"
-                  alt="Pet Picture"
-                />
-              </div>
               <div class="pet-details">
                 <p>
                   <strong>Pet Name:</strong>
@@ -560,7 +636,13 @@
 
           <div class="pet-profile-card">
             <div class="pet-info-box">
-              <div class="pet-info-header">Edit Medications</div>
+              <div class="pet-info-header">
+                Edit Medications
+                <!-- Add Medication Button -->
+                <button type="button" onclick="addNewMedicationFields()">
+                  Add Medication
+                </button>
+              </div>
               <div class="pet-info-content">
                 <div class="medication-details">
                   <!-- Loop over medications to show details -->
@@ -639,9 +721,6 @@
                         th:value="${medication.instruction} + '|'"
                       />
                     </p>
-
-                    <!-- Buttons for saving or deleting the medication -->
-                    <button type="submit">Save Changes</button>
                     <button
                       type="button"
                       th:attr="onclick='deleteMedication(' + ${medication.id} + ')'"
@@ -651,12 +730,19 @@
                     <hr style="margin-top: 1rem" />
                   </div>
                 </div>
+                <!-- New Medication Fields Container -->
+                <div id="newMedicationContainer" style="margin-top: 2rem">
+                  <!-- New fields will be appended here -->
+                </div>
+                <a th:href="@{/petProfile(petId=${pet.id})}">
+                  <button type="button" style="margin-bottom: 1rem">
+                    Cancel
+                  </button>
+                </a>
+                <button type="submit">Save Changes</button>
               </div>
             </div>
           </div>
-          <a th:href="@{/petProfile(petId=${pet.id})}">
-            <button type="button" style="margin-bottom: 1rem">Cancel</button>
-          </a>
         </form>
       </div>
 
