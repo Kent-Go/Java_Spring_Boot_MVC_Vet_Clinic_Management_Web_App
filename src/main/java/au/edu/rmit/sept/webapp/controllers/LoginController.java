@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.models.Vet;
+import au.edu.rmit.sept.webapp.models.PetOwner;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.VetService;
+import au.edu.rmit.sept.webapp.services.PetOwnerService;
 
 @Controller
 public class LoginController {
@@ -20,6 +22,9 @@ public class LoginController {
 
     @Autowired
     private VetService vetService;
+
+    @Autowired
+    private PetOwnerService petOwnerService;
 
     @GetMapping("/login")
     public String showLoginPage(Model model) {
@@ -34,15 +39,18 @@ public class LoginController {
 
         // Get the user by email
         User user = userService.getUserByEmail(email);
+        String redirectUrl;
 
         if (user != null && user.getPassword().equals(password)) {
-            // Store the user ID in session or pass it as a query parameter
-            String redirectUrl = "/petOwnerWelcome?userId=" + user.getId();
-            
             // If the user is a vet, redirect to vet dashboard
             if (vetService.getVetByUserID(user.getId()) != null) {
                 Vet vet = vetService.getVetByUserID(user.getId());
                 redirectUrl = "/vetDashboard?userId=" + user.getId() + "&vetId=" + vet.getId();
+            }
+            // If the user is a pet owner, redirect to pet owner dashboard
+            else {
+                PetOwner petOwner = petOwnerService.getPetOwnerByUserID(user.getId());
+                redirectUrl = "/petOwnerWelcome?userId=" + user.getId() + "&petOwnerId=" + petOwner.getId();
             }
             
             return "redirect:" + redirectUrl;

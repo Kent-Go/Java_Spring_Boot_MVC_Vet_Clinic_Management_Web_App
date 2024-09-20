@@ -31,13 +31,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     return appointmentRepository.findByVetIDOrderByDateAscStartTimeAsc(vetID);
   }
 
-  // Get appointments for a specific vet within a week range and order by date and startTime
+  // Get appointments for a specific vet within a week range and order by date and
+  // startTime
   @Override
   public Collection<Appointment> getAppointmentsByVetAndWeek(int vetID, LocalDate startDate, LocalDate endDate) {
     return appointmentRepository.findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc(vetID, startDate, endDate);
   }
 
-  // Get an appointment by their pet ID
+  // Get an appointment by their petID
   @Override
   public Collection<Appointment> getAppointmentByPetID(int petID) {
     return appointmentRepository.findByPetID(petID);
@@ -49,9 +50,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     return appointmentRepository.save(appointment);
   }
 
-  // Get appointments by their vet ID and Date and order by startTime
+  // Get appointments by their vetID and Date and order by startTime
   @Override
   public Collection<Appointment> getAppointmentsByVetIDAndDate(int vetID, LocalDate date) {
     return appointmentRepository.findByVetIDAndDateOrderByStartTimeAsc(vetID, date);
+  }
+
+  // Get appointments by their petID after a certain date
+  @Override
+  public Collection<Appointment> getAppointmentsByPetIDAndDateAfter(int petID, LocalDate date) {
+    return appointmentRepository.findByPetIDAndDateAfterOrderByDateAscStartTimeAsc(petID, date);
   }
 }

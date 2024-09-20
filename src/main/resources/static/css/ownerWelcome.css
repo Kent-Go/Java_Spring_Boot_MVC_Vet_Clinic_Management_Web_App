@@ -23,6 +23,7 @@ html, body {
     margin-left: 15px;
 }
 
+/* Add profile-link for consistency with vetDashboard */
 .profile-link {
     margin-right: 15px;
     display: flex;
@@ -37,85 +38,12 @@ html, body {
     padding: 5px;
 }
 
-.welcome-text {
-    padding-left: 150px; 
-}
-
-.appointment-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 150px; /* Optional: adjust the margin as needed */
-}
-
-.schedule-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.schedule-btn:hover {
-    background-color: #0056b3; /* Slightly darker color on hover */
-}
-
-.appointment-container {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 800px;
-    width: 100%;
-    margin: 20px auto;
-}
-
-/* Container holding both buttons */
-.appointment-actions {
-    display: flex;
-    justify-content: flex-end; /* Aligns buttons to the right */
-    margin-top: 20px; /* Space above the buttons */
-}
-
-/* Styles for both buttons */
-.appointment-actions button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px; /* Space between the two buttons */
-}
-
-/* Hover effect for both buttons */
-.appointment-actions button:hover {
-    background-color: #0056b3; /* Slightly darker blue on hover */
-}
-
-/* Individual button styles */
-.reschedule-btn {
-    background-color: #007bff;
-}
-
-.cancel-btn {
-    background-color: #dc3545; /* Red for the Cancel button */
-}
-
-.cancel-btn:hover {
-    background-color: #c82333; /* Darker red on hover */
-}
-
-/* Navbar styles */
 .navbar {
-    width: 100%;
-    background-color: #0096C7;
+    background-color: #d3edf8;
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar ul {
@@ -126,16 +54,97 @@ html, body {
 }
 
 .navbar li {
-    margin: 0 50px;
-    padding: 10px 0;
+    margin: 0 20px;
 }
 
 .navbar a {
     text-decoration: none;
-    color: #111;
-    font-size: 15px;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.welcome-text {
+    margin-left: 15rem; 
+    margin-top: 3rem;
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.new-schedule-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 15rem;
+}
+
+.new-schedule-btn:hover {
+    background-color: #0056b3; /* Slightly darker color on hover */
+}
+
+.appointment-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 550px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.appointment-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.appointment-actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.appointment-actions button:hover {
+    background-color: #0056b3;
+}
+
+.reschedule-btn {
+    background-color: #007bff;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
 }
 
 .navbar a:hover {
     color: lightgray;
+}
+
+span {
+    font-weight: normal;
 }

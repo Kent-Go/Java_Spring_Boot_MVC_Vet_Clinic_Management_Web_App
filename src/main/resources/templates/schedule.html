@@ -5,169 +5,77 @@
     <title>Vet Dashboard</title>
     <link rel="stylesheet" href="/css/schedule.css" />
   </head>
-  <body>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const userID = localStorage.getItem("userId");
-        const vetID = localStorage.getItem("vetId");
-
-        // If both vetID and userID are available, update the vetDashboard URL to display the correct vet's daily schedule
-        if (vetID && userID) {
-          const vetDashboardLink = document.querySelector(
-            "#vet-dashboard-link"
-          );
-          const logoLink = document.querySelector("#logo-link");
-          const profileLink = document.querySelector("#profile-link");
-          console.log(vetDashboardLink);
-          if (vetDashboardLink) {
-            vetDashboardLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
-          }
-          if (logoLink) {
-            logoLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
-          }
-          if (profileLink) {
-            profileLink.href = `/profile?vetId=${vetID}`;
-          }
-        } else {
-          console.log("vetId or userId is missing from localStorage.");
-        }
-
-        // Function to get the start and end of a week based on a given start date
-        function getWeekRange(startDate) {
-          const startOfWeek = new Date(startDate);
-          const endOfWeek = new Date(startOfWeek);
-          endOfWeek.setDate(startOfWeek.getDate() + 6); // Set end of week to 6 days after start
-
-          return {
-            start: startOfWeek.toISOString().split("T")[0],
-            end: endOfWeek.toISOString().split("T")[0],
-          };
-        }
-
-        // Retrieve weekStart value from the hidden input
-        const weekStartInput = document.getElementById("weekStart");
-        if (weekStartInput) {
-          const weekStart = weekStartInput.value;
-          if (weekStart) {
-            const { start, end } = getWeekRange(weekStart);
-
-            // Update the appointments range heading with the start and end of the week selected
-            const appointmentsHeading =
-              document.getElementById("appointments-range");
-            if (appointmentsHeading) {
-              appointmentsHeading.innerText = `${start} - ${end}`;
-            }
-          }
-        }
-
-        // Function to navigate to a different week
-        function navigateWeek(offset) {
-          const weekStartInput = document.getElementById("weekStart");
-          if (!weekStartInput) {
-            console.error("weekStart input element is missing.");
-            return;
-          }
-
-          const weekStart = new Date(weekStartInput.value);
-          if (isNaN(weekStart.getTime())) {
-            console.error("Invalid weekStart date:", weekStart);
-            return;
-          }
-
-          // Calculate the new week start and end dates based on the offset
-          const newWeekStartDate = new Date(
-            weekStart.setDate(weekStart.getDate() + offset * 7)
-          );
-          const newWeekStart = newWeekStartDate.toISOString().split("T")[0];
-          const newWeekEnd = new Date(
-            newWeekStartDate.setDate(newWeekStartDate.getDate() + 6)
-          )
-            .toISOString()
-            .split("T")[0];
-
-          // Retrieve vetId from localStorage
-          const vetID = localStorage.getItem("vetId");
-          if (!vetID) {
-            console.error("vetId is missing from localStorage.");
-            return;
-          }
-
-          // Construct the new URL
-          const newUrl = `/schedule?vetId=${vetID}&weekStart=${newWeekStart}`;
-
-          // Redirect to the new URL
-          window.location.href = newUrl;
-        }
-
-        // Add event listeners to the arrow buttons
-        document
-          .getElementById("left-arrow")
-          .addEventListener("click", function () {
-            navigateWeek(-1);
-          });
-
-        document
-          .getElementById("right-arrow")
-          .addEventListener("click", function () {
-            navigateWeek(1);
-          });
-
-        // Retrieve the schedule link element
-        const scheduleLink = document.getElementById("schedule-link");
-
-        // Function to set the schedule link to the current week's schedule
-        function setScheduleLinkToCurrentWeek() {
-          const now = new Date();
-          const startOfWeek = new Date(
-            now.setDate(now.getDate() - now.getDay() + 1)
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Set schedule link in navbar to be default starting current week
+      // Week start is set to the current date but is not stored in local storage
+      const scheduleLink = document.getElementById("schedule-link");
+      if (scheduleLink) {
+        const vetId = localStorage.getItem("vetId");
+        if (vetId) {
+          const currentDate = new Date();
+          const weekStart = new Date(
+            currentDate.setDate(
+              currentDate.getDate() - currentDate.getDay() + 1
+            )
           ); // Monday
-          const weekStart = startOfWeek.toISOString().split("T")[0];
-
-          // Retrieve vetId from localStorage
-          const vetID = localStorage.getItem("vetId");
-          if (!vetID) {
-            console.error("vetId is missing from localStorage.");
-            return;
-          }
-
-          // Construct the URL for the current week
-          const currentWeekUrl = `/schedule?vetId=${vetID}&weekStart=${weekStart}`;
-
-          // Update the href attribute of the schedule link
-          if (scheduleLink) {
-            scheduleLink.href = currentWeekUrl;
-          }
+          const formattedWeekStart = weekStart.toISOString().split("T")[0];
+          scheduleLink.href = `/schedule?vetId=${vetId}&weekStart=${formattedWeekStart}`;
         }
+      }
+    });
 
-        // Set the schedule link to the current week's schedule if on the schedule page
-        if (window.location.pathname.includes("schedule")) {
-          setScheduleLinkToCurrentWeek();
-        }
+    // Function to navigate to the previous or next week
+    function navigateToWeek(days) {
+      // Get the current weekStart value from the hidden input field
+      const weekStartInput = document.getElementById("weekStart").value;
+      const currentWeekStart = new Date(weekStartInput);
 
-        // Add click event to schedule-link to navigate to the current week
-        if (scheduleLink) {
-          scheduleLink.addEventListener("click", function () {
-            setScheduleLinkToCurrentWeek();
-          });
-        }
-      });
-    </script>
+      // Calculate the new weekStart value by adding/subtracting days
+      currentWeekStart.setDate(currentWeekStart.getDate() + days);
 
+      // Format the new weekStart as yyyy-MM-dd
+      const newWeekStart = currentWeekStart.toISOString().split("T")[0];
+
+      // Retrieve vetId
+      const vetId = localStorage.getItem("vetId");
+
+      // Redirect to the updated URL with the new weekStart
+      window.location.href = `/schedule?vetId=${vetId}&weekStart=${newWeekStart}`;
+    }
+  </script>
+  <body>
     <div class="header">
-      <a href="#" id="logo-link">
+      <a
+        th:href="@{/vetDashboard(userId=${userId}, vetId=${vetId})}"
+        id="logo-link"
+      >
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="#" id="profile-link" class="profile-link">
+      <a
+        th:href="@{/vetProfile(vetId=${vetId})}"
+        id="profile-link"
+        class="profile-link"
+      >
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
 
     <div class="nav-bar">
-      <a href="#" id="vet-dashboard-link">Home</a>
-      <a href="patients">Patients</a>
-      <a href="#" id="schedule-link" class="active">Schedule</a>
-      <a href="availability">Availability</a>
-      <a href="vetFaq">FAQ</a>
+      <a
+        th:href="@{/vetDashboard(userId=${userId}, vetId=${vetId})}"
+        id="vet-dashboard-link"
+        >Home</a
+      >
+      <a th:href="@{/patients}" id="patients-link">Patients</a>
+      <a
+        th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
+        id="schedule-link"
+        class="active"
+        >Schedule</a
+      >
+      <a th:href="@{/availability}" id="availability-link">Availability</a>
+      <a th:href="@{/vetFaq}" id="faq-link">FAQ</a>
     </div>
 
     <!-- Weekly Calendar View -->
@@ -178,19 +86,26 @@
       <div class="arrow-buttons-container">
         <h2>
           Appointments for:
-          <span id="appointments-range">Start of Week - End of Week</span>
+          <span
+            id="appointments-range"
+            th:text="${weekStart} + ' - ' + ${weekEnd}"
+            >Start - End</span
+          >
         </h2>
         <div class="arrow-buttons">
-          <button class="arrow-button" id="left-arrow">
+          <!-- Navigate to previous week -->
+          <button class="arrow-button" onclick="navigateToWeek(-7)">
             <img src="/images/left-arrow-icon.png" alt="Left Arrow" />
           </button>
-          <button class="arrow-button" id="right-arrow">
+
+          <!-- Navigate to next week -->
+          <button class="arrow-button" onclick="navigateToWeek(7)">
             <img src="/images/right-arrow-icon.png" alt="Right Arrow" />
           </button>
         </div>
       </div>
 
-      <!-- Hidden input to store the current week start date -->
+      <!-- Hidden input to store the current weekStart date -->
       <input type="hidden" id="weekStart" th:value="${weekStart}" />
 
       <!-- Container for the calendar -->
@@ -200,7 +115,7 @@
           <h3>Mon</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Mon'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Mon')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -217,7 +132,7 @@
           <h3>Tue</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Tue'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Tue')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -234,7 +149,7 @@
           <h3>Wed</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Wed'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Wed')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -251,7 +166,7 @@
           <h3>Thu</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Thu'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Thu')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -268,7 +183,7 @@
           <h3>Fri</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Fri'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Fri')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -285,7 +200,7 @@
           <h3>Sat</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Sat'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Sat')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>
@@ -302,7 +217,7 @@
           <h3>Sun</h3>
           <div
             th:each="appointment : ${appointments}"
-            th:if="${appointment.dayOfWeek == 'Sun'}"
+            th:if="${#strings.equals(appointment.dayOfWeek, 'Sun')}"
             class="appointment-card"
           >
             <h4>Appointment</h4>

@@ -6,47 +6,22 @@
     <link rel="stylesheet" href="/css/vetDashboard.css" />
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Fetch the userId from the URL
+        // Fetch the userId from the URL and store it in localStorage if not already set
         const urlParams = new URLSearchParams(window.location.search);
         const urlUserID = urlParams.get("userId");
 
-        // Check if userId is not already stored
         if (urlUserID && !localStorage.getItem("userId")) {
           localStorage.setItem("userId", urlUserID);
         }
 
-        // Fetch the vet ID from the API
+        // Fetch vet details based on userId through the API
         const userID = localStorage.getItem("userId");
         if (userID) {
-          // Fetch vet details based on userId through the API
           fetch(`/api/vets/${userID}`)
             .then((response) => response.json())
             .then((data) => {
               const vetID = data.id;
-              const scheduleLink = document.querySelector(".schedule-link");
-              const profileLink = document.querySelector("#profile-link");
-
               localStorage.setItem("vetId", vetID);
-
-              if (vetID) {
-                // Calculate the start date of the current week (e.g., Monday of the current week)
-                const now = new Date();
-                const startOfWeek = new Date(
-                  now.setDate(now.getDate() - now.getDay() + 1)
-                ); // Monday
-                const weekStart = startOfWeek.toISOString().split("T")[0]; // Format as YYYY-MM-DD
-
-                // Set the schedule link with vetId and weekStart
-                const newHref = `schedule?vetId=${vetID}&weekStart=${weekStart}`;
-                console.log("Setting schedule link href to:", newHref); // Log the new href
-                scheduleLink.href = newHref;
-
-                if (profileLink) {
-                  profileLink.href = `/profile?vetId=${vetID}`;
-                }
-              } else {
-                console.error("Vet ID not found");
-              }
             })
             .catch((error) => console.error("Error fetching vet ID:", error));
         }
@@ -55,25 +30,35 @@
   </head>
   <body>
     <div class="header">
-      <a href="javascript:void(0)" onclick="window.location.reload()">
+      <a
+        th:href="@{/vetDashboard(userId=${userId}, vetId=${vetId})}"
+        id="logo-link"
+      >
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="#" id="profile-link" class="profile-link">
+      <a
+        th:href="@{/vetProfile(vetId=${vetId})}"
+        id="profile-link"
+        class="profile-link"
+      >
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
 
     <div class="nav-bar">
       <a
-        href="javascript:void(0)"
-        onclick="window.location.reload()"
+        th:href="@{/vetDashboard(userId=${userId}, vetId=${vetId})}"
         class="active"
         >Home</a
       >
-      <a href="patients">Patients</a>
-      <a href="#" class="schedule-link">Schedule</a>
-      <a href="availability">Availability</a>
-      <a href="vetFaq">FAQ</a>
+      <a th:href="@{/patients}">Patients</a>
+      <a
+        th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
+        class="schedule-link"
+        >Schedule</a
+      >
+      <a th:href="@{/availability}">Availability</a>
+      <a th:href="@{/vetFaq}">FAQ</a>
     </div>
 
     <div class="container">
@@ -110,6 +95,14 @@
             </p>
             <hr />
             <p>
+              <strong>Owner:</strong>
+              <span
+                th:text="${appointment.pet.petOwner.user.firstName + ' ' + appointment.pet.petOwner.user.lastName}"
+              ></span>
+            </p>
+            <p>
+              <strong>Gender:</strong>
+              <span th:text="${appointment.pet.petOwner.user.gender}"></span>
               <strong>Pet Owner:</strong>
               <span th:text="${appointment.pet.petOwner.user.firstName + ' ' + appointment.pet.petOwner.user.lastName}">N/A</span>
             </p>
@@ -118,12 +111,19 @@
               <span th:text="${appointment.pet.petOwner.user.email}"></span>
             </p>
             <p>
-              <strong>Number:</strong> +<span
+              <strong>Number:</strong>
+              <span
                 th:text="${appointment.pet.petOwner.user.phoneNumber}"
               ></span>
             </p>
-            <button>Pet Details</button>
-            <button>Owner Details</button>
+            <div class="button-container">
+              <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
+                <button>Pet Details</button>
+              </a>
+              <a th:href="@{/petOwnerProfile(petOwnerId=${appointment.pet.petOwner.id})}">
+                <button>Pet Owner Details</button>
+              </a>
+            </div>
           </div>
         </div>
       </div>

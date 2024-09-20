@@ -40,7 +40,24 @@ public class VetDashboardController {
     private UserService userService;
 
     @GetMapping("/vetDashboard")
-    public String showVetDashboard(@RequestParam("vetId") int vetId, Model model) {
+    public String showVetDashboard(@RequestParam(value = "userId", required = false) Integer userId,
+            @RequestParam(value = "vetId", required = false) Integer vetId, Model model) {
+
+        // Default or handle missing parameters as needed
+        if (vetId == null) {
+            model.addAttribute("errorMessage", "Vet ID is missing");
+            return "errorPage"; // Make sure this template exists in src/main/resources/templates/
+        }
+
+        // Add attributes to the model
+        model.addAttribute("userId", userId);
+        model.addAttribute("vetId", vetId);
+
+        // Get current week start date
+        LocalDate startDate = LocalDate.now()
+                .with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+        model.addAttribute("weekStart", startDate);
+
         // get today date
         LocalDate todayDate = LocalDate.now();
         model.addAttribute("today", todayDate);
