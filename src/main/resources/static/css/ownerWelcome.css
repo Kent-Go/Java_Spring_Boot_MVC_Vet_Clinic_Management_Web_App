@@ -71,6 +71,11 @@ html, body {
     color: white;
 }
 
+.navbar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
 .welcome-text {
     margin-left: 15rem; 
     margin-top: 3rem;

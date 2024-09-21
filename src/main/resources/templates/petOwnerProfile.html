@@ -46,12 +46,16 @@
           const petOwnerProfileLink = document.getElementById(
             "petOwnerProfileLink"
           );
+          const petOwnerHomeLink = document.getElementById("petOwnerHomeLink");
 
           if (petOwnerDashboardLink) {
             petOwnerDashboardLink.href = `/petOwnerWelcome?userId=${userID}&petOwnerId=${petOwnerID}`;
           }
           if (petOwnerLogoLink) {
             petOwnerLogoLink.href = `/petOwnerWelcome?userId=${userID}&petOwnerId=${petOwnerID}`;
+          }
+          if (petOwnerHomeLink) {
+            petOwnerHomeLink.href = `/petOwnerWelcome?userId=${userID}&petOwnerId=${petOwnerID}`;
           }
           if (petOwnerProfileLink) {
             petOwnerProfileLink.href = `/petOwnerProfile?petOwnerId=${petOwnerID}`;
@@ -113,7 +117,7 @@
 
     <div class="navbar" id="petOwnerNavbar" style="display: none">
       <ul>
-        <li><a id="petOwnerLogoLink" class="active">Home</a></li>
+        <li><a id="petOwnerHomeLink" class="active">Home</a></li>
         <li><a th:href="@{/petList(petOwnerId=${petOwner.id})}">Pets</a></li>
         <li><a href="/trendsHome">Articles & Videos</a></li>
         <li><a href="#consultation">Consultation</a></li>

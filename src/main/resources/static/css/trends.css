@@ -73,6 +73,11 @@ html, body {
     color: white;
 }
 
+.navbar a.active {
+    background-color: #007bff;
+    color: white;
+}
+
 .trends-content {
     max-width: 1200px;
     margin: 0 auto;
