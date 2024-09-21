@@ -119,8 +119,8 @@ h1 {
 
 /* Edit icon styling */
 .edit-icon {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 }
 
@@ -131,7 +131,6 @@ h1 {
 .owner-info-content,
 .immunisation-info-content,
 .surgery-info-content {
-  display: flex;
   align-items: flex-start;
 }
 
@@ -159,7 +158,6 @@ h1 {
   padding: 20px;
   border-radius: 10px;
   border: 1px solid #007bff;
-  width: 100%;
 }
 
 /* Paragraphs inside the details section */
@@ -208,4 +206,82 @@ li {
 .surgery-name-column {
   width: 1%;
   white-space: nowrap;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.large-textbox {
+  width: 100%;
+  max-width: 75%;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Ensure the table occupies full width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style for table cells */
+td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Style for the date input to be as small as possible */
+input[type="date"] {
+  width: 120px; 
+  box-sizing: border-box; 
+  max-width: 100%;
+}
+
+/* Optional: Add some margin and border styling for visual clarity */
+input[type="date"] {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid #ccc;
+}
+
+#editImmunisationTableBody td input[type="text"],
+#editSurgeryTableBody td input[type="text"] {
+  width: 95%;
+}
+
+#newMedicationContainer {
+  clear: both; /* Ensures it starts on a new line */
+}
+
+.medication-card {
+  background-color: #f0f9ff;
+  padding: 10px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+}
+
+.back-button {
+  position: fixed;        
+  bottom: 20px;           
+  left: 20px;             
+  padding: 10px 20px;     
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  opacity: 0.8;
 }

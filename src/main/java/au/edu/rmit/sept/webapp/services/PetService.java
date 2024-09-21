@@ -16,5 +16,13 @@ public interface PetService {
 
     // Create a new pet
     public Pet createPet(Pet pet);
-  
+
+    // Update a pet
+    public Pet updatePet(Pet pet);
+
+    // Update a pet's allergies and existing conditions by pet ID
+    public Pet updatePetAllergiesAndExistingConditionsByPetID(int petID, String allergies, String existingConditions);
+
+    // Delete a pet by their ID
+    public void deletePetById(int petID);
 }

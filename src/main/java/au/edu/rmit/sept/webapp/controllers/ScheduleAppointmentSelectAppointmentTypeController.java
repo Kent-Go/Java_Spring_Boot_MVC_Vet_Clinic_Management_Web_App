@@ -1,18 +1,14 @@
 package au.edu.rmit.sept.webapp.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.models.AppointmentType;
 import au.edu.rmit.sept.webapp.services.AppointmentTypeService;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ScheduleAppointmentSelectAppointmentTypeController {

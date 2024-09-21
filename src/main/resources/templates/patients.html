@@ -1,155 +1,130 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Patients</title>
     <link rel="stylesheet" href="/css/patients.css" />
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Search bar filter logic
-            const searchInput = document.getElementById("searchInput");
-            searchInput.addEventListener("input", function () {
-                const filter = searchInput.value.toLowerCase();
-                const tableRows = document.querySelectorAll(".patients-table tbody tr");
+      document.addEventListener("DOMContentLoaded", function () {
+        // Search bar filter logic
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", function () {
+          const filter = searchInput.value.toLowerCase();
+          const tableRows = document.querySelectorAll(
+            ".patients-table tbody tr"
+          );
 
-                tableRows.forEach((row) => {
-                    const nameCell = row.querySelector("td:first-child").textContent.toLowerCase();
-                    if (nameCell.includes(filter)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                });
-            });
-
-            // Modal logic
-            const modal = document.getElementById("patientModal");
-            const btn = document.getElementById("addPatientBtn");
-            const span = document.getElementsByClassName("close")[0];
-            const submitPatient = document.getElementById("submitPatient");
-
-            btn.onclick = function() {
-                modal.style.display = "block";
+          tableRows.forEach((row) => {
+            const nameCell = row
+              .querySelector("td:first-child")
+              .textContent.toLowerCase();
+            if (nameCell.includes(filter)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
             }
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Add patient form logic
-            submitPatient.addEventListener("click", function (event) {
-                event.preventDefault();
-
-                // Get the input values
-                const name = document.getElementById("nameInput").value.trim();
-                const species = document.getElementById("speciesInput").value.trim();
-                const gender = document.getElementById("genderInput").value.trim();
-                const age = document.getElementById("ageInput").value.trim();
-                const breed = document.getElementById("breedInput").value.trim();
-                const owner = document.getElementById("ownerInput").value.trim();
-
-                if (name && species && gender && age && breed && owner) {
-                    const newRow = `
-                        <tr>
-                            <td>${name}</td>
-                            <td>${species}</td>
-                            <td>${gender}</td>
-                            <td>${age}</td>
-                            <td>${breed}</td>
-                            <td>${owner}</td>
-                        </tr>
-                    `;
-                    document.querySelector(".patients-table tbody").insertAdjacentHTML("beforeend", newRow);
-
-                    // Clear input fields and close modal
-                    document.querySelectorAll(".modal input").forEach(input => input.value = "");
-                    modal.style.display = "none";
-                } else {
-                    alert("Please fill in all fields.");
-                }
-            });
+          });
         });
+
+        // Row click event logic
+        const tableRows = document.querySelectorAll(".patients-table tbody tr");
+        tableRows.forEach((row) => {
+          row.addEventListener("click", function () {
+            const petId = this.getAttribute("data-pet-id");
+            if (petId) {
+              window.location.href = `/petProfile?petId=${petId}`;
+            }
+          });
+        });
+
+        // Remove the originalPreviousPage that is for petProfile from localStorage
+        localStorage.removeItem("originalPreviousPage");
+      });
     </script>
-</head>
-<body>
-<!-- Header Section -->
-<div class="header">
-    <a href="javascript:void(0)" onclick="window.location.reload()">
+  </head>
+  <body>
+    <!-- Header Section -->
+    <div class="header">
+      <a th:href="@{/vetDashboard(userId=, vetId=${vetId})}">
         <img src="/images/logo.png" alt="Logo" class="logo" />
-    </a>
-    <a href="#" id="profile-link" class="profile-link">
+      </a>
+      <a
+        th:href="@{/vetProfile(vetId=${vetId})}"
+        id="profile-link"
+        class="profile-link"
+      >
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
-    </a>
-</div>
-
-<!-- Navbar Section -->
-<div class="nav-bar">
-    <a href="javascript:void(0)" onclick="window.location.reload()">Home</a>
-    <a href="patients" class="active">Patients</a>
-    <a href="#" class="schedule-link">Schedule</a>
-    <a href="availability">Availability</a>
-    <a href="vetFaq">FAQ</a>
-</div>
-
-<!-- Main Content Section -->
-<div class="container">
-    <h1>Your Patients</h1>
-    <p>Total Number of Patients: <span th:text="${pets.size()}"></span></p>
-
-    <div class="search-bar-container">
-        <input type="text" id="searchInput" placeholder="Search Patient" aria-label="Search Patient" />
-        <div id="addPatientBtn" class="add-patient-icon-container">
-            <img src="/images/add-patient-icon.png" alt="Add Patient" class="add-patient-icon" />
-        </div>
+      </a>
     </div>
 
-    <table class="patients-table">
+    <!-- Navbar Section -->
+    <div class="nav-bar">
+      <a th:href="@{/vetDashboard(userId=, vetId=${vetId})}">Home</a>
+      <a
+        href="javascript:void(0)"
+        onclick="window.location.reload()"
+        class="active"
+        >Patients</a
+      >
+      <a
+        th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
+        class="schedule-link"
+        >Schedule</a
+      >
+      <a href="availability">Availability</a>
+      <a href="vetFaq">FAQ</a>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="container">
+      <h1>Your Patients</h1>
+      <p>
+        Total Number of Patients:
+        <span th:text="${pets.size()}"></span>
+      </p>
+
+      <div class="search-bar-container">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search Patient by Name"
+          aria-label="Search Patient"
+        />
+      </div>
+
+      <!-- Table of patients and their details -->
+      <table class="patients-table">
         <thead>
-        <tr>
-            <th>Name</th>
+          <tr>
+            <th>Pet Name</th>
             <th>Species</th>
             <th>Gender</th>
-            <th>Age</th>
+            <th>Birth Date</th>
             <th>Breed</th>
             <th>Owner</th>
-        </tr>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="pet : ${pets}">
-            <td th:text="${pet.name}">Name</td>
-            <td th:text="${pet.species}">Species</td>
-            <td th:text="${pet.gender}">Gender</td>
-            <td th:text="${pet.age}">Age</td>
-            <td th:text="${pet.breed}">Breed</td>
-            <td th:text="${pet?.petOwner?.user?.name}">Owner</td> <!-- Safe navigation operator -->
-        </tr>
+          <!-- Loop through appointments to display pets and owners -->
+          <tr
+            th:each="pet : ${pets}"
+            th:attr="data-pet-id=${pet.id}"
+            title="Click to access profile"
+          >
+            <td th:text="${pet.name}">Pet Name</td>
+            <td th:text="${pet.species}" class="min">Species</td>
+            <td th:text="${pet.gender}" class="min">Gender</td>
+            <td th:text="${pet.birthDate}" class="min">Birth Date</td>
+            <td th:text="${pet.breed}" class="min">Breed</td>
+            <td
+              th:text="${pet.petOwner.user.firstName + ' ' + pet.petOwner.user.lastName}"
+            >
+              Owner Name
+            </td>
+          </tr>
         </tbody>
-    </table>
-</div>
-
-<!-- Modal for Adding Patient -->
-<!-- The form should only be pet and owner name in the last version, it should check the pet and owner in the database-->
-<div id="patientModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Add a New Patient</h2>
-        <form>
-            <input type="text" id="nameInput" placeholder="Name" required />
-            <input type="text" id="speciesInput" placeholder="Species" required />
-            <input type="text" id="genderInput" placeholder="Gender" required />
-            <input type="number" id="ageInput" placeholder="Age" required />
-            <input type="text" id="breedInput" placeholder="Breed" required />
-            <input type="text" id="ownerInput" placeholder="Owner" required />
-            <button id="submitPatient">Add Patient</button>
-        </form>
+      </table>
     </div>
-</div>
-</body>
+  </body>
 </html>

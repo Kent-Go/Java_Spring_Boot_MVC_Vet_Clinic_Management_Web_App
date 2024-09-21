@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import au.edu.rmit.sept.webapp.models.Vet;
-import au.edu.rmit.sept.webapp.services.VetServiceImpl;
+import au.edu.rmit.sept.webapp.services.VetService;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
@@ -20,16 +20,16 @@ import java.io.IOException;
 @RequestMapping("/api/vets")
 public class VetRestController {
     @Autowired
-    private VetServiceImpl vetServiceImpl;
+    private VetService vetService;
 
     @GetMapping
     public Collection<Vet> getAllVets() {
-        return vetServiceImpl.getAllVets();
+        return vetService.getAllVets();
     }
 
     @GetMapping("/{userID}")
     public Vet getVetById(@PathVariable("userID") int userID) {
-        return vetServiceImpl.getVetByUserID(userID);
+        return vetService.getVetByUserID(userID);
     }
 
     @PostMapping
@@ -48,6 +48,6 @@ public class VetRestController {
             vet.setUserID(userID);
             // vet.setProfilePicture(profilePicture.getBytes());
 
-            return vetServiceImpl.createVet(vet);
+            return vetService.createVet(vet);
         }
 }

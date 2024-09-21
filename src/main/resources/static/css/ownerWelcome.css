@@ -38,7 +38,6 @@ html, body {
     padding: 5px;
 }
 
-/* Update navbar to match vetDashboard style */
 .navbar {
     background-color: #d3edf8;
     display: flex;
@@ -73,8 +72,8 @@ html, body {
 }
 
 .welcome-text {
-    padding: 0 200px; 
-    text-align: left;
+    margin-left: 15rem; 
+    margin-top: 3rem;
 }
 
 .appointment-header {
@@ -92,6 +91,7 @@ html, body {
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 15rem;
 }
 
 .new-schedule-btn:hover {
@@ -103,7 +103,7 @@ html, body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 40px;
-    max-width: 800px;
+    max-width: 550px;
     width: 100%;
     margin: 20px auto;
 }
@@ -141,3 +141,10 @@ html, body {
     background-color: #c82333;
 }
 
+.navbar a:hover {
+    color: lightgray;
+}
+
+span {
+    font-weight: normal;
+}

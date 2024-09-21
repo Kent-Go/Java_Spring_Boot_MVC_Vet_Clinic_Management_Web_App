@@ -37,4 +37,22 @@ public class PetServiceImpl implements PetService {
     public Pet createPet(Pet pet){
         return petRepository.save(pet);
     }
+
+    @Override
+    public Pet updatePet(Pet pet){
+        return petRepository.save(pet);
+    }
+
+    @Override
+    public Pet updatePetAllergiesAndExistingConditionsByPetID(int petID, String allergies, String existingConditions){
+        Pet pet = getPetByPetID(petID);
+        pet.setAllergies(allergies);
+        pet.setExistingConditions(existingConditions);
+        return petRepository.save(pet);
+    }
+
+    @Override
+    public void deletePetById(int petID){
+        petRepository.deleteById(petID);
+    }
 }

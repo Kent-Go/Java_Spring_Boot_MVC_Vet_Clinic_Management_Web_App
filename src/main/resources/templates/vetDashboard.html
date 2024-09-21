@@ -25,6 +25,9 @@
             })
             .catch((error) => console.error("Error fetching vet ID:", error));
         }
+
+        // Remove the originalPreviousPage that is for petProfile from localStorage
+        localStorage.removeItem("originalPreviousPage");
       });
     </script>
   </head>
@@ -37,7 +40,7 @@
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a
-        th:href="@{/profile(vetId=${vetId})}"
+        th:href="@{/vetProfile(vetId=${vetId})}"
         id="profile-link"
         class="profile-link"
       >
@@ -51,7 +54,7 @@
         class="active"
         >Home</a
       >
-      <a th:href="@{/patients}">Patients</a>
+      <a th:href="@{/patients(vetId=${vetId})}">Patients</a>
       <a
         th:href="@{/schedule(vetId=${vetId}, weekStart=${weekStart})}"
         class="schedule-link"
@@ -118,7 +121,11 @@
               <a th:href="@{/petProfile(petId=${appointment.pet.id})}">
                 <button>Pet Details</button>
               </a>
-              <button>Owner Details</button>
+              <a
+                th:href="@{/petOwnerProfile(petOwnerId=${appointment.pet.petOwner.id})}"
+              >
+                <button>Pet Owner Details</button>
+              </a>
             </div>
           </div>
         </div>

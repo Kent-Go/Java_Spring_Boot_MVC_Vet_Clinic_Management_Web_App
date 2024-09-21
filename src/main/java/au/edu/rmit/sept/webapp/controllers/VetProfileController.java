@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
-public class ProfileController {
+public class VetProfileController {
     @Autowired
     private UserService userService;
 
@@ -37,7 +37,7 @@ public class ProfileController {
     @Autowired
     private QualificationService qualificationService;
 
-    @GetMapping("/profile")
+    @GetMapping("/vetProfile")
     public String showProfilePage(@RequestParam("vetId") int vetId, Model model) {
         // Get the vet by vetID and the user by userID that is associated with the vet
         Vet vet = vetService.getVetByVetID(vetId);
@@ -64,10 +64,10 @@ public class ProfileController {
         model.addAttribute("vet", vet);
         model.addAttribute("qualifications", qualifications);
 
-        return "profile"; // Returns the profile.html view
+        return "vetProfile"; // Returns the vetProfile.html view
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/vetProfile")
     public String updateProfile(@RequestParam Map<String, String> formData,
             @RequestParam("profilePicture") MultipartFile profilePicture,
             Model model) throws IOException {
@@ -83,6 +83,6 @@ public class ProfileController {
         // Reload the updated profile data into the model
         model.addAttribute("profileData", formData);
 
-        return "profile"; // Reloads the profile page with the updated data
+        return "vetProfile"; // Reloads the profile page with the updated data
     }
 }
