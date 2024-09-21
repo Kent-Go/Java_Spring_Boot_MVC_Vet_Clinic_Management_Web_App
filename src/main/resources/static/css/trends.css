@@ -1,5 +1,5 @@
 .content-container {
-    padding: 0 100px; /* Adjust padding as needed */
+    padding: 0 100px;
     box-sizing: border-box;
 }
 
@@ -40,7 +40,6 @@ html, body {
     padding: 5px;
 }
 
-/* Navbar styling from ownerDashboard */
 .navbar {
     background-color: #d3edf8;
     display: flex;
@@ -74,7 +73,6 @@ html, body {
     color: white;
 }
 
-/* Revert to original trends-specific styles */
 .trends-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -88,6 +86,7 @@ h1, h2 {
 .main-article {
     display: flex;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .main-article img {
@@ -114,6 +113,12 @@ h1, h2 {
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.recent-article:hover {
+    background-color: #f0f0f0;
 }
 
 .recent-article img {
@@ -124,13 +129,9 @@ h1, h2 {
     margin-right: 15px;
 }
 
-.article-text h3 {
+.article-text h3, .article-text p, .main-article h2, .main-article p {
     margin: 0;
-}
-
-.article-text p {
-    font-size: 14px;
-    color: #666;
+    color: #333;
 }
 
 .view-more-btn {
@@ -149,29 +150,89 @@ h1, h2 {
     background-color: #0056b3;
 }
 
+/* Video Section */
 .latest-videos {
     margin-top: 40px;
 }
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+    grid-gap: 20px; /* Space between each video card */
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 20px;
 }
 
 .video-card {
+    background-color: #f9f9f9;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    overflow: hidden; /* Ensures the image doesn't overflow the card */
 }
 
 .video-card img {
-    width: 100%; 
-    height: 150px; 
-    object-fit: cover; 
-    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the thumbnail fills the container while maintaining aspect ratio */
+    border-radius: 8px 8px 0 0; /* Rounded corners for the top of the card */
+}
+
+.video-card p {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+
+/* Modal (background for video) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.8); /* Black with opacity for background dim */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Width of the modal */
+    max-width: 800px; /* Maximum width */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Video Container Styling */
+#videoContainer iframe {
+    width: 100%; /* Full width of modal content */
+    height: 450px; /* Set the height */
+    border-radius: 8px; /* Rounded corners */
 }
