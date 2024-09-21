@@ -35,7 +35,6 @@ html, body {
     padding: 5px;
 }
 
-/* Navbar styling */
 .navbar {
     background-color: #d3edf8;
     display: flex;
@@ -69,7 +68,6 @@ html, body {
     color: white;
 }
 
-/* Articles section */
 .articles-section {
     padding: 20px;
     max-width: 1200px;
@@ -81,65 +79,55 @@ html, body {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
-    padding: 5px 0;
 }
 
 .main-article {
-    position: relative;
     display: flex;
-    align-items: center;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .main-article img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
+    width: 60%;
     border-radius: 8px;
+    margin-right: 20px;
 }
 
 .main-article-content {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .sub-articles {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
 }
 
 .sub-article {
-    width: 32%; /* Ensure three sub-articles fit within the parent */
-    margin-bottom: 20px; /* Space between each sub-article */
-    text-align: center; /* Center-align the title text */
+    width: 32%;
+    cursor: pointer;
 }
 
 .sub-article img {
-    width: 100%; /* Full width to match the container */
-    height: 200px; /* Consistent height */
-    object-fit: cover; /* Cover the container without stretching */
-    border-radius: 8px; /* Rounded corners */
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .sub-article-title {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 10px 0; /* Padding for the text box */
-    border-radius: 0 0 8px 8px; /* Rounded corners on the bottom */
-    margin-top: -5px; /* Slight overlap for a seamless look */
-    font-size: 18px; /* Adjust font size */
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Include padding in the width calculation */
+    padding: 10px 0;
+    border-radius: 0 0 8px 8px;
+    margin-top: -5px;
+    font-size: 18px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* What's New section */
+/* What's New Section */
 .whats-new-section {
     padding: 20px;
     max-width: 1200px;
@@ -152,36 +140,35 @@ html, body {
     color: #333;
 }
 
-/* Set up the container to align articles vertically */
 .whats-new-container {
     display: flex;
-    flex-direction: column; /* Stack articles vertically */
-    gap: 20px; /* Space between articles */
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Flex to place image and text side by side */
 .whats-new-article {
-    display: flex; /* Align image and text side by side */
-    align-items: center; /* Center vertically */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
 .whats-new-article img {
-    width: 40%; /* Adjust width as needed */
+    width: 40%;
     border-radius: 8px;
-    margin-right: 20px; /* Space between image and text */
+    margin-right: 20px;
 }
 
 .whats-new-content {
-    flex: 1; /* Take up remaining space */
+    flex: 1;
 }
 
-.whats-new-article h2 {
+.whats-new-content h2 {
     font-size: 24px;
     color: #333;
     margin: 0;
 }
 
-.whats-new-article p {
+.whats-new-content p {
     margin-top: 10px;
     color: #555;
 }
