@@ -1,87 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Pets</title>
-    <link rel="stylesheet" href="/css/petList.css">
+    <link rel="stylesheet" href="/css/petList.css" />
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const deleteButtons = document.querySelectorAll('.delete-pet-button');
+      document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-pet-button");
 
-            // Attach click event to each delete button
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const petId = this.getAttribute('data-pet-id');
-                    const petName = this.getAttribute('data-pet-name');
+        // Attach click event to each delete button
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const petId = this.getAttribute("data-pet-id");
+            const petName = this.getAttribute("data-pet-name");
 
-                    // Show a confirmation popup
-                    const confirmDelete = confirm(`Are you sure you want to delete ${petName}?`);
-                    if (confirmDelete) {
-                        // Send delete request to server
-                        fetch(`/pets/delete/${petId}`, {
-                            method: 'DELETE'
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    alert(`${petName} has been deleted.`);
-                                    // Remove the pet card from the DOM
-                                    document.getElementById(`pet-card-${petId}`).remove();
-                                } else {
-                                    alert('Error deleting pet.');
-                                }
-                            })
-                            .catch(error => {
-                                alert('Error: ' + error);
-                            });
-                    }
+            // Show a confirmation popup
+            const confirmDelete = confirm(
+              `Are you sure you want to delete ${petName}?`
+            );
+            if (confirmDelete) {
+              // Send delete request to server
+              fetch(`/pets/delete/${petId}`, {
+                method: "DELETE",
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    alert(`${petName} has been deleted.`);
+                    // Remove the pet card from the DOM
+                    document.getElementById(`pet-card-${petId}`).remove();
+                  } else {
+                    alert("Error deleting pet.");
+                  }
+                })
+                .catch((error) => {
+                  alert("Error: " + error);
                 });
-            });
+            }
+          });
         });
+      });
     </script>
-</head>
-<body>
-<!-- Header Section -->
-<div class="header">
-    <a href="/">
+  </head>
+  <body>
+    <!-- Header Section -->
+    <div class="header">
+    <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}">
         <img src="/images/logo.png" alt="Logo" class="logo" />
-    </a>
-    <a href="#" class="profile-link">
+      </a>
+      <a th:href="@{/petOwnerProfile(petOwnerId=${petOwner.id})}" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
-    </a>
-</div>
-
-<!-- Navbar Section -->
-<div class="nav-bar">
-    <a href="/">Home</a>
-    <a href="/pets" class="active">Pets</a>
-    <a href="/articles">Articles & Videos</a>
-    <a href="/consultation">Consultation</a>
-    <a href="/prescriptions">Prescriptions</a>
-</div>
-
-<div class="container">
-    <h1>Your Pets</h1>
-
-    <!-- Add Pet Button -->
-    <div class="add-pet-container">
-        <a href="/petRegister" class="add-pet-button">Register Pet</a>
+      </a>
     </div>
 
-    <div class="pet-selection">
-        <div th:each="pet : ${pets}" class="pet-card" th:id="'pet-card-' + ${pet.id}">
-            <!-- Dynamically set the image source based on the pet species -->
-            <img th:src="${pet.species == 'Dog' ? '/images/dog.png' :
-                               pet.species == 'Cat' ? '/images/cat.png' :
-                               pet.species == 'Bird' ? '/images/bird.png' :
-                               pet.species == 'Rabbit' ? '/images/bunny.png' :
-                               pet.species == 'Hamster' ? '/images/rodent.png' :
-                               pet.species == 'Fish' ? '/images/fish.png' :
-                               pet.species == 'Horse' ? '/images/horse.png' :
-                               pet.species == 'Turtle' ? '/images/turtle.png' :
-                               pet.species == 'Chicken' ? '/images/chicken.png' : '/images/pet-placeholder.png'}"
-                 alt="Pet Image" class="pet-image"/>
+    <!-- Navbar Section -->
+    <div class="nav-bar">
+      <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}">Home</a>
+      <a href="javascript:void(0)" class="active">Pets</a>
+      <a href="/articles">Articles & Videos</a>
+      <a href="/consultation">Consultation</a>
+      <a href="/prescriptions">Prescriptions</a>
+      <a href="/faq">FAQ</a>
+    </div>
 
+    <div class="container">
+      <h1>Your Pets</h1>
+
+      <!-- Add Pet Button -->
+      <div class="add-pet-container">
+        <a href="/petRegister" class="add-pet-button">Register Pet</a>
+      </div>
+
+      <div class="pet-selection">
+        <div th:each="pet : ${pets}" class="pet-card" th:id="'pet-card-' + ${pet.id}">
+            <img
+                th:src="${pet.species == 'Dog' ? '/images/dog.png' :
+                          pet.species == 'Cat' ? '/images/cat.png' :
+                          pet.species == 'Bird' ? '/images/bird.png' :
+                          pet.species == 'Rabbit' ? '/images/bunny.png' :
+                          pet.species == 'Hamster' ? '/images/rodent.png' :
+                          pet.species == 'Fish' ? '/images/fish.png' :
+                          pet.species == 'Horse' ? '/images/horse.png' :
+                          pet.species == 'Turtle' ? '/images/turtle.png' :
+                          pet.species == 'Chicken' ? '/images/chicken.png' :
+                          '/images/pet-placeholder.png'}"
+                alt="Pet Image"
+                class="pet-image"
+            />
+    
             <div class="pet-info">
                 <h2 th:text="${pet.name}">Pet Name</h2>
                 <p th:text="'Species: ' + ${pet.species}"></p>
@@ -89,11 +95,16 @@
                 <p th:text="'Gender: ' + ${pet.gender}"></p>
                 <p th:text="'Weight: ' + ${pet.weight} + ' kg'"></p>
             </div>
-
-            <!-- Delete button -->
-            <button class="delete-pet-button" th:data-pet-id="${pet.id}" th:data-pet-name="${pet.name}">Delete Pet</button>
+    
+            <button
+                class="delete-pet-button"
+                th:data-pet-id="${pet.id}"
+                th:data-pet-name="${pet.name}"
+            >
+                Delete Pet
+            </button>
         </div>
     </div>
-</div>
-</body>
+    
+  </body>
 </html>
