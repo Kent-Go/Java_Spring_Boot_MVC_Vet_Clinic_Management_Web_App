@@ -64,15 +64,34 @@ public class VeterinarianRegisterController {
             @RequestParam("yearAwarded") String year,
 
             Model model) {
-        // Handle the form submission, save the veterinarian details
 
-        // Create user entitiy
+        // Validate required fields
+        if (firstName == null || firstName.isEmpty() || lastName == null || lastName.isEmpty()) {
+            throw new IllegalArgumentException("First name and last name are required");
+        }
+
+        // Validate year awarded is not in the future
+        int awardedYear = Integer.parseInt(year);
+        int currentYear = LocalDate.now().getYear();
+        if (awardedYear > currentYear) {
+            throw new IllegalArgumentException("Year awarded cannot be in the future");
+        } else if (awardedYear < 1900) {  // Example minimum year validation
+            throw new IllegalArgumentException("Year awarded cannot be in the past beyond a certain threshold");
+        }
+
+        // Create user entity
         User user = new User(firstName, lastName, LocalDate.parse(birthDate, DateTimeFormatter.ISO_LOCAL_DATE), gender,
                 phoneNumber, email, password);
         userService.createUser(user);
 
+        // Get the user_id by email and handle null case
+        User existingUser = userService.getUserByEmail(email);
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User with email " + email + " does not exist.");
+        }
+
         // Get the user_id by email
-        int userID = userService.getUserByEmail(email).getId();
+        int userID = existingUser.getId();
 
         // Create address entity
         Address address = new Address(street, suburb, state, postcode, userID);
@@ -86,9 +105,10 @@ public class VeterinarianRegisterController {
         int vetID = vetService.getVetByUserID(userID).getId();
 
         // Create qualification entity
-        Qualification qualification = new Qualification(name, university, country, Integer.parseInt(year), vetID);
+        Qualification qualification = new Qualification(name, university, country, awardedYear, vetID);
         qualificationService.createQualification(qualification);
 
         return "redirect:/profile"; // Redirect to the same page or to a success page
     }
+
 }
