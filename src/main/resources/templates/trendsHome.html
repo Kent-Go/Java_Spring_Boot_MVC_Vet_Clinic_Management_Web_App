@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Trends Page</title>
-        <link rel="stylesheet" href="/css/trends.css" />
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trends Page</title>
+    <link rel="stylesheet" href="/css/trends.css" />
+</head>
 <body>
     
     <div class="header">
@@ -19,7 +19,7 @@
     
     <div class="navbar">
         <ul>
-            <li><a href="#home">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="#pets">Pets</a></li>
             <li><a href="/trendsHome">Articles & Videos</a></li>
             <li><a href="#consultation">Consultation</a></li>
@@ -32,90 +32,104 @@
         <div class="trends-content">
             <h1>Latest Trends</h1>
     
-            <div class="main-article">
+            <!-- Articles Section -->
+            <div class="main-article" onclick="navigateTo('/article3')">
                 <img src="/images/article10.jpg" alt="Main article image" class="article-image">
                 <div class="main-article-content">
-                    <h2>Title</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad mi...</p>
-                    
+                    <h2>10 Dangers of Fleas, Ticks and Mosquitoes</h2>
+                    <p>Fleas and ticks are among the most common external parasites in pets. Pesky mosquitoes also enjoy feasting on dogs and cats...</p>
+                    <p>All pets—even indoor pets—are at risk of fleas, ticks, and mosquitoes. These little bloodsuckers can hitch a ride inside on you or a pet and make themselves at home...</p>
+                    <p>Keep reading to learn more about the dangers fleas, ticks, and mosquitoes pose and how to protect your pet (and yourself).</p>
                 </div>
             </div>
     
             <div class="recent-articles">
                 <h2>Recent Articles</h2>
                 
-                <div class="recent-article">
-                    <img src="/images/article1.jpg" alt="Article image">
+                <div class="recent-article" onclick="navigateTo('/article1')">
+                    <img src="/images/article11.jpg" alt="Article image">
                     <div class="article-text">
-                        <h3>Title</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
+                        <h3>Can Dogs Get Seasonal Depression?</h3>
+                        <p>You may have experienced mood changes as the seasons shift and long, sunny days become darker and shorter...</p>
                     </div>
                 </div>
-                <div class="recent-article">
-                    <img src="/images/article2.jpg" alt="Article image">
+                
+                <div class="recent-article" onclick="navigateTo('/article2')">
+                    <img src="/images/article12.jpg" alt="Article image">
                     <div class="article-text">
-                        <h3>Title</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
-                    </div>
-                </div>
-                <div class="recent-article">
-                    <img src="/images/article3.jpg" alt="Article image">
-                    <div class="article-text">
-                        <h3>Title</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
+                        <h3>Adopting a Cat? 12 Cat Adoption Mistakes to Avoid</h3>
+                        <p>Adopting a new cat is incredibly exciting. From picking out the perfect name to readying the ultimate cat-friendly casa...</p>
                     </div>
                 </div>
             </div>
-    
-            <button class="view-more-btn" th:onclick="|window.location.href='@{/articlesPage}'|">View More Articles</button>
-    
+            <button class="view-more-btn" onclick="navigateTo('/articlesPage')">View More Articles</button>
+            
+            <!-- Latest Videos Section -->
             <div class="latest-videos">
                 <h2>Latest Videos</h2>
                 <div class="video-grid">
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article4.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
+                    <div class="video-card" data-video-id="n3OwgFrZ4zY">
+                        <img src="/images/vidThumbnail1.jpg" alt="Video 1">
+                        <p>Beginner's Guide to Care for a Pet Rabbit!</p>
                     </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article5.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
+                    <div class="video-card" data-video-id="zlljYjfejIg">
+                        <img src="/images/vidThumbnail2.jpg" alt="Video 2">
+                        <p>Chinchilla as Pet - Pros and Cons Chinchillas as Pet</p>
                     </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article6.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article7.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article8.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
-                    </div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <img src="/images/article9.jpg" alt="Video Thumbnail">
-                        </div>
-                        <p>Video Title</p>
+                    <div class="video-card" data-video-id="UqswCFhhPPg">
+                        <img src="/images/vidThumbnail3.jpg" alt="Video 3">
+                        <p>Love Birds as Pets: The Pros and Cons of Keeping Love Birds as Pet</p>
                     </div>
                 </div>
             </div>
     
-            <button class="view-more-btn" th:onclick="|window.location.href='@{/videos}'|">View More Videos</button>
+            <button class="view-more-btn" onclick="navigateTo('/videos')">View More Videos</button>
     
         </div>
     </div>
-    
+
+    <!-- Modal for YouTube Video -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="videoContainer"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to handle page navigation
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Modal functionality for video popup
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById("videoModal");
+            var videoContainer = document.getElementById("videoContainer");
+            var span = document.getElementsByClassName("close")[0];
+            var videoCards = document.getElementsByClassName('video-card');
+
+            for (var i = 0; i < videoCards.length; i++) {
+                videoCards[i].addEventListener('click', function () {
+                    var videoId = this.getAttribute('data-video-id');
+                    videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1" frameborder="0" allowfullscreen></iframe>';
+                    modal.style.display = "block";
+                });
+            }
+
+            span.onclick = function () {
+                modal.style.display = "none";
+                videoContainer.innerHTML = '';
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    videoContainer.innerHTML = '';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-<!-- http://localhost:8080/trendsHome -->
