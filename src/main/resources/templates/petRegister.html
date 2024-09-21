@@ -5,6 +5,29 @@
     <title>Register Pets</title>
     <link rel="stylesheet" href="/css/veterinarianRegister.css" />
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the petOwnerId from localStorage
+        const petOwnerId = localStorage.getItem("petOwnerId");
+
+        // Get the back button
+        const backButton = document.getElementById("backButton");
+
+        // Get the previous URL
+        const previousURL = document.referrer;
+
+        if (previousURL.includes("petOwnerRegister")) {
+          // Redirect to the login page if the user is not logged in
+          backButton.addEventListener("click", function () {
+            window.location.href='petOwnerRegister?deleteUser=true';
+          });
+        }
+        else if (previousURL.includes("petList")){
+          // Redirect to the pet list page if the user is logged in
+          backButton.addEventListener("click", function () {
+            window.location.href='petList?petOwnerId=' + petOwnerId;
+          });
+        }
+      });
 
       var nextPetID = 1;
       var numPets = 1;
@@ -327,7 +350,7 @@
       <div class="button-container">
         <button
           type="button"
-          onclick="window.location.href='petOwnerRegister?deleteUser=true';"
+          id="backButton"
         >
           Back
         </button>
