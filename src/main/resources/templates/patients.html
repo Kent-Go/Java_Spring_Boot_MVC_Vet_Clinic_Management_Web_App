@@ -26,15 +26,27 @@
             }
           });
         });
+
+        // Row click event logic
+        const tableRows = document.querySelectorAll(".patients-table tbody tr");
+        tableRows.forEach((row) => {
+          row.addEventListener("click", function () {
+            const petId = this.getAttribute("data-pet-id");
+            if (petId) {
+              window.location.href = `/petProfile?petId=${petId}`;
+            }
+          });
+        });
+
+        // Remove the originalPreviousPage that is for petProfile from localStorage
+        localStorage.removeItem("originalPreviousPage");
       });
     </script>
   </head>
   <body>
     <!-- Header Section -->
     <div class="header">
-      <a
-        th:href="@{/vetDashboard(userId=, vetId=${vetId})}"
-      >
+      <a th:href="@{/vetDashboard(userId=, vetId=${vetId})}">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a
@@ -48,10 +60,7 @@
 
     <!-- Navbar Section -->
     <div class="nav-bar">
-      <a
-        th:href="@{/vetDashboard(userId=, vetId=${vetId})}"
-        >Home</a
-      >
+      <a th:href="@{/vetDashboard(userId=, vetId=${vetId})}">Home</a>
       <a
         href="javascript:void(0)"
         onclick="window.location.reload()"
@@ -79,7 +88,7 @@
         <input
           type="text"
           id="searchInput"
-          placeholder="Search Patient"
+          placeholder="Search Patient by Name"
           aria-label="Search Patient"
         />
       </div>
@@ -98,7 +107,11 @@
         </thead>
         <tbody>
           <!-- Loop through appointments to display pets and owners -->
-          <tr th:each="pet : ${pets}">
+          <tr
+            th:each="pet : ${pets}"
+            th:attr="data-pet-id=${pet.id}"
+            title="Click to access profile"
+          >
             <td th:text="${pet.name}">Pet Name</td>
             <td th:text="${pet.species}" class="min">Species</td>
             <td th:text="${pet.gender}" class="min">Gender</td>
