@@ -114,7 +114,7 @@
     <div class="navbar" id="petOwnerNavbar" style="display: none">
       <ul>
         <li><a id="petOwnerLogoLink" class="active">Home</a></li>
-        <li><a href="/petList">Pets</a></li>
+        <li><a th:href="@{/petList(petOwnerId=${petOwner.id})}">Pets</a></li>
         <li><a href="/trendsHome">Articles & Videos</a></li>
         <li><a href="#consultation">Consultation</a></li>
         <li><a href="#prescriptions">Prescriptions</a></li>
