@@ -37,6 +37,9 @@
             }
           });
         });
+
+        // Remove the originalPreviousPage that is for petProfile from localStorage
+        localStorage.removeItem("originalPreviousPage");
       });
     </script>
   </head>
@@ -85,7 +88,7 @@
         <input
           type="text"
           id="searchInput"
-          placeholder="Search Patient"
+          placeholder="Search Patient by Name"
           aria-label="Search Patient"
         />
       </div>

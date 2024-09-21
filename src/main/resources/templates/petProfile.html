@@ -356,12 +356,59 @@
       document.addEventListener("DOMContentLoaded", function () {
         const backButton = document.getElementById("backButton"); // Referencing the button by its Id
 
+        // Retrieve the previous page from localStorage
+        let originalPreviousPage = localStorage.getItem("originalPreviousPage");
+
+        // Get the current referrer
+        const referrer = document.referrer;
+
+        // Update the original previous page based on the referrer conditions
+        if (
+          (originalPreviousPage === null &&
+            referrer &&
+            !referrer.includes("petProfile")) ||
+          (originalPreviousPage &&
+            originalPreviousPage.includes("vetDashboard") &&
+            referrer &&
+            referrer.includes("patients")) ||
+          (originalPreviousPage.includes("patients") &&
+            referrer &&
+            referrer.includes("vetDashboard"))
+        ) {
+          originalPreviousPage = referrer;
+        }
+
+        // Store the original previous page if it's been updated
+        if (originalPreviousPage) {
+          localStorage.setItem("originalPreviousPage", originalPreviousPage);
+        }
+
         // If vetId is in local storage, set the back button to redirect to the vet dashboard
         if (localStorage.getItem("vetId")) {
           if (backButton) {
-            backButton.addEventListener("click", function () {
-              window.location.href = "/vetDashboard?userId=" + localStorage.getItem("userId") + "&vetId=" + localStorage.getItem("vetId");
-            });
+            // If previous page is the vet dashboard
+            if (
+              originalPreviousPage &&
+              originalPreviousPage.includes("vetDashboard")
+            ) {
+              backButton.addEventListener("click", function () {
+                window.location.href =
+                  "/vetDashboard?userId=" +
+                  localStorage.getItem("userId") +
+                  "&vetId=" +
+                  localStorage.getItem("vetId");
+              });
+            }
+            // If previous page is the patients page
+            if (
+              originalPreviousPage &&
+              originalPreviousPage.includes("patients")
+            ) {
+              backButton.addEventListener("click", function () {
+                window.location.href =
+                  "/patients?vetId=" + localStorage.getItem("vetId");
+              });
+            }
           }
         }
 
@@ -369,10 +416,11 @@
         if (localStorage.getItem("petOwnerId")) {
           if (backButton) {
             backButton.addEventListener("click", function () {
-              window.location.href = "/petOwnerWelcome?userId=" + localStorage.getItem("userId");
+              window.location.href =
+                "/petOwnerWelcome?userId=" + localStorage.getItem("userId");
             });
           }
-        }        
+        }
 
         // Function to get query parameters from the URL
         function getQueryParams() {
