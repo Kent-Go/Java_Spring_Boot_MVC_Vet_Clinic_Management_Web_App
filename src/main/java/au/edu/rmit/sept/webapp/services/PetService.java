@@ -22,4 +22,7 @@ public interface PetService {
 
     // Update a pet's allergies and existing conditions by pet ID
     public Pet updatePetAllergiesAndExistingConditionsByPetID(int petID, String allergies, String existingConditions);
+
+    // Delete a pet by their ID
+    public void deletePetById(int petID);
 }

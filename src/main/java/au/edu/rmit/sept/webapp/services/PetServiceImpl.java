@@ -50,4 +50,9 @@ public class PetServiceImpl implements PetService {
         pet.setExistingConditions(existingConditions);
         return petRepository.save(pet);
     }
+
+    @Override
+    public void deletePetById(int petID){
+        petRepository.deleteById(petID);
+    }
 }
