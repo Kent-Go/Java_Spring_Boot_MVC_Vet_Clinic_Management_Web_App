@@ -57,7 +57,12 @@
         var values = [];
 
         for(var i = 0; i < fieldElements.length; i++){
-          values.push(fieldElements[i].value);
+          if(fieldElements[i].value === ''){
+            values.push("None");
+          }
+          else{
+            values.push(fieldElements[i].value);
+          }
         }
 
         return values;
@@ -70,6 +75,8 @@
           //and an array with the corresponding data.
           var formData = new FormData();
 
+          const petOwnerId = localStorage.getItem("petOwnerId");
+
           formData.append("petName", extractFields("petName"));
           formData.append("dob", extractFields("dob"));
           formData.append("gender", extractFields("gender"));
@@ -81,6 +88,13 @@
           formData.append("allergies", extractFields("allergies"));
           formData.append("existingCondition", extractFields("existingCondition"));
 
+          if(petOwnerId === null){
+            formData.append("petOwnerId", -1);
+          }
+          else {
+            formData.append("petOwnerId", petOwnerId);
+          }
+
           //Because the form is dynamic, we cannot submit it directly through html.
           //We cannot account for the varying number of fields, after all.
           //Instead, we have to make a post request with the form data to add the pets to the database.
@@ -91,7 +105,12 @@
             })
 
             //Redirect the user to the login page through javascript.
-            window.location.replace("/login");
+            if(petOwnerId === null){
+              window.location.replace("/login");
+            }
+            else {
+              window.location.replace(`/petList?petOwnerId=${petOwnerId}`); 
+            }
           }
 
           catch (e) {

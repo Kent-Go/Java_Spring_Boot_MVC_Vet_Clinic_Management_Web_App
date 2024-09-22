@@ -52,6 +52,7 @@ public class PetRegisterController {
             //@RequestParam("profilePicture") IDK profilePicture,
             @RequestParam("allergies") String[] allergies,
             @RequestParam("existingCondition") String[] condition,
+            @RequestParam("petOwnerId") int petOwnerID,
             SessionStatus sessionStatus,
             Model model) {
 
@@ -61,11 +62,17 @@ public class PetRegisterController {
         Address address = (Address) model.getAttribute("address");
         ArrayList<Pet> addedPets = new ArrayList<Pet>();
         
-        if (user != null && petOwner != null && address != null) {
+        if ((user != null && petOwner != null && address != null) || petOwnerID >= 0) {
             // Save address and petOwner to database
-            addressService.createAddress(address);
-            PetOwner owner = petOwnerService.createPetOwner(petOwner);
+            PetOwner owner;
 
+            if(petOwnerID < 0){
+                addressService.createAddress(address);
+                owner = petOwnerService.createPetOwner(petOwner);
+            }
+            else {
+                owner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerID);
+            }
 
             for(int i = 0; i < petName.length; i++){
                 // Assuming there is a service to handle pets
