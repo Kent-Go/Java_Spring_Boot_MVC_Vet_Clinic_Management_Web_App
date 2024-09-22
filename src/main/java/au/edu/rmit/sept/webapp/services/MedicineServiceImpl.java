@@ -30,6 +30,17 @@ public class MedicineServiceImpl implements MedicineService {
 
   @Override
   public Medicine createMedicine(Medicine medicine) {
+    // Validate required fields
+    if (medicine.getName() == null || medicine.getName().isEmpty()) {
+      throw new IllegalArgumentException("Medicine name cannot be empty");
+    }
+    if (medicine.getQuantity() == null || medicine.getQuantity().isEmpty()) {
+      throw new IllegalArgumentException("Medicine quantity cannot be empty");
+    }
+    if (medicine.getPrice() == null || medicine.getPrice().isEmpty()) {
+      throw new IllegalArgumentException("Medicine price cannot be empty");
+    }
+
     return medicineRepository.save(medicine);
   }
 }
