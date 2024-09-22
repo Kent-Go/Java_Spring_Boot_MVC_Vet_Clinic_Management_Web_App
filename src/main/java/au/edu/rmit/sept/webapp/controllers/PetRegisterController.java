@@ -47,7 +47,7 @@ public class PetRegisterController {
             @RequestParam("gender") String[] gender,
             @RequestParam("petType") String[] petType,
             @RequestParam("breed") String[] breed,
-            @RequestParam("color") String[] color,
+            //@RequestParam("color") String[] color,
             @RequestParam("weight") float[] weight,
             //@RequestParam("profilePicture") IDK profilePicture,
             @RequestParam("allergies") String[] allergies,
