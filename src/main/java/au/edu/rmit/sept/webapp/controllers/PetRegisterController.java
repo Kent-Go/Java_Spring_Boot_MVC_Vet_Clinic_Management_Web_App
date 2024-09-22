@@ -63,14 +63,17 @@ public class PetRegisterController {
         ArrayList<Pet> addedPets = new ArrayList<Pet>();
         
         if ((user != null && petOwner != null && address != null) || petOwnerID >= 0) {
-            // Save address and petOwner to database
+
             PetOwner owner;
 
+            //petOwnerID is -1 if this request comes through a new account,
+            //so we need to save the address and petOwner to the database.
             if(petOwnerID < 0){
                 addressService.createAddress(address);
                 owner = petOwnerService.createPetOwner(petOwner);
             }
             else {
+                //Just retrieve the petOwner if it's an existing account.
                 owner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerID);
             }
 

@@ -57,6 +57,8 @@
         var values = [];
 
         for(var i = 0; i < fieldElements.length; i++){
+          //For optional fields (allergies and existing conditions)
+          //autofill with "None" because otherwise an outOfIndex error is caused.
           if(fieldElements[i].value === ''){
             values.push("None");
           }
@@ -74,7 +76,8 @@
           //we create a FormData object which holds all the fields
           //and an array with the corresponding data.
           var formData = new FormData();
-
+          
+          //Get the petOwnerID from lcoal storage, if there.
           const petOwnerId = localStorage.getItem("petOwnerId");
 
           formData.append("petName", extractFields("petName"));
@@ -88,10 +91,14 @@
           formData.append("allergies", extractFields("allergies"));
           formData.append("existingCondition", extractFields("existingCondition"));
 
+          //If there is no petOwnerId in local storage,
+          //send the request with -1 as the petOwnerID to singal this registration
+          //is coming from a new account.
           if(petOwnerId === null){
             formData.append("petOwnerId", -1);
           }
           else {
+            //Send the existing ID otherwise.
             formData.append("petOwnerId", petOwnerId);
           }
 
@@ -104,7 +111,7 @@
               body: formData
             })
 
-            //Redirect the user to the login page through javascript.
+            //Redirect the user to the login page or pet list through javascript accordingly.
             if(petOwnerId === null){
               window.location.replace("/login");
             }
