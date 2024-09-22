@@ -57,7 +57,14 @@
         var values = [];
 
         for(var i = 0; i < fieldElements.length; i++){
-          values.push(fieldElements[i].value);
+          //For optional fields (allergies and existing conditions)
+          //autofill with "None" because otherwise an outOfIndex error is caused.
+          if(fieldElements[i].value === ''){
+            values.push("None");
+          }
+          else{
+            values.push(fieldElements[i].value);
+          }
         }
 
         return values;
@@ -69,17 +76,31 @@
           //we create a FormData object which holds all the fields
           //and an array with the corresponding data.
           var formData = new FormData();
+          
+          //Get the petOwnerID from lcoal storage, if there.
+          const petOwnerId = localStorage.getItem("petOwnerId");
 
           formData.append("petName", extractFields("petName"));
           formData.append("dob", extractFields("dob"));
           formData.append("gender", extractFields("gender"));
           formData.append("petType", extractFields("petType"));
           formData.append("breed", extractFields("breed"));
-          formData.append("color", extractFields("color"));
+          //formData.append("color", extractFields("color"));
           formData.append("weight", extractFields("weight"));
           //formData.append("profilePicture", extractFields("profilePicture"));
           formData.append("allergies", extractFields("allergies"));
           formData.append("existingCondition", extractFields("existingCondition"));
+
+          //If there is no petOwnerId in local storage,
+          //send the request with -1 as the petOwnerID to singal this registration
+          //is coming from a new account.
+          if(petOwnerId === null){
+            formData.append("petOwnerId", -1);
+          }
+          else {
+            //Send the existing ID otherwise.
+            formData.append("petOwnerId", petOwnerId);
+          }
 
           //Because the form is dynamic, we cannot submit it directly through html.
           //We cannot account for the varying number of fields, after all.
@@ -90,8 +111,13 @@
               body: formData
             })
 
-            //Redirect the user to the login page through javascript.
-            window.location.replace("/login");
+            //Redirect the user to the login page or pet list through javascript accordingly.
+            if(petOwnerId === null){
+              window.location.replace("/login");
+            }
+            else {
+              window.location.replace(`/petList?petOwnerId=${petOwnerId}`); 
+            }
           }
 
           catch (e) {
@@ -189,17 +215,17 @@
         const formBreed = createInput("breed", "text");
 
         //Color label and input
-        const formColorLabel = createLabel("color", "Color");
-        const formColor = createInput("color", "text");
+        //const formColorLabel = createLabel("color", "Color");
+        //const formColor = createInput("color", "text");
 
         //Weight label and input
         const formWeightLabel = createLabel("weight", "Weight (kg)");
         const formWeight = createInput("weight", "number");
 
         //Profile picture label and input
-        const formPictureLabel = createLabel("profilePicture", "Profile Picture", false);
-        const formPicture = createInput("profilePicture", "file", false);
-        formPicture.accept = "image/*";
+        //const formPictureLabel = createLabel("profilePicture", "Profile Picture", false);
+        //const formPicture = createInput("profilePicture", "file", false);
+        //formPicture.accept = "image/*";
 
         //Health Concerns h2
         const healthConcerns = document.createElement("h2");
@@ -232,12 +258,12 @@
         newFormDiv.appendChild(formType);
         newFormDiv.appendChild(formBreedLabel);
         newFormDiv.appendChild(formBreed);
-        newFormDiv.appendChild(formColorLabel);
-        newFormDiv.appendChild(formColor);
+        //newFormDiv.appendChild(formColorLabel);
+        //newFormDiv.appendChild(formColor);
         newFormDiv.appendChild(formWeightLabel);
         newFormDiv.appendChild(formWeight);
-        newFormDiv.appendChild(formPictureLabel);
-        newFormDiv.appendChild(formPicture);
+        //newFormDiv.appendChild(formPictureLabel);
+        //newFormDiv.appendChild(formPicture);
 
         newFormDiv.appendChild(healthConcerns);
 
@@ -319,19 +345,19 @@
             <label for="breed">Breed<span style="color: red">*</span></label>
             <input type="text" class="breed" name="breed" required />
 
-            <label for="color">Color<span style="color: red">*</span></label>
-            <input type="text" class="color" name="color" required />
+            <!-- <label for="color">Color<span style="color: red">*</span></label>
+            <input type="text" class="color" name="color" required /> -->
 
             <label for="weight">Weight (kg)<span style="color: red">*</span></label>
             <input type="number" class="weight" name="weight" required />
 
-            <label for="profilePicture">Profile Picture</label>
+            <!-- <label for="profilePicture">Profile Picture</label>
             <input
               type="file"
               class="profilePicture"
               name="profilePicture"
               accept="image/*"
-            />
+            /> -->
 
             <!-- Health Concern Section -->
             <h2>Health Concerns</h2>

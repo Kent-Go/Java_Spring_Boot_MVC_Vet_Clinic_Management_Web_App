@@ -47,11 +47,12 @@ public class PetRegisterController {
             @RequestParam("gender") String[] gender,
             @RequestParam("petType") String[] petType,
             @RequestParam("breed") String[] breed,
-            @RequestParam("color") String[] color,
+            //@RequestParam("color") String[] color,
             @RequestParam("weight") float[] weight,
             //@RequestParam("profilePicture") IDK profilePicture,
             @RequestParam("allergies") String[] allergies,
             @RequestParam("existingCondition") String[] condition,
+            @RequestParam("petOwnerId") int petOwnerID,
             SessionStatus sessionStatus,
             Model model) {
 
@@ -61,11 +62,20 @@ public class PetRegisterController {
         Address address = (Address) model.getAttribute("address");
         ArrayList<Pet> addedPets = new ArrayList<Pet>();
         
-        if (user != null && petOwner != null && address != null) {
-            // Save address and petOwner to database
-            addressService.createAddress(address);
-            PetOwner owner = petOwnerService.createPetOwner(petOwner);
+        if ((user != null && petOwner != null && address != null) || petOwnerID >= 0) {
 
+            PetOwner owner;
+
+            //petOwnerID is -1 if this request comes through a new account,
+            //so we need to save the address and petOwner to the database.
+            if(petOwnerID < 0){
+                addressService.createAddress(address);
+                owner = petOwnerService.createPetOwner(petOwner);
+            }
+            else {
+                //Just retrieve the petOwner if it's an existing account.
+                owner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerID);
+            }
 
             for(int i = 0; i < petName.length; i++){
                 // Assuming there is a service to handle pets
