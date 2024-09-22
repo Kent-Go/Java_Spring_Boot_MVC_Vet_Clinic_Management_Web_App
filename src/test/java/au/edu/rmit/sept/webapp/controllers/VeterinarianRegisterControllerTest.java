@@ -1,16 +1,13 @@
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+package au.edu.rmit.sept.webapp.controllers;
 
-import au.edu.rmit.sept.webapp.controllers.VeterinarianRegisterController;
-import au.edu.rmit.sept.webapp.services.UserService;
-import au.edu.rmit.sept.webapp.services.AddressService;
-import au.edu.rmit.sept.webapp.services.VetService;
-import au.edu.rmit.sept.webapp.services.QualificationService;
+import au.edu.rmit.sept.webapp.models.Address;
+import au.edu.rmit.sept.webapp.models.Qualification;
 import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.models.Vet;
-import au.edu.rmit.sept.webapp.models.Qualification;
-import au.edu.rmit.sept.webapp.models.Address;
-
+import au.edu.rmit.sept.webapp.services.AddressService;
+import au.edu.rmit.sept.webapp.services.QualificationService;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.VetService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,6 +16,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+
 
 public class VeterinarianRegisterControllerTest {
 
