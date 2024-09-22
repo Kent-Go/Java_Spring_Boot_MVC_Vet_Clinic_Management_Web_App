@@ -26,6 +26,19 @@ public class QualificationServiceImpl implements QualificationService {
   // Create a new qualification and save it to the database
   @Override
   public Qualification createQualification(Qualification qualification) {
+    if (qualification.getName() == null || qualification.getName().trim().isEmpty()) {
+      throw new IllegalArgumentException("Qualification name cannot be empty");
+    }
+    if (qualification.getUniversity() == null || qualification.getUniversity().trim().isEmpty()) {
+      throw new IllegalArgumentException("University cannot be empty");
+    }
+    if (qualification.getCountry() == null || qualification.getCountry().trim().isEmpty()) {
+      throw new IllegalArgumentException("Country cannot be empty");
+    }
+    if (qualification.getYear() <= 0) {
+      throw new IllegalArgumentException("Year must be a positive number");
+    }
+
     return qualificationRepository.save(qualification);
   }
 }

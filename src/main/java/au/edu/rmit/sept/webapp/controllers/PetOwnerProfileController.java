@@ -14,11 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Map;
 
 @Controller
 public class PetOwnerProfileController {
@@ -34,7 +34,19 @@ public class PetOwnerProfileController {
 
     @GetMapping("/petOwnerProfile")
     public String showPetOwnerProfile(@RequestParam("petOwnerId") int petOwnerId, Model model) {
+        // Check for invalid parameter values (e.g., negative ID)
+        if (petOwnerId <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid PetOwner ID");
+        }
+
+        // Only call service if the ID is valid
         PetOwner petOwner = petOwnerService.getPetOwnerByUserID(petOwnerId);
+
+        // If PetOwner is not found, return 404
+        if (petOwner == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PetOwner not found");
+        }
+
         User user = userService.getUserByUserID(petOwner.getUserID());
         Address address = addressService.getAddressByUserID(user.getId());
 
@@ -45,11 +57,12 @@ public class PetOwnerProfileController {
         return "petOwnerProfile";
     }
 
+
+
     @PostMapping("/petOwnerProfile")
-        public String updatPetOwnereProfile(
+    public String updatePetOwnerProfile(
             @RequestParam("edit-userId") int userId,
             @RequestParam("edit-petOwnerId") int petOwnerId,
-
             @RequestParam("edit-firstname") String firstname,
             @RequestParam("edit-lastname") String lastname,
             @RequestParam("edit-dob") String birthDate,
@@ -57,14 +70,13 @@ public class PetOwnerProfileController {
             @RequestParam("edit-phone") String phoneNumber,
             @RequestParam("edit-email") String email,
             @RequestParam("edit-password") String password,
-
             @RequestParam("edit-streetAddress") String street,
             @RequestParam("edit-suburb") String suburb,
             @RequestParam("edit-state") String state,
             @RequestParam("edit-postcode") String postcode,
-
             Model model) throws IOException {
-        // Fetch the User, PetOwner, Address from the database
+
+        // Fetch the User and Address from the database
         User user = userService.getUserByUserID(userId);
         Address address = addressService.getAddressByUserID(userId);
 

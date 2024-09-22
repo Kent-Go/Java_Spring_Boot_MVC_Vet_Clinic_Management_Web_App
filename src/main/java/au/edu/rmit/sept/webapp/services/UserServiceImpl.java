@@ -30,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(User user) {
+    if (user == null) {
+      throw new IllegalArgumentException("User cannot be null");
+    }
     return userRepository.save(user);
   }
 
