@@ -37,6 +37,12 @@ public class PetListController {
 
         // Get the pet owner based on the petOwnerId
         PetOwner petOwner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerId);
+        // Handle null case for petOwner
+        if (petOwner == null) {
+            // Optionally, you could add an error message or return a different view
+            model.addAttribute("errorMessage", "Pet Owner not found.");
+            return "errorPage";  // Make sure to have an error page for this case
+        }
 
         // Get the user based on the petOwnerId
         User user = userService.getUserByUserID(petOwner.getUserID());

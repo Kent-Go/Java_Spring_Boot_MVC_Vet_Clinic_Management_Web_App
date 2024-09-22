@@ -35,6 +35,17 @@ public class VetServiceImpl implements VetService {
 
   @Override
   public Vet createVet(Vet vet) {
+    if (vet.getTitle() == null || vet.getTitle().isEmpty()) {
+      throw new IllegalArgumentException("Title is required");
+    }
+    if (vet.getLanguagesSpoken() == null || vet.getLanguagesSpoken().isEmpty()) {
+      throw new IllegalArgumentException("Languages spoken is required");
+    }
+    if (vet.getSelfDescription() == null || vet.getSelfDescription().isEmpty()) {
+      throw new IllegalArgumentException("Self description is required");
+    }
+    // Add any other field validation as required
+
     return vetRepository.save(vet);
   }
 }
