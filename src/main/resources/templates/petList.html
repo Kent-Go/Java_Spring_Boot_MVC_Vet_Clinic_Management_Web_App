@@ -45,15 +45,15 @@
           th:id="'pet-card-' + ${pet.id}"
         >
           <img
-            th:src="${pet.species == 'Dog' ? '/images/dog.png' :
-                          pet.species == 'Cat' ? '/images/cat.png' :
-                          pet.species == 'Bird' ? '/images/bird.png' :
-                          pet.species == 'Rabbit' ? '/images/bunny.png' :
-                          pet.species == 'Hamster' ? '/images/rodent.png' :
-                          pet.species == 'Fish' ? '/images/fish.png' :
-                          pet.species == 'Horse' ? '/images/horse.png' :
-                          pet.species == 'Turtle' ? '/images/turtle.png' :
-                          pet.species == 'Chicken' ? '/images/chicken.png' :
+            th:src="${pet.species == 'Dog' || pet.species == 'dog' ? '/images/dog.png' :
+                          pet.species == 'Cat' || pet.species == 'cat' ? '/images/cat.png' :
+                          pet.species == 'Bird' || pet.species == 'bird' ? '/images/bird.png' :
+                          pet.species == 'Rabbit' || pet.species == 'rabbit' ? '/images/bunny.png' :
+                          pet.species == 'Hamster' || pet.species == 'hamster'? '/images/rodent.png' :
+                          pet.species == 'Fish' || pet.species == 'fish' ? '/images/fish.png' :
+                          pet.species == 'Horse' || pet.species == 'horse' ? '/images/horse.png' :
+                          pet.species == 'Turtle' || pet.species == 'turtle' ? '/images/turtle.png' :
+                          pet.species == 'Chicken' || pet.species == 'chicken' ? '/images/chicken.png' :
                           '/images/pet-placeholder.png'}"
             alt="Pet Image"
             class="pet-image"
