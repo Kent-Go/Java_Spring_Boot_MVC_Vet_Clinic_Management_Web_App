@@ -50,6 +50,8 @@ public class PrescriptionListController {
             // For each appointment, get the prescribed medication
             appointments.forEach(appointment -> {
                 List<PrescribedMedication> prescribedMedications = prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId());
+
+                // For each prescribed medication, get the medicine and set the appointment and pet
                 prescribedMedications.forEach(prescribedMedication -> {
                     Medicine medicine = medicineService.getMedicineByID(prescribedMedication.getMedicineID());
                     prescribedMedication.setMedicine(medicine);
