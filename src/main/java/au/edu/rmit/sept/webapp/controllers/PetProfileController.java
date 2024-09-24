@@ -2,10 +2,12 @@ package au.edu.rmit.sept.webapp.controllers;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
@@ -174,135 +176,186 @@ public class PetProfileController {
         return "redirect:/petProfile?petId=" + petId;
     }
 
-    // Method to handle form submission for updating existing medication
+    // Method to handle form submission for updating the pet's prescribed medications
     @PostMapping("/updateMedication")
     public String updateMedication(
             @RequestParam("petId") int petId,
-            @RequestParam("medicationId") String medicationId,
+            @RequestParam(value = "medicationId", required = false) String medicationId,
             @RequestParam("name") String name,
             @RequestParam("dosage") String dosage,
             @RequestParam("frequency") String frequency,
             @RequestParam("duration") String duration,
             @RequestParam("instruction") String instruction) {
-        // Split name and instruction using '|'
-        String[] nameSplit = name.split("\\|,");
-        String[] instructionSplit = instruction.split("\\|,");
 
-        // If the name or instruction contains '|', then change it to ""
-        for (int i = 0; i < nameSplit.length; i++) {
-            if (nameSplit[i].contains("|")) {
-                nameSplit[i] = nameSplit[i].replace("|", "");
+        // Handle multiple medications based on presence of "|", because "|" shows how many medications need to be processed
+        if (medicationId == null) {
+            if (hasMultipleMedications(name)) {
+                return handleMultipleMedications(petId, name, dosage, frequency, duration, instruction);
+            } else {
+                return handleSingleMedication(petId, null, name, dosage, frequency, duration, instruction);
             }
+        } else {
+            return updateExistingMedications(petId, medicationId, name, dosage, frequency, duration, instruction);
+        }
+    }
+
+    // Helper method to determine if multiple medications are being processed
+    private boolean hasMultipleMedications(String name) {
+        int countName = name.length() - name.replace("|", "").length();
+
+        return countName > 1;
+    }
+
+    // Helper method to process multiple medications
+    private String handleMultipleMedications(int petId, String name, String dosage, String frequency, String duration,
+            String instruction) {
+        String[] names = cleanAndSplit(name, "\\|,");
+        String[] dosages = dosage.split(",");
+        String[] frequencies = frequency.split(",");
+        String[] durations = duration.split(",");
+        String[] instructions = cleanAndSplit(instruction, "\\|,");
+
+        List<Map<String, Object>> medicationList = buildMedicationList(null, names, dosages, frequencies, durations,
+                instructions);
+
+        return processMedications(petId, medicationList);
+    }
+
+    // Helper method to process a single medication
+    private String handleSingleMedication(int petId, Integer medicationId, String name, String dosage, String frequency,
+            String duration, String instruction) {
+        String cleanedName = name.replace("|", "");
+        String cleanedInstruction = instruction.replace("|", "");
+
+        Map<String, Object> medicationMap = buildSingleMedicationMap(medicationId, cleanedName, dosage, frequency,
+                duration, cleanedInstruction);
+
+        List<Map<String, Object>> medicationList = Collections.singletonList(medicationMap);
+
+        return processMedications(petId, medicationList);
+    }
+
+    // Helper method to update existing medications
+    private String updateExistingMedications(int petId, String medicationId, String name, String dosage,
+            String frequency, String duration, String instruction) {
+        String[] names = cleanAndSplit(name, "\\|,");
+        String[] dosages = dosage.split(",");
+        String[] frequencies = frequency.split(",");
+        String[] durations = duration.split(",");
+        String[] instructions = cleanAndSplit(instruction, "\\|,");
+        String[] medicationIds = medicationId.split(",");
+
+        List<Map<String, Object>> medicationList = buildMedicationList(medicationIds, names, dosages, frequencies,
+                durations, instructions);
+
+        return processMedications(petId, medicationList);
+    }
+
+    // Helper method to build a medication list
+    private List<Map<String, Object>> buildMedicationList(String[] medicationIds, String[] names, String[] dosages,
+            String[] frequencies, String[] durations, String[] instructions) {
+        List<Map<String, Object>> medicationList = new ArrayList<>();
+
+        for (int i = 0; i < names.length; i++) {
+            Integer medId = (medicationIds != null && i < medicationIds.length && !medicationIds[i].isEmpty())
+                    ? Integer.parseInt(medicationIds[i])
+                    : null;
+
+            Map<String, Object> medicationMap = buildSingleMedicationMap(medId, names[i], dosages[i], frequencies[i],
+                    durations[i], instructions[i]);
+            medicationList.add(medicationMap);
         }
 
-        for (int i = 0; i < instructionSplit.length; i++) {
-            if (instructionSplit[i].contains("|")) {
-                instructionSplit[i] = instructionSplit[i].replace("|", "");
-            }
-        }
+        return medicationList;
+    }
 
-        // Split medicationId, dosage, frequency, and duration to get the integer values
-        // from delimiter ","
-        String[] medicationIdSplit = medicationId.split(",");
-        String[] dosageSplit = dosage.split(",");
-        String[] frequencySplit = frequency.split(",");
-        String[] durationSplit = duration.split(",");
+    // Helper method to build a single medication map
+    private Map<String, Object> buildSingleMedicationMap(Integer medicationId, String name, String dosage,
+            String frequency, String duration, String instruction) {
+        Map<String, Object> medicationMap = new HashMap<>();
+        medicationMap.put("medicationId", medicationId);
+        medicationMap.put("name", name);
+        medicationMap.put("dosage", Integer.parseInt(dosage));
+        medicationMap.put("frequency", Integer.parseInt(frequency));
+        medicationMap.put("duration", Integer.parseInt(duration));
+        medicationMap.put("instruction", instruction);
 
+        return medicationMap;
+    }
+
+    // Helper method to clean and split strings
+    private String[] cleanAndSplit(String input, String delimiter) {
+        return Arrays.stream(input.split(delimiter))
+                .map(s -> s.replace("|", "").trim())
+                .toArray(String[]::new);
+    }
+
+    // Main logic to process medications (new or existing)
+    private String processMedications(int petId, List<Map<String, Object>> medicationList) {
         try {
-            // Loop through the split values and append them to a list
-            List<Map<String, Object>> medicationList = new ArrayList<>();
-            for (int i = 0; i < nameSplit.length; i++) {
-                Map<String, Object> medicationMap = new HashMap<>();
-
-                // Handle immunisation ID: check if it exists (for existing records)
-                if (i < medicationIdSplit.length && medicationIdSplit[i] != null
-                        && !medicationIdSplit[i].isEmpty()) {
-                    medicationMap.put("medicationId", Integer.parseInt(medicationIdSplit[i]));
-                } else {
-                    // No ID for new rows
-                    medicationMap.put("medicationId", null);
-                }
-
-                medicationMap.put("name", nameSplit[i]);
-                medicationMap.put("dosage", Integer.parseInt(dosageSplit[i]));
-                medicationMap.put("frequency", Integer.parseInt(frequencySplit[i]));
-                medicationMap.put("duration", Integer.parseInt(durationSplit[i]));
-                medicationMap.put("instruction", instructionSplit[i]);
-                medicationList.add(medicationMap);
-            }
-
-            // For each medication in the list, update the prescribed medication
             for (Map<String, Object> medicationMap : medicationList) {
-                PrescribedMedication prescribedMedication = null;
-
-                // Check if the medicine exists
+                PrescribedMedication prescribedMedication = getOrCreatePrescribedMedication(medicationMap, petId);
                 Medicine medicine = medicineService.getMedicineByName((String) medicationMap.get("name"));
 
                 if (medicine == null) {
-                    // If the medicine does not exist, pass a message to the html to display an
-                    // error
                     return "redirect:/petProfile?petId=" + petId + "&error=Medicine does not exist!";
                 }
 
-                // Check if the medication ID exists (for existing entries)
-                Integer medicationID = (Integer) medicationMap.get("medicationId");
+                updatePrescribedMedicationFields(prescribedMedication, medicationMap, medicine);
+                Order order = new Order(LocalDate.now(), "Pending");
+                orderService.createOrder(order);
 
-                // If medication ID exists, fetch the existing prescribed medication
-                if (medicationID != null) {
-                    try {
-                        // Try to fetch the existing prescribed medication by ID
-                        prescribedMedication = prescribedMedicationService
-                                .getPrescribedMedicationByID(medicationID);
-                    } catch (Exception e) {
-                        // Log if the ID was invalid (for debugging)
-                        System.out.println("No medication found for ID: " + medicationID + " - Creating a new entry.");
-                    }
-                }
-
-                Order order = null;
-
-                // If no existing prescription is found or it's a new entry, create a new
-                // instance of prescribed medication and order
-                if (prescribedMedication == null) {
-                    prescribedMedication = new PrescribedMedication();
-                    order = new Order(LocalDate.now(), "Pending");
-                    orderService.createOrder(order);
-
-                    prescribedMedication.setOrderID(order.getId());
-
-                    // Check if the pet has an appointment today
-                    // If the pet has an appointment today, set the appointment ID
-                    Collection<Appointment> appointments = appointmentService.getAppointmentByPetID(petId);
-                    for (Appointment appointment : appointments) {
-                        if (appointment.getDate().equals(LocalDate.now())) {
-                            prescribedMedication.setAppointmentID(appointment.getId());
-                            break;
-                        }
-                    }
-
-                    // If the pet does not have an appointment today, return an error
-                    if (prescribedMedication.getAppointmentID() == 0) {
-                        return "redirect:/petProfile?petId=" + petId + "&error=No appointment today!";
-                    }
-                }
-
-                // Update the fields for the prescribed medication for existing and new entries
-                prescribedMedication.setDosage((int) medicationMap.get("dosage"));
-                prescribedMedication.setDailyFrequency((int) medicationMap.get("frequency"));
-                prescribedMedication.setDuration((int) medicationMap.get("duration"));
-                prescribedMedication.setInstruction((String) medicationMap.get("instruction"));
-                prescribedMedication.setMedicineID(medicine.getId());
-                prescribedMedication.setMedicine(medicine);
-
-                // Save the updated prescribed medication
+                prescribedMedication.setOrderID(order.getId());
                 prescribedMedicationService.updatePrescribedMedication(prescribedMedication);
             }
-
-            // Redirect back to the pet's profile after successful update
-            return "redirect:/petProfile?petId=" + petId;
         } catch (Exception e) {
             return "redirect:/petProfile?petId=" + petId + "&error=" + e.getMessage();
         }
+
+        return "redirect:/petProfile?petId=" + petId;
+    }
+
+    // Helper method to get or create a PrescribedMedication
+    private PrescribedMedication getOrCreatePrescribedMedication(Map<String, Object> medicationMap, int petId) {
+        Integer medicationId = (Integer) medicationMap.get("medicationId");
+
+        if (medicationId != null) {
+            try {
+                return prescribedMedicationService.getPrescribedMedicationByID(medicationId);
+            } catch (Exception e) {
+                // Log if no medication is found, fall back to creating a new one
+                System.out.println("No medication found for ID: " + medicationId + " - Creating a new entry.");
+            }
+        }
+
+        PrescribedMedication prescribedMedication = new PrescribedMedication();
+        setAppointmentId(prescribedMedication, petId);
+
+        return prescribedMedication;
+    }
+
+    // Helper method to set appointment ID for today
+    private void setAppointmentId(PrescribedMedication prescribedMedication, int petId) {
+        Collection<Appointment> appointments = appointmentService.getAppointmentByPetID(petId);
+        appointments.stream()
+                .filter(appointment -> appointment.getDate().equals(LocalDate.now()))
+                .findFirst()
+                .ifPresent(appointment -> prescribedMedication.setAppointmentID(appointment.getId()));
+
+        if (prescribedMedication.getAppointmentID() == 0) {
+            throw new IllegalStateException("No appointment found for today!");
+        }
+    }
+
+    // Helper method to update prescribed medication fields
+    private void updatePrescribedMedicationFields(PrescribedMedication prescribedMedication,
+            Map<String, Object> medicationMap, Medicine medicine) {
+        prescribedMedication.setDosage((int) medicationMap.get("dosage"));
+        prescribedMedication.setDailyFrequency((int) medicationMap.get("frequency"));
+        prescribedMedication.setDuration((int) medicationMap.get("duration"));
+        prescribedMedication.setInstruction((String) medicationMap.get("instruction"));
+        prescribedMedication.setMedicineID(medicine.getId());
+        prescribedMedication.setMedicine(medicine);
     }
 
     // Method to handle deletion of medication
