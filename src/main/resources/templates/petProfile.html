@@ -415,10 +415,21 @@
         // If petOwnerId is in local storage, set the back button to redirect to the pet owner welcome page
         if (localStorage.getItem("petOwnerId")) {
           if (backButton) {
-            backButton.addEventListener("click", function () {
-              window.location.href =
-                "/petOwnerWelcome?userId=" + localStorage.getItem("userId");
-            });
+            // If the previous page is the pet list, redirect the back button to the pet list page
+            if (
+              originalPreviousPage &&
+              originalPreviousPage.includes("petList")
+            ) {
+              backButton.addEventListener("click", function () {
+                window.location.href =
+                  "/petList?petOwnerId=" + localStorage.getItem("petOwnerId");
+              });
+            } else {
+              backButton.addEventListener("click", function () {
+                window.location.href =
+                  "/petOwnerWelcome?userId=" + localStorage.getItem("userId");
+              });
+            }
           }
         }
 
@@ -722,7 +733,7 @@
                     <input
                       type="hidden"
                       name="medicationId"
-                      th:value="${medication.id}"
+                      th:value="${medication.id != null ? medication.id : 'new'}"
                     />
                     <p>
                       <strong>Name:</strong>
