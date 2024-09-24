@@ -6,6 +6,14 @@
     <title>Your Pets</title>
     <link rel="stylesheet" href="/css/petList.css" />
   </head>
+  <script>
+    // This function prevents the 'Delete' button click from redirecting to the pet profile
+    document.querySelectorAll(".delete-pet-button").forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+    });
+  </script>
   <body>
     <!-- Header Section -->
     <div class="header">
@@ -26,7 +34,9 @@
       <a href="javascript:void(0)" class="active">Pets</a>
       <a href="/trendsHome">Articles & Videos</a>
       <a href="/consultation">Consultation</a>
-      <a th:href="@{/prescriptions(petOwnerId=${petOwner.id})}">Prescriptions</a>
+      <a th:href="@{/prescriptions(petOwnerId=${petOwner.id})}"
+        >Prescriptions</a
+      >
       <a href="/faq">FAQ</a>
     </div>
 
@@ -39,41 +49,51 @@
       </div>
 
       <div class="pet-selection">
-        <div
-          th:each="pet : ${pets}"
-          class="pet-card"
-          th:id="'pet-card-' + ${pet.id}"
-        >
-          <img
-            th:src="${pet.species == 'Dog' || pet.species == 'dog' ? '/images/dog.png' :
-                          pet.species == 'Cat' || pet.species == 'cat' ? '/images/cat.png' :
-                          pet.species == 'Bird' || pet.species == 'bird' ? '/images/bird.png' :
-                          pet.species == 'Rabbit' || pet.species == 'rabbit' ? '/images/bunny.png' :
-                          pet.species == 'Hamster' || pet.species == 'hamster'? '/images/rodent.png' :
-                          pet.species == 'Fish' || pet.species == 'fish' ? '/images/fish.png' :
-                          pet.species == 'Horse' || pet.species == 'horse' ? '/images/horse.png' :
-                          pet.species == 'Turtle' || pet.species == 'turtle' ? '/images/turtle.png' :
-                          pet.species == 'Chicken' || pet.species == 'chicken' ? '/images/chicken.png' :
-                          '/images/pet-placeholder.png'}"
-            alt="Pet Image"
-            class="pet-image"
-          />
+        <div th:each="pet : ${pets}">
+          <!-- Make the card clickable for the pet profile -->
+          <div class="pet-card" th:id="'pet-card-' + ${pet.id}">
+            <a th:href="@{/petProfile(petId=${pet.id})}" class="pet-card-link" style="text-decoration: none;">
+              <div class="pet-card-content">
+                <img
+                  th:src="${pet.species == 'Dog' || pet.species == 'dog' ? '/images/dog.png' :
+                                    pet.species == 'Cat' || pet.species == 'cat' ? '/images/cat.png' :
+                                    pet.species == 'Bird' || pet.species == 'bird' ? '/images/bird.png' :
+                                    pet.species == 'Rabbit' || pet.species == 'rabbit' ? '/images/bunny.png' :
+                                    pet.species == 'Hamster' || pet.species == 'hamster'? '/images/rodent.png' :
+                                    pet.species == 'Fish' || pet.species == 'fish' ? '/images/fish.png' :
+                                    pet.species == 'Horse' || pet.species == 'horse' ? '/images/horse.png' :
+                                    pet.species == 'Turtle' || pet.species == 'turtle' ? '/images/turtle.png' :
+                                    pet.species == 'Chicken' || pet.species == 'chicken' ? '/images/chicken.png' :
+                                    '/images/pet-placeholder.png'}"
+                  alt="Pet Image"
+                  class="pet-image"
+                />
 
-          <div class="pet-info">
-            <h2 th:text="${pet.name}">Pet Name</h2>
-            <p th:text="'Species: ' + ${pet.species}"></p>
-            <p th:text="'Breed: ' + ${pet.breed}"></p>
-            <p th:text="'Gender: ' + ${pet.gender}"></p>
-            <p th:text="'Weight: ' + ${pet.weight} + ' kg'"></p>
+                <div class="pet-info">
+                  <h2 th:text="${pet.name}">Pet Name</h2>
+                  <p th:text="'Species: ' + ${pet.species}"></p>
+                  <p th:text="'Breed: ' + ${pet.breed}"></p>
+                  <p th:text="'Gender: ' + ${pet.gender}"></p>
+                  <p th:text="'Weight: ' + ${pet.weight} + ' kg'"></p>
+                </div>
+              </div>
+            </a>
+
+            <!-- Delete Pet Button (Inside the card but outside the link) -->
+            <form
+              th:action="@{/pets/delete(petId=${pet.id}, petOwnerId=${petOwner.id})}"
+              method="post"
+              class="delete-form"
+            >
+              <button
+                type="submit"
+                class="delete-pet-button"
+                onclick="event.stopPropagation();"
+              >
+                Delete Pet
+              </button>
+            </form>
           </div>
-
-          <form
-            th:action="@{/pets/delete(petId=${pet.id}, petOwnerId=${petOwner.id})}"
-            method="post"
-            class="delete-form"
-          >
-            <button type="submit" class="delete-pet-button">Delete Pet</button>
-          </form>
         </div>
       </div>
     </div>
