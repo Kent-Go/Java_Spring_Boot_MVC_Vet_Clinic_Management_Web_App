@@ -143,6 +143,10 @@ public class PrescribedMedication {
         return appointment;
     }
 
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
     public void setAppointmentType(Appointment appointment) {
         this.appointment = appointment;
     }

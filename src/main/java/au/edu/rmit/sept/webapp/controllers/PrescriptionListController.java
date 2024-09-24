@@ -1,62 +1,81 @@
 package au.edu.rmit.sept.webapp.controllers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import au.edu.rmit.sept.webapp.models.PrescribedMedication;
+import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.models.PetOwner;
 import au.edu.rmit.sept.webapp.models.Medicine;
+import au.edu.rmit.sept.webapp.models.Appointment;
+import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import au.edu.rmit.sept.webapp.services.PetService;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.PetOwnerService;
+import au.edu.rmit.sept.webapp.services.MedicineService;
+import au.edu.rmit.sept.webapp.services.AppointmentService;
+import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
 @Controller
 public class PrescriptionListController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PetOwnerService petOwnerService;
+
+    @Autowired
+    private PetService petService;
+
+    @Autowired
+    private AppointmentService appointmentService;
+
+    @Autowired
+    private MedicineService medicineService;
+
+    @Autowired
+    private PrescribedMedicationService prescribedMedicationService;
 
     @GetMapping("/prescriptions")
-    public String showPrescriptionList(Model model) {
-        // Create hardcoded data
-        List<PrescribedMedication> prescriptions = new ArrayList<>();
+    public String showPrescriptionList(@RequestParam("petOwnerId") int petOwnerId, Model model) {
+        List<PrescribedMedication> prescriptions = new ArrayList<PrescribedMedication>();
 
-        // Medicine 1
-        Medicine medicine1 = new Medicine();
-        medicine1.setId(1);
-        medicine1.setName("Frusemide");
-        medicine1.setQuantity("20mg");
-        medicine1.setPrice("$10.00");
+        // Get all the pet based on the pet owner id
+        Collection<Pet> pets = petService.getPetsByPetOwnerID(petOwnerId);
 
-        // Prescription 1
-        PrescribedMedication prescription1 = new PrescribedMedication(1, 1, 14, "Feed one tablet daily during breakfast for 2 weeks.", medicine1.getId(), 1, 0);
-        prescription1.setMedicine(medicine1);
-        prescriptions.add(prescription1);
+        // For each pet, get the prescribed medication
+        for (Pet pet : pets) {
+            // Get the appointments for the pet
+            Collection<Appointment> appointments = appointmentService.getAppointmentByPetID(pet.getId());
+            
+            // For each appointment, get the prescribed medication
+            appointments.forEach(appointment -> {
+                List<PrescribedMedication> prescribedMedications = prescribedMedicationService.getPrescribedMedicationByAppointmentID(appointment.getId());
 
-        // Medicine 2
-        Medicine medicine2 = new Medicine();
-        medicine2.setId(2);
-        medicine2.setName("Medicine 2");
-        medicine2.setQuantity("20mg");
-        medicine2.setPrice("$15.00");
+                // For each prescribed medication, get the medicine and set the appointment and pet
+                prescribedMedications.forEach(prescribedMedication -> {
+                    Medicine medicine = medicineService.getMedicineByID(prescribedMedication.getMedicineID());
+                    prescribedMedication.setMedicine(medicine);
+                    prescribedMedication.setAppointment(appointment);
+                    prescribedMedication.getAppointment().setPet(pet);
+                });
+                prescriptions.addAll(prescribedMedications);
+            });
+        }
 
-        // Prescription 2
-        PrescribedMedication prescription2 = new PrescribedMedication(2, 2, 7, "Feed one tablet twice daily during breakfast and dinner for 1 week.", medicine2.getId(), 2, 0);
-        prescription2.setMedicine(medicine2);
-        prescriptions.add(prescription2);
+        PetOwner petOwner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerId);
+        petOwner.setUser(userService.getUserByUserID(petOwner.getUserID()));
 
-        // Medicine 3
-        Medicine medicine3 = new Medicine();
-        medicine3.setId(3);
-        medicine3.setName("Medicine 3");
-        medicine3.setQuantity("50mg");
-        medicine3.setPrice("$20.00");
-
-        // Prescription 3
-        PrescribedMedication prescription3 = new PrescribedMedication(1, 1, 10, "Feed one tablet daily during lunch for 10 days.", medicine3.getId(), 3, 0);
-        prescription3.setMedicine(medicine3);
-        prescriptions.add(prescription3);
-
-        // Add prescriptions to the model
         model.addAttribute("prescriptions", prescriptions);
+        model.addAttribute("petOwner", petOwner);
 
         return "prescriptionList";
     }
-
 }

@@ -11,6 +11,9 @@ public interface MedicineService {
   // Get a medicine by their name
   public Medicine getMedicineByName(String medicineName);
 
+  // Get a medicine by their ID
+  public Medicine getMedicineByID(int medicineID);
+
   // Create a new medicine
   public Medicine createMedicine(Medicine medicine);
   

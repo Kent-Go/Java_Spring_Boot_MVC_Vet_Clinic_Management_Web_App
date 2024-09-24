@@ -29,6 +29,11 @@ public class MedicineServiceImpl implements MedicineService {
   }
 
   @Override
+  public Medicine getMedicineByID(int medicineID) {
+    return medicineRepository.findById(medicineID).orElse(null);
+  }
+
+  @Override
   public Medicine createMedicine(Medicine medicine) {
     // Validate required fields
     if (medicine.getName() == null || medicine.getName().isEmpty()) {
