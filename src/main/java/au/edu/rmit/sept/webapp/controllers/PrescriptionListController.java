@@ -2,6 +2,7 @@ package au.edu.rmit.sept.webapp.controllers;
 
 import org.springframework.ui.Model;
 import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.models.PetOwner;
 import au.edu.rmit.sept.webapp.models.Medicine;
 import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.PrescribedMedication;
@@ -16,12 +17,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import au.edu.rmit.sept.webapp.services.PetService;
+import au.edu.rmit.sept.webapp.services.UserService;
+import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.MedicineService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
 @Controller
 public class PrescriptionListController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PetOwnerService petOwnerService;
 
     @Autowired
     private PetService petService;
@@ -62,8 +70,11 @@ public class PrescriptionListController {
             });
         }
 
+        PetOwner petOwner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerId);
+        petOwner.setUser(userService.getUserByUserID(petOwner.getUserID()));
+
         model.addAttribute("prescriptions", prescriptions);
-        model.addAttribute("petOwnerId", petOwnerId);
+        model.addAttribute("petOwner", petOwner);
 
         return "prescriptionList";
     }

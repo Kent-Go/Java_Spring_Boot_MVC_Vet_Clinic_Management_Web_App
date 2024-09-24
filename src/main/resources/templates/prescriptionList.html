@@ -9,21 +9,21 @@
   <body>
     <!-- Header Section -->
     <div class="header">
-      <a href="/">
+      <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" id="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
-      <a href="#" class="profile-link">
+      <a th:href="@{/petOwnerProfile(petOwnerId=${petOwner.id})}" class="profile-link">
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
 
     <!-- Navbar Section -->
     <div class="nav-bar">
-      <a href="/">Home</a>
-      <a href="/pets">Pets</a>
-      <a href="/articles">Articles & Videos</a>
+      <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}">Home</a>
+      <a th:href="@{/petList(petOwnerId=${petOwner.id})}">Pets</a>
+      <a href="/trendsHome">Articles & Videos</a>
       <a href="/consultation">Consultation</a>
-      <a href="/prescriptions" class="active">Prescriptions</a>
+      <a href="javascript:void(0)" class="active">Prescriptions</a>
     </div>
 
     <!-- Main Content Section -->
