@@ -41,7 +41,7 @@ public class Vet {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "clinic_id", insertable = false, updatable = false)
+    @JoinColumn(name = "clinic_id", insertable = false, updatable = false) 
     private Clinic clinic;
 
     // Getters and Setters
@@ -114,10 +114,11 @@ public class Vet {
     }
 
     // Constructor without ID because it is auto-generated
-    public Vet(String title, String languagesSpoken, String selfDescription, int userID) {
+    public Vet(String title, String languagesSpoken, String selfDescription, int userID, int clinicID) {
         this.title = title;
         this.languagesSpoken = languagesSpoken;
         this.selfDescription = selfDescription;
         this.userID = userID;
+        this.clinicID = clinicID;
     }
 }
