@@ -10,17 +10,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import au.edu.rmit.sept.webapp.models.Vet;
 import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.models.Address;
+import au.edu.rmit.sept.webapp.models.Clinic;
 import au.edu.rmit.sept.webapp.models.Qualification;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.VetService;
 import au.edu.rmit.sept.webapp.services.QualificationService;
+import au.edu.rmit.sept.webapp.services.ClinicService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 @Controller
 public class VeterinarianRegisterController {
+
+    @Autowired
+    private ClinicService clinicService;
 
     @Autowired
     private UserService userService;
@@ -36,6 +42,11 @@ public class VeterinarianRegisterController {
 
     @GetMapping("/veterinarianRegister")
     public String showVeterinarianRegister(Model model) {
+        Collection<Clinic> clinics = clinicService.getAllClinics();
+
+        // Add attributes to the model
+        model.addAttribute("clinics", clinics);
+
         return "veterinarianRegister"; // Corresponds to veterinarianRegister.html
     }
 
@@ -57,6 +68,7 @@ public class VeterinarianRegisterController {
             @RequestParam("title") String title,
             @RequestParam("language") String languagesSpoken,
             @RequestParam("description") String selfDescription,
+            @RequestParam("clinic_id") int clinicID,
 
             @RequestParam("qualification_name") String name,
             @RequestParam("university") String university,
@@ -98,7 +110,7 @@ public class VeterinarianRegisterController {
         addressService.createAddress(address);
 
         // Create vet entity
-        Vet vet = new Vet(title, languagesSpoken, selfDescription, userID);
+        Vet vet = new Vet(title, languagesSpoken, selfDescription, userID, clinicID);
         vetService.createVet(vet);
 
         // Get the vet_id by user_id
