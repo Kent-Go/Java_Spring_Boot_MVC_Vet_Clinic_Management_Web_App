@@ -5,6 +5,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +33,16 @@ public class Vet {
     @Column(name = "user_id")
     private int userID;
 
+    @Column(name = "clinic_id")
+    private int clinicID;
+
     @OneToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "clinic_id", insertable = false, updatable = false)
+    private Clinic clinic;
 
     // Getters and Setters
     public int getId() {
@@ -91,6 +99,14 @@ public class Vet {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Clinic getClinic() {
+        return clinic;
+    }
+
+    public void setClinic(Clinic clinic) {
+        this.clinic = clinic;
     }
 
     // Default no-argument constructor required by JPA
