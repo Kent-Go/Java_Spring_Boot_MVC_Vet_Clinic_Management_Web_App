@@ -1,27 +1,28 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import org.springframework.ui.Model;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import au.edu.rmit.sept.webapp.models.Vet;
-import au.edu.rmit.sept.webapp.models.User;
-import au.edu.rmit.sept.webapp.models.Address;
-import au.edu.rmit.sept.webapp.models.Clinic;
 import au.edu.rmit.sept.webapp.models.Qualification;
+import au.edu.rmit.sept.webapp.models.Address;
+import au.edu.rmit.sept.webapp.models.User;
+import au.edu.rmit.sept.webapp.models.Clinic;
 import au.edu.rmit.sept.webapp.services.AddressService;
+import au.edu.rmit.sept.webapp.services.ClinicService;
+import au.edu.rmit.sept.webapp.services.QualificationService;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.VetService;
-import au.edu.rmit.sept.webapp.services.QualificationService;
-import au.edu.rmit.sept.webapp.services.ClinicService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-
 @Controller
 public class VeterinarianRegisterController {
 
@@ -68,7 +69,7 @@ public class VeterinarianRegisterController {
             @RequestParam("title") String title,
             @RequestParam("language") String languagesSpoken,
             @RequestParam("description") String selfDescription,
-            @RequestParam("clinic_id") int clinicID,
+            @RequestParam("clinicId") int clinicID,
 
             @RequestParam("qualification_name") String name,
             @RequestParam("university") String university,
@@ -120,7 +121,11 @@ public class VeterinarianRegisterController {
         Qualification qualification = new Qualification(name, university, country, awardedYear, vetID);
         qualificationService.createQualification(qualification);
 
-        return "redirect:/profile"; // Redirect to the same page or to a success page
+        // redirect to vet dashboard
+        User userLogin = userService.getUserByEmail(email);
+        Vet vetLogin = vetService.getVetByUserID(user.getId());
+       
+        return "redirect:/vetDashboard?userId=" + userLogin.getId() + "&vetId=" + vetLogin.getId();
     }
 
 }
