@@ -68,17 +68,17 @@
 </div>
 
 <div class="container">
-    <h1>New Appointment Scheduling</h1>
+    <h1>Reschedule Appointment</h1>
     <h3>Confirm your Appointment:</h3>
 
     <div class="appointment-summary">
-        <!-- <p><strong>Clinic:</strong> <span th:text="${clinicName}"></span></p>
+        <p><strong>Clinic:</strong> <span th:text="${clinicName}"></span></p>
         <p><strong>Appointment Type:</strong> <span th:text="${appointmentTypeName}"></span></p>
         <p><strong>Price:</strong> <span th:text="'$ ' + ${#numbers.formatDecimal(price, 1, 'POINT', 2, 'POINT')}"></span></p>
         <p><strong>Pet:</strong> <span th:text="${petInfo}"></span></p>
-        <p><strong>Date:</strong> <span th:text="${appointmentDate}"></span></p>
-        <p><strong>Time:</strong> <span th:text="${appointmentTime}"></span></p>
-        <p><strong>Veterinarian:</strong> <span th:text="${vetTitleName}"></span></p> -->
+        <p><strong>New Date:</strong> <span th:text="${appointmentDate}"></span></p>
+        <p><strong>New Time:</strong> <span th:text="${appointmentTime}"></span></p>
+        <p><strong>Veterinarian:</strong> <span th:text="${vetTitleName}"></span></p>
     </div>
 
     <div class="buttons">
@@ -89,14 +89,14 @@
             th:action="@{/appointment/reschedule/confirmation}"
             method="POST"
         >
-            <!-- <input type="hidden" name="selectedAppointmentTypeId" id="selectedAppointmentTypeId" />
+            <input type="hidden" name="selectedAppointmentTypeId" id="selectedAppointmentTypeId" />
             <input type="hidden" name="selectedPetId" id="selectedPetId" />
             <input type="hidden" name="selectedVetId" id="selectedVetId" />
             <input type="hidden" name="selectedAppointmentDate" id="selectedAppointmentDate" />
             <input type="hidden" name="selectedAppointmentTime" id="selectedAppointmentTime" />
             <input type="hidden" name="selectedAppointmentTypeDuration" id="selectedAppointmentTypeDuration" />
             <input type="hidden" name="userId" id="userId" />
-            <input type="hidden" name="petOwnerId" id="petOwnerId" /> -->
+            <input type="hidden" name="petOwnerId" id="petOwnerId" />
             <button type="button" class="confirm-button" onclick="confirmAppointment();">Confirm</button>
         </form>
     </div>

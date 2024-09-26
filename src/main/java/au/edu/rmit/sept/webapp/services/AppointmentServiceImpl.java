@@ -2,6 +2,7 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,12 @@ public class AppointmentServiceImpl implements AppointmentService {
   @Autowired
   public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
     this.appointmentRepository = appointmentRepository;
+  }
+
+  // Get an appointment by appointment id
+  @Override
+  public Appointment getAppointmentByAppointmentID(int appointmentID) {
+    return appointmentRepository.findById(appointmentID).orElseThrow(() -> new RuntimeException("Appointment not found"));
   }
 
   // Get all the appointments

@@ -93,13 +93,13 @@ public class ScheduleAppointmentConfirmationController {
         // get clinic appointment type price
         double price = clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(vet.getClinicID(), selectedAppointmentTypeId).getPrice();
 
+        model.addAttribute("clinicName", clinicName);
         model.addAttribute("appointmentTypeName", appointmentTypeName);
+        model.addAttribute("price", price);
         model.addAttribute("petInfo", petInfo);
         model.addAttribute("appointmentDate", appointmentDate);
         model.addAttribute("appointmentTime", appointmentTime);
         model.addAttribute("vetTitleName", vetTitleName);
-        model.addAttribute("clinicName", clinicName);
-        model.addAttribute("price", price);
 
         return "appointmentConfirmation"; // Return the view name
     }
@@ -111,6 +111,52 @@ public class ScheduleAppointmentConfirmationController {
         @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
         @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
         Model model) {
+
+        // get Appointment object by appointment id
+        Appointment appointment = appointmentService.getAppointmentByAppointmentID(appointmentId);
+        // get Vet object
+        Vet vet = vetService.getVetByVetID(appointment.getVetID());
+        // get user object
+        User user = userService.getUserByUserID(vet.getUserID());
+        // get Pet object
+        Pet pet = petService.getPetByPetID(appointment.getPetID());
+
+        // get Clinic name
+        String clinicName = clinicService.getClinicByClinicID(vet.getClinicID()).getName();
+        
+        // get appointment type name
+        String appointmentTypeName = appointmentTypeService.getAppointmentTypeByAppointmentTypeID(appointment.getAppointmentTypeID()).getName();
+        
+        // get clinic appointment type price
+        double price = clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(vet.getClinicID(), appointment.getAppointmentTypeID()).getPrice();
+
+        // convert date into d MMMM yyyy
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+        String appointmentDate = selectedAppointmentDate.format(dateFormatter);
+ 
+        // convert time into 12 hour format
+        DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
+        .appendPattern("h:mm ")
+        .appendText(ChronoField.AMPM_OF_DAY, TextStyle.SHORT)
+        .toFormatter(Locale.ENGLISH)
+        .withLocale(Locale.ENGLISH);
+
+        String appointmentTime = selectedAppointmentTime.format(timeFormatter).toUpperCase();
+
+        // get pet info
+        String petInfo = pet.getName() + " (" + pet.getGender() + " - " + pet.getBreed() + ")";
+
+        // get vet title and name
+        String vetTitleName = vet.getTitle() + " " + user.getFirstName() + " " + user.getLastName();
+
+
+        model.addAttribute("clinicName", clinicName);
+        model.addAttribute("appointmentTypeName", appointmentTypeName);
+        model.addAttribute("price", price);
+        model.addAttribute("petInfo", petInfo);
+        model.addAttribute("appointmentDate", appointmentDate);
+        model.addAttribute("appointmentTime", appointmentTime);
+        model.addAttribute("vetTitleName", vetTitleName);
 
 
         return "rescheduleAppointmentConfirmation";

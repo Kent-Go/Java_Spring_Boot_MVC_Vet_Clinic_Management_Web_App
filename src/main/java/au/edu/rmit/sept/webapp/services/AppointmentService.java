@@ -2,10 +2,14 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 import au.edu.rmit.sept.webapp.models.Appointment;
 
 public interface AppointmentService {
+  // Get an appointment by appointment id
+  public Appointment getAppointmentByAppointmentID(int appointmentID);
+
   // Get all the appointments
   public Collection<Appointment> getAllAppointments();
 
