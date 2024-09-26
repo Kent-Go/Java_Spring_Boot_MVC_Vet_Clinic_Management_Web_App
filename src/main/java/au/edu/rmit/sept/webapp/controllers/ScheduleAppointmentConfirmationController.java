@@ -104,6 +104,18 @@ public class ScheduleAppointmentConfirmationController {
         return "appointmentConfirmation"; // Return the view name
     }
 
+    @GetMapping("appointment/reschedule/confirmation")
+    public String displayRescheduleAppointment(
+        @RequestParam("appointmentId") int appointmentId,
+        @RequestParam("selectedAppointmentDate") LocalDate selectedAppointmentDate,
+        @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
+        @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
+        Model model) {
+
+
+        return "rescheduleAppointmentConfirmation";
+    }
+
     @PostMapping("appointment/new/confirmation")
     public String confirmAppointment(
         @RequestParam("selectedAppointmentTypeId") int selectedAppointmentTypeId,
