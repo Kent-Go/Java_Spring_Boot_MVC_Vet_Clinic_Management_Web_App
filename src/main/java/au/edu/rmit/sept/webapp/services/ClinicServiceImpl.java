@@ -22,4 +22,9 @@ public class ClinicServiceImpl implements ClinicService {
   public Collection<Clinic> getAllClinics() {
     return clinicRepository.findAll();
   }
+
+  @Override
+  public Clinic getClinicByClinicID(int clinicID) {
+    return clinicRepository.findById(clinicID).orElseThrow(() -> new RuntimeException("Clinic not found"));
+  }
 }

@@ -93,6 +93,14 @@ public class Vet {
         this.selfDescription = selfDescription;
     }
 
+    public int getClinicID() {
+        return clinicID;
+    }
+
+    public void setClinicID(int clinicID) {
+        this.clinicID = clinicID;
+    }
+
     public User getUser() {
         return user;
     }

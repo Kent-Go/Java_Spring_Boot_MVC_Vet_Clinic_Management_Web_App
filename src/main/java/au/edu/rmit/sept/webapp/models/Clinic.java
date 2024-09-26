@@ -67,6 +67,14 @@ public class Clinic {
         this.password = password;
     }
 
+    public int getClinicAddressID() {
+        return clinicAddressID;
+    }
+
+    public void setClinicAddressID(int clinicAddressID) {
+        this.clinicAddressID = clinicAddressID;
+    }
+
     public ClinicAddress getClinicAddress() {
         return clinicAddress;
     }
