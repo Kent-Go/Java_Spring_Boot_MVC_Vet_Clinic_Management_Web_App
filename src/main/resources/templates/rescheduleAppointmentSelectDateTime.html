@@ -47,6 +47,9 @@
                 const userId = localStorage.getItem('userId');
 
                 // remove local storage data
+                if (localStorage.getItem('appointmentId')) {
+                    localStorage.removeItem('appointmentId');
+                }
                 if (localStorage.getItem('selectedAppointmentDate')) {
                     localStorage.removeItem('selectedAppointmentDate');
                 }
