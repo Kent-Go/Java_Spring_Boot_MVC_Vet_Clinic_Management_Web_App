@@ -158,6 +158,10 @@ public class ScheduleAppointmentConfirmationController {
         model.addAttribute("appointmentTime", appointmentTime);
         model.addAttribute("vetTitleName", vetTitleName);
 
+        model.addAttribute("appointmentId", appointmentId);
+        model.addAttribute("selectedAppointmentDate", selectedAppointmentDate);
+        model.addAttribute("selectedAppointmentTime", selectedAppointmentTime);
+        model.addAttribute("selectedAppointmentTypeDuration", selectedAppointmentTypeDuration);
 
         return "rescheduleAppointmentConfirmation";
     }
@@ -177,9 +181,39 @@ public class ScheduleAppointmentConfirmationController {
         // get appointment end time by adding selectedAppointmentTypeDuration
         LocalTime selectedAppointmentEndTime = selectedAppointmentTime.plusMinutes(selectedAppointmentTypeDuration);
 
+        // create new appointment entity
         Appointment appointment = new Appointment(selectedAppointmentDate, selectedAppointmentTime, selectedAppointmentEndTime, selectedVetId, selectedPetId, selectedAppointmentTypeId);
+        // save into database
         appointmentService.createAppointment(appointment);
 
         return "redirect:/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+    }
+
+    @PostMapping("appointment/reschedule/confirmation")
+    public String confirmRescheduleAppointment(
+        @RequestParam("appointmentId") int appointmentId,
+        @RequestParam("selectedAppointmentDate") LocalDate selectedAppointmentDate,
+        @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
+        @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
+        @RequestParam("userId") int userId,
+        @RequestParam("petOwnerId") int petOwnerId,
+        Model model) {
+        
+        // retrieve appointment by appointment id
+        Appointment appointment = appointmentService.getAppointmentByAppointmentID(appointmentId);
+
+        // get appointment end time by adding selectedAppointmentTypeDuration
+        LocalTime selectedAppointmentEndTime = selectedAppointmentTime.plusMinutes(selectedAppointmentTypeDuration);
+
+        // update the appointment to new date, start time and end time
+        appointment.setDate(selectedAppointmentDate);
+        appointment.setStartTime(selectedAppointmentTime);
+        appointment.setEndTime(selectedAppointmentEndTime);
+
+        // Save the updated Appointment in database
+        appointmentService.createAppointment(appointment);
+
+        return "redirect:/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+
     }
 }
