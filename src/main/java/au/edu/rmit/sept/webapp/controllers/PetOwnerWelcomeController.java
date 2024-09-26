@@ -20,6 +20,9 @@ import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.AppointmentTypeService;
+import au.edu.rmit.sept.webapp.services.ClinicService;
+import au.edu.rmit.sept.webapp.services.ClinicAddressService;
+
 
 @Controller
 public class PetOwnerWelcomeController {
@@ -40,6 +43,12 @@ public class PetOwnerWelcomeController {
 
     @Autowired
     private AppointmentTypeService appointmentTypeService;
+
+    @Autowired
+    private ClinicService clinicService;
+
+    @Autowired
+    private ClinicAddressService clinicAddressService;
 
     @GetMapping("/petOwnerWelcome")
     public String showPetOwnerWelcome(@RequestParam("userId") Integer userId, Model model) {
@@ -70,6 +79,10 @@ public class PetOwnerWelcomeController {
 
                 // Set the vet user to appointment based on the vet's user ID
                 appointment.getVet().setUser(userService.getUserByUserID(appointment.getVet().getUserID()));
+
+                // set the clinic entity to vet
+                int clinicId = appointment.getVet().getClinicID();
+                appointment.getVet().setClinic(clinicService.getClinicByClinicID(clinicId));
             }
 
             if (upcomingAppointments == null) {

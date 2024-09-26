@@ -82,6 +82,10 @@
         class="appointment-container"
       >
         <h4>
+          Clinic:
+          <span th:text="${appointment.vet.clinic.name}"></span>
+        </h4>   
+        <h4>
           Appointment Type:
           <span th:text="${appointment.appointmentType.name}"></span>
         </h4>
