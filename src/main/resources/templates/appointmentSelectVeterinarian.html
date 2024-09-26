@@ -26,11 +26,12 @@
                 const selectedCard = document.querySelector('.vet-card.selected');
                 if (selectedCard) {
                     const selectedVetId = selectedCard.getAttribute('data-vet-id');
+                    const selectedClinicId = localStorage.getItem('selectedClinicId');
 
                     localStorage.setItem('selectedVetId', selectedVetId)
 
                     // Redirect to the vetSchedule page with the selected vet ID
-                    window.location.href = `/appointment/new/select_date_time?vetId=${selectedVetId}&appointmentTypeId=${appointmentTypeId}`;
+                    window.location.href = `/appointment/new/select_date_time?vetId=${selectedVetId}&appointmentTypeId=${appointmentTypeId}&clinicId=${selectedClinicId}`;
                 } else {
                     alert('Please select a veterinarian to continue.');
                 }
@@ -39,7 +40,7 @@
             // Back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
                 // Redirect back to the appointment type selection page
-                window.location.href = `/appointment/new/select_appointment_type`;
+                window.location.href = `/appointment/new/select_clinic?appointmentTypeId=${appointmentTypeId}`;
             });
         });
     </script>
@@ -59,10 +60,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select a Veterinarian:</h3>
 
-    <div th:each="vetAppointmentTypeOffered : ${vetAppointmentTypeOffereds}" class="vet-card" th:data-vet-id="${vetAppointmentTypeOffered.vet.id}">
-        <h3 th:text="${vetAppointmentTypeOffered.vet.title + ' ' + vetAppointmentTypeOffered.vet.user.firstName + ' ' + vetAppointmentTypeOffered.vet.user.lastName}"></h3>
-        <p th:text="${vetAppointmentTypeOffered.vet.languagesSpoken}"></p>
-        <p th:text="${vetAppointmentTypeOffered.vet.selfDescription}"></p>
+    <div th:each="vet : ${vets}" class="vet-card" th:data-vet-id="${vet.id}">
+        <h3 th:text="${vet.title + ' ' + vet.user.firstName + ' ' + vet.user.lastName}"></h3>
+        <p th:text="${vet.languagesSpoken}"></p>
+        <p th:text="${vet.selfDescription}"></p>
     </div>
 </div>
 

@@ -16,4 +16,7 @@ public interface VetService {
 
   // Create a new vet
   public Vet createVet(Vet vet);
+
+  // Get all vet by clinicID
+  public Collection<Vet> getVetsByClinicID(int clinicID);
 }
