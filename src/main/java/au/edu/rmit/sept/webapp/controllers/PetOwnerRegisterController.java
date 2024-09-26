@@ -1,18 +1,18 @@
 package au.edu.rmit.sept.webapp.controllers;
 
 import java.time.LocalDate;
-import org.springframework.ui.Model;
-import au.edu.rmit.sept.webapp.models.User;
-import au.edu.rmit.sept.webapp.models.Address;
-import au.edu.rmit.sept.webapp.models.PetOwner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import au.edu.rmit.sept.webapp.models.Address;
+import au.edu.rmit.sept.webapp.models.PetOwner;
+import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.services.UserService;
 
 @Controller
