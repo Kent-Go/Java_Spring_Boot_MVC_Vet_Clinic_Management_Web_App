@@ -39,9 +39,11 @@
 
             // back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
-                const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId')
+                const selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId');
+                const selectedClinicId = localStorage.getItem('selectedClinicId');
+
                 // Redirect back to the veterinarian selection page
-                window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}`;
+                window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}&clinicId=${selectedClinicId}`;
             });
         });
 

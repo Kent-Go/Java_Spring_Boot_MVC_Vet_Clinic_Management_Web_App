@@ -26,24 +26,23 @@
                 const urlParams = new URLSearchParams(window.location.search);
 
                 if (selectedCard) {
-                    const selectedAppointmentTypeId = selectedCard.getAttribute('data-appointment-type-id');
-                    const appointmentTypeName = selectedCard.querySelector('h3').textContent;
-                    const selectedAppointmentTypeDuration = selectedCard.querySelector('p').textContent.split(' ')[0];
+                    const selectedClinicId = selectedCard.getAttribute('data-clinic-id');
+                    localStorage.setItem('selectedClinicId', selectedClinicId);
 
-                    localStorage.setItem('selectedAppointmentTypeId', selectedAppointmentTypeId);
-                    localStorage.setItem('selectedAppointmentTypeDuration', selectedAppointmentTypeDuration);
+                    // get selectedAppointmentTypeId from local storage
+                    selectedAppointmentTypeId = localStorage.getItem('selectedAppointmentTypeId');
 
-                    // Redirect to the vet list page with the selected appointment type ID
-                    window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}`;
+                    // Redirect to the clinic list page with the selected appointment type ID
+                    window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}&clinicId=${selectedClinicId}`;
                 } else {
-                    alert('Please select an appointment type to continue.');
+                    alert('Please select a clinic to continue.');
                 }
             });
 
             // Back button logic
             document.querySelector('.back-button').addEventListener('click', function () {
-                // Redirect to the select pet page
-                window.location.href = `/appointment/new/select_pet?petOwnerId=${petOwnerId}`;
+                // Redirect to the select appointment type page
+                window.location.href = `/appointment/new/select_appointment_type`;
             });
         });
     </script>
@@ -63,10 +62,10 @@
     <h1>New Appointment Scheduling</h1>
     <h3>Select a Clinic:</h3>
 
-    <div th:each="appointmentType : ${appointmentTypes}" class="appointment-type-card" th:data-appointment-type-id="${appointmentType.id}">
-        <h3 th:text="${appointmentType.name}"></h3>
-        <p th:text="${appointmentType.duration} + ' min'"></p>
-        <p th:text="${appointmentType.description}"></p>
+    <div th:each="clinicAppointmentTypePrice : ${clinicAppointmentTypePrices}" class="appointment-type-card" th:data-clinic-id="${clinicAppointmentTypePrice.clinic.id}">
+        <h3 th:text="${clinicAppointmentTypePrice.clinic.name}"></h3>
+        <p th:text="'$ ' + ${#numbers.formatDecimal(clinicAppointmentTypePrice.price, 1, 'POINT', 2, 'POINT')}"></p>
+        <p th:text="${clinicAppointmentTypePrice.clinic.clinicAddress.street + ', ' + clinicAppointmentTypePrice.clinic.clinicAddress.suburb + ', ' + clinicAppointmentTypePrice.clinic.clinicAddress.state + ', ' + clinicAppointmentTypePrice.clinic.clinicAddress.postcode + '.'}"></p>
     </div>
 </div>
 

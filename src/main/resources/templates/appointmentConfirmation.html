@@ -34,6 +34,9 @@
             if (localStorage.getItem('selectedAppointmentTypeDuration')) {
                 localStorage.removeItem('selectedAppointmentTypeDuration');
             }
+            if (localStorage.getItem('selectedClinicId')) {
+                localStorage.removeItem('selectedClinicId');
+            }
             if (localStorage.getItem('selectedVetId')) {
                 localStorage.removeItem('selectedVetId');
             }
@@ -67,7 +70,9 @@
     <h3>Confirm your Appointment:</h3>
 
     <div class="appointment-summary">
+        <p><strong>Clinic:</strong> <span th:text="${clinicName}"></span></p>
         <p><strong>Appointment Type:</strong> <span th:text="${appointmentTypeName}"></span></p>
+        <p><strong>Price:</strong> <span th:text="'$ ' + ${#numbers.formatDecimal(price, 1, 'POINT', 2, 'POINT')}"></span></p>
         <p><strong>Pet:</strong> <span th:text="${petInfo}"></span></p>
         <p><strong>Date:</strong> <span th:text="${appointmentDate}"></span></p>
         <p><strong>Time:</strong> <span th:text="${appointmentTime}"></span></p>

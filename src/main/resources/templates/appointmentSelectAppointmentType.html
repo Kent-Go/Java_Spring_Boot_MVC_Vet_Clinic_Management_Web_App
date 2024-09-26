@@ -33,8 +33,8 @@
                     localStorage.setItem('selectedAppointmentTypeId', selectedAppointmentTypeId);
                     localStorage.setItem('selectedAppointmentTypeDuration', selectedAppointmentTypeDuration);
 
-                    // Redirect to the vet list page with the selected appointment type ID
-                    window.location.href = `/appointment/new/select_veterinarian?appointmentTypeId=${selectedAppointmentTypeId}`;
+                    // Redirect to the clinic list page with the selected appointment type ID
+                    window.location.href = `/appointment/new/select_clinic?appointmentTypeId=${selectedAppointmentTypeId}`;
                 } else {
                     alert('Please select an appointment type to continue.');
                 }

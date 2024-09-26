@@ -14,6 +14,8 @@ import au.edu.rmit.sept.webapp.services.VetAppointmentTypeOfferedService;
 import au.edu.rmit.sept.webapp.services.VetService;
 import au.edu.rmit.sept.webapp.services.UserService;
 
+import java.util.ArrayList;
+
 import java.util.Collection;
 
 @Controller
@@ -29,30 +31,29 @@ public class ScheduleAppointmentSelectVeterinarianController {
     private UserService userService;
 
     @GetMapping("/appointment/new/select_veterinarian")
-    public String showVet(@RequestParam("appointmentTypeId") int appointmentTypeId, Model model) {
-        Collection<VetAppointmentTypeOffered> vetAppointmentTypeOffereds = vetAppointmentTypeOfferedService.getVetAppointmentTypeOfferedByAppointmentTypeID(appointmentTypeId);
+    public String showVet(
+        @RequestParam("appointmentTypeId") int appointmentTypeId,
+        @RequestParam("clinicId") int clinicId,
+        Model model) {
 
-        for (VetAppointmentTypeOffered vetAppointmentTypeOffered : vetAppointmentTypeOffereds) {
-            Vet vet = vetService.getVetByVetID(vetAppointmentTypeOffered.getVetID());
-            User user = userService.getUserByUserID(vet.getUserID());
+        Collection<Vet> vetsInClinic = vetService.getVetsByClinicID(clinicId);
 
-            // store the User into Vet entity
-            vet.setUser(user);
-            // store the Vet into VetAppointmentTypeOffered entity
-            vetAppointmentTypeOffered.setVet(vet);
+        Collection<Vet> vets = new ArrayList<>();
+
+        // iterate each vet from clinic
+        for (Vet vetInClinic : vetsInClinic) {
+            // check if vet offer the appointment type
+            if (vetAppointmentTypeOfferedService.getVetAppointmentTypeOfferedByVetIDAndAppointmentTypeID(vetInClinic.getId(), appointmentTypeId)!= null) {
+                // get user entity for the vet
+                User user = userService.getUserByUserID(vetInClinic.getUserID());
+                vetInClinic.setUser(user);
+
+                // add vet into vets collection
+                vets.add(vetInClinic);
+            }   
         }
 
-        model.addAttribute("vetAppointmentTypeOffereds", vetAppointmentTypeOffereds);
+        model.addAttribute("vets", vets);
         return "appointmentSelectVeterinarian";  // This should match your Thymeleaf template name for vet list
     }
-
-    // @PostMapping("/appointment/selectVet")
-    // public String selectVetForAppointment(@RequestParam("vetId") int vetId, Model model) {
-    //     // Logic to handle creating the appointment with the selected veterinarian
-    //     Vet selectedVet = getVets().stream().filter(vet -> vet.getId() == vetId).findFirst().orElse(null);
-    //     if (selectedVet != null) {
-    //         model.addAttribute("selectedVetName", selectedVet.getTitle());
-    //     }
-    //     return "appointmentConfirmation";  // This should match your confirmation view template
-    // }
 }

@@ -12,6 +12,8 @@ import au.edu.rmit.sept.webapp.services.PetService;
 import au.edu.rmit.sept.webapp.services.VetService;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
+import au.edu.rmit.sept.webapp.services.ClinicService;
+import au.edu.rmit.sept.webapp.services.ClinicAppointmentTypePriceService;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Vet;
@@ -44,6 +46,12 @@ public class ScheduleAppointmentConfirmationController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private ClinicService clinicService;
+
+    @Autowired
+    private ClinicAppointmentTypePriceService clinicAppointmentTypePriceService;
+
     @GetMapping("appointment/new/confirmation")
     public String displayAppointment(
         @RequestParam("selectedAppointmentTypeId") int selectedAppointmentTypeId,
@@ -53,7 +61,7 @@ public class ScheduleAppointmentConfirmationController {
         @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
         @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
         Model model) {
-        
+
         // get appointment type name
         String appointmentTypeName = appointmentTypeService.getAppointmentTypeByAppointmentTypeID(selectedAppointmentTypeId).getName();
 
@@ -79,11 +87,19 @@ public class ScheduleAppointmentConfirmationController {
         User user = userService.getUserByUserID(vet.getUserID());
         String vetTitleName = vet.getTitle() + " " + user.getFirstName() + " " + user.getLastName();
 
+        // get clinic name
+        String clinicName = clinicService.getClinicByClinicID(vet.getClinicID()).getName();
+
+        // get clinic appointment type price
+        double price = clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(vet.getClinicID(), selectedAppointmentTypeId).getPrice();
+
         model.addAttribute("appointmentTypeName", appointmentTypeName);
         model.addAttribute("petInfo", petInfo);
         model.addAttribute("appointmentDate", appointmentDate);
         model.addAttribute("appointmentTime", appointmentTime);
         model.addAttribute("vetTitleName", vetTitleName);
+        model.addAttribute("clinicName", clinicName);
+        model.addAttribute("price", price);
 
         return "appointmentConfirmation"; // Return the view name
     }
