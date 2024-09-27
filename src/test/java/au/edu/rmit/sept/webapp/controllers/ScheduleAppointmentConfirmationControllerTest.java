@@ -128,6 +128,72 @@ class ScheduleAppointmentConfirmationControllerTest {
                 .andExpect(model().attribute("vetTitleName", is("Dr. Jude Bellingham")));
     }
 
+    // Test rendering the rescheduleAppointmentConfirmation page
+    @Test
+    public void testDisplayRescheduledAppointmentWithValidParams() throws Exception {
+        Integer appointmentId = 1;
+        LocalDate selectedAppointmentDate = LocalDate.of(2023, 10, 10);
+        LocalTime selectedAppointmentTime = LocalTime.of(14, 30);
+        Integer selectedAppointmentTypeDuration = 30;
+
+        // Mock data
+        Appointment appointment = new Appointment(LocalDate.of(2023, 9, 10), LocalTime.of(11, 30), LocalTime.of(12, 0), 1, 1, 1);
+        when(appointmentService.getAppointmentByAppointmentID(appointmentId)).thenReturn(appointment);
+
+        Clinic clinic = new Clinic();
+        clinic.setId(1);
+        clinic.setName("Frank Samways Veterinary Clinic");
+
+        AppointmentType appointmentType = new AppointmentType();
+        appointmentType.setId(1);
+        appointmentType.setName("General Clinical Consultation");
+
+        ClinicAppointmentTypePrice clinicAppointmentTypePrice = new ClinicAppointmentTypePrice();
+        clinicAppointmentTypePrice.setPrice(50.0);
+
+        Vet vet = new Vet();
+        vet.setId(1);
+        vet.setUserID(1);
+        vet.setClinicID(1);
+        vet.setTitle("Dr.");
+
+        User user = new User();
+        user.setId(1);
+        user.setFirstName("Jude");
+        user.setLastName("Bellingham");
+        
+        Pet pet = new Pet();
+        pet.setId(1);
+        pet.setName("Rocky");
+        pet.setGender("Male");
+        pet.setBreed("Chihuahua");
+
+        // Mock service methods
+        when(clinicService.getClinicByClinicID(1)).thenReturn(clinic);
+        when(appointmentTypeService.getAppointmentTypeByAppointmentTypeID(1)).thenReturn(appointmentType);
+        when(clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(1, 1)).thenReturn(clinicAppointmentTypePrice);
+        when(vetService.getVetByVetID(1)).thenReturn(vet);
+        when(userService.getUserByUserID(1)).thenReturn(user);
+        when(petService.getPetByPetID(1)).thenReturn(pet);
+
+        // Perform the GET request
+        mockMvc.perform(get("/appointment/reschedule/confirmation")
+                .param("appointmentId", appointmentId.toString())
+                .param("selectedAppointmentDate", selectedAppointmentDate.toString())
+                .param("selectedAppointmentTime", selectedAppointmentTime.toString())
+                .param("selectedAppointmentTypeDuration", selectedAppointmentTypeDuration.toString()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("rescheduleAppointmentConfirmation"))
+                .andExpect(model().attributeExists("clinicName", "appointmentTypeName", "price", "petInfo", "appointmentDate", "appointmentTime", "vetTitleName"))
+                .andExpect(model().attribute("clinicName", is("Frank Samways Veterinary Clinic")))
+                .andExpect(model().attribute("appointmentTypeName", is("General Clinical Consultation")))
+                .andExpect(model().attribute("price", is(50.0)))
+                .andExpect(model().attribute("petInfo", is("Rocky (Male - Chihuahua)")))
+                .andExpect(model().attribute("appointmentDate", is("10 October 2023")))
+                .andExpect(model().attribute("appointmentTime", is("2:30 PM")))
+                .andExpect(model().attribute("vetTitleName", is("Dr. Jude Bellingham")));
+    }
+
     // Test post method in the appointmentConfirmation page
     @Test
     void testConfirmAppointment() throws Exception {
