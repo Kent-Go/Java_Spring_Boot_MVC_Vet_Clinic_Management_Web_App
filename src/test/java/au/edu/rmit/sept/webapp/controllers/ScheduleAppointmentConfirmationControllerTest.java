@@ -132,12 +132,12 @@ class ScheduleAppointmentConfirmationControllerTest {
     @Test
     public void testDisplayRescheduledAppointmentWithValidParams() throws Exception {
         Integer appointmentId = 1;
-        LocalDate selectedAppointmentDate = LocalDate.of(2023, 10, 10);
+        LocalDate selectedAppointmentDate = LocalDate.of(2024, 10, 10);
         LocalTime selectedAppointmentTime = LocalTime.of(14, 30);
         Integer selectedAppointmentTypeDuration = 30;
 
         // Mock data
-        Appointment appointment = new Appointment(LocalDate.of(2023, 9, 10), LocalTime.of(11, 30), LocalTime.of(12, 0), 1, 1, 1);
+        Appointment appointment = new Appointment(LocalDate.of(2024, 9, 10), LocalTime.of(11, 30), LocalTime.of(12, 0), 1, 1, 1);
         when(appointmentService.getAppointmentByAppointmentID(appointmentId)).thenReturn(appointment);
 
         Clinic clinic = new Clinic();
@@ -189,7 +189,7 @@ class ScheduleAppointmentConfirmationControllerTest {
                 .andExpect(model().attribute("appointmentTypeName", is("General Clinical Consultation")))
                 .andExpect(model().attribute("price", is(50.0)))
                 .andExpect(model().attribute("petInfo", is("Rocky (Male - Chihuahua)")))
-                .andExpect(model().attribute("appointmentDate", is("10 October 2023")))
+                .andExpect(model().attribute("appointmentDate", is("10 October 2024")))
                 .andExpect(model().attribute("appointmentTime", is("2:30 PM")))
                 .andExpect(model().attribute("vetTitleName", is("Dr. Jude Bellingham")));
     }
@@ -219,6 +219,45 @@ class ScheduleAppointmentConfirmationControllerTest {
         assertThat(capturedAppointment.getDate()).isEqualTo(LocalDate.of(2024, 9, 19));
         assertThat(capturedAppointment.getStartTime()).isEqualTo(LocalTime.of(10, 0));
         assertThat(capturedAppointment.getEndTime()).isEqualTo(LocalTime.of(10, 30));
+        assertThat(capturedAppointment.getVetID()).isEqualTo(1);
+        assertThat(capturedAppointment.getPetID()).isEqualTo(1);
+        assertThat(capturedAppointment.getAppointmentTypeID()).isEqualTo(1);
+    }
+
+    // Test post method in the rescheduleAppointmentConfirmation page
+    @Test
+    void testConfirmRescheduledAppointment() throws Exception {
+        Integer appointmentId = 1;
+        LocalDate selectedAppointmentDate = LocalDate.of(2024, 10, 10);
+        LocalTime selectedAppointmentTime = LocalTime.of(14, 30);
+        Integer selectedAppointmentTypeDuration = 30;
+        Integer userId = 1;
+        Integer petOwnerId = 1;
+
+        // Mock data
+        Appointment appointment = new Appointment(LocalDate.of(2024, 9, 10), LocalTime.of(11, 30), LocalTime.of(12, 0), 1, 1, 1);
+        when(appointmentService.getAppointmentByAppointmentID(appointmentId)).thenReturn(appointment);
+
+        // Perform a POST request to /appointment/new/confirmation with the required parameters
+        mockMvc.perform(post("/appointment/reschedule/confirmation")
+                .param("appointmentId", appointmentId.toString())
+                .param("selectedAppointmentDate", selectedAppointmentDate.toString())
+                .param("selectedAppointmentTime", selectedAppointmentTime.toString())
+                .param("selectedAppointmentTypeDuration", selectedAppointmentTypeDuration.toString())
+                .param("userId", userId.toString())
+                .param("petOwnerId", petOwnerId.toString()))
+                .andExpect(status().is3xxRedirection()) // Expect a redirection status
+                .andExpect(redirectedUrl(String.format("/petOwnerWelcome?userId=%d&petOwnerId=%d", userId, petOwnerId))); // Expect the redirection URL
+
+        // Capture the Appointment object passed to the createAppointment method
+        ArgumentCaptor<Appointment> appointmentCaptor = ArgumentCaptor.forClass(Appointment.class);
+        verify(appointmentService, times(1)).createAppointment(appointmentCaptor.capture());
+
+        // Verify the properties of the captured Appointment object
+        Appointment capturedAppointment = appointmentCaptor.getValue();
+        assertThat(capturedAppointment.getDate()).isEqualTo(LocalDate.of(2024, 10, 10));
+        assertThat(capturedAppointment.getStartTime()).isEqualTo(LocalTime.of(14, 30));
+        assertThat(capturedAppointment.getEndTime()).isEqualTo(LocalTime.of(15, 0));
         assertThat(capturedAppointment.getVetID()).isEqualTo(1);
         assertThat(capturedAppointment.getPetID()).isEqualTo(1);
         assertThat(capturedAppointment.getAppointmentTypeID()).isEqualTo(1);
