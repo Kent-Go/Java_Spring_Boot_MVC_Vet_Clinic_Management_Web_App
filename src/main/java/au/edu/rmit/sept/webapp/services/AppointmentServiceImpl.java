@@ -68,4 +68,11 @@ public class AppointmentServiceImpl implements AppointmentService {
   public Collection<Appointment> getAppointmentsByPetIDAndDateAfter(int petID, LocalDate date) {
     return appointmentRepository.findByPetIDAndDateAfterOrderByDateAscStartTimeAsc(petID, date);
   }
+
+  // delete appointments by their appointment id
+  @Override
+  public void cancelAppointment(int appointmentId) {
+      // delete appointment
+      appointmentRepository.deleteById(appointmentId);
+}
 }
