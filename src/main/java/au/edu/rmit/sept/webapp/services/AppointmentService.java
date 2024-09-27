@@ -31,4 +31,7 @@ public interface AppointmentService {
 
   // Get appointments by petID after a certain date
   public Collection<Appointment> getAppointmentsByPetIDAndDateAfter(int petID, LocalDate date);
+
+  // delete appointments by their appointment id
+  public void cancelAppointment(int appointmentId);
 }
