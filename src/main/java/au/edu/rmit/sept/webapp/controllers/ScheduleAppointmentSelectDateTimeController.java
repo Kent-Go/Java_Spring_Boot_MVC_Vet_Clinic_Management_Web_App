@@ -9,8 +9,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ScheduleAppointmentSelectDateTimeController {
 
     @GetMapping("/appointment/new/select_date_time")
-    public String vetSchedule(@RequestParam("vetId") int vetId, @RequestParam("appointmentTypeId") int appointmentTypeId, Model model) {
+    public String displayScheduleAppointmentDateTime(@RequestParam("vetId") int vetId, @RequestParam("appointmentTypeId") int appointmentTypeId, Model model) {
         // You can add any necessary attributes here if needed
-        return "appointmentSelectDateTime";  // Return the name of the Thymeleaf template (newAppointment.html)
+        return "appointmentSelectDateTime";  // Return the name of the Thymeleaf template (appointmentSelectDateTime.html)
+    }
+
+    @GetMapping("/appointment/reschedule/select_date_time")
+    public String displayRescheduleAppointmentDateTime(
+        @RequestParam("appointmentId") int appointmentId,
+        @RequestParam("vetId") int vetId, 
+        @RequestParam("appointmentTypeDuration") int appointmentTypeDuration,
+        
+        Model model) {
+        // You can add any necessary attributes here if needed
+        return "rescheduleAppointmentSelectDateTime";  // Return the name of the Thymeleaf template (rescheduleAppointmentSelectDateTime.html)
     }
 }

@@ -93,15 +93,77 @@ public class ScheduleAppointmentConfirmationController {
         // get clinic appointment type price
         double price = clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(vet.getClinicID(), selectedAppointmentTypeId).getPrice();
 
+        model.addAttribute("clinicName", clinicName);
         model.addAttribute("appointmentTypeName", appointmentTypeName);
+        model.addAttribute("price", price);
         model.addAttribute("petInfo", petInfo);
         model.addAttribute("appointmentDate", appointmentDate);
         model.addAttribute("appointmentTime", appointmentTime);
         model.addAttribute("vetTitleName", vetTitleName);
-        model.addAttribute("clinicName", clinicName);
-        model.addAttribute("price", price);
 
         return "appointmentConfirmation"; // Return the view name
+    }
+
+    @GetMapping("appointment/reschedule/confirmation")
+    public String displayRescheduleAppointment(
+        @RequestParam("appointmentId") int appointmentId,
+        @RequestParam("selectedAppointmentDate") LocalDate selectedAppointmentDate,
+        @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
+        @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
+        Model model) {
+
+        // get Appointment object by appointment id
+        Appointment appointment = appointmentService.getAppointmentByAppointmentID(appointmentId);
+        // get Vet object
+        Vet vet = vetService.getVetByVetID(appointment.getVetID());
+        // get user object
+        User user = userService.getUserByUserID(vet.getUserID());
+        // get Pet object
+        Pet pet = petService.getPetByPetID(appointment.getPetID());
+
+        // get Clinic name
+        String clinicName = clinicService.getClinicByClinicID(vet.getClinicID()).getName();
+        
+        // get appointment type name
+        String appointmentTypeName = appointmentTypeService.getAppointmentTypeByAppointmentTypeID(appointment.getAppointmentTypeID()).getName();
+        
+        // get clinic appointment type price
+        double price = clinicAppointmentTypePriceService.getClinicAppointmentTypePriceByClinicIDAndAppointmentTypeID(vet.getClinicID(), appointment.getAppointmentTypeID()).getPrice();
+
+        // convert date into d MMMM yyyy
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+        String appointmentDate = selectedAppointmentDate.format(dateFormatter);
+ 
+        // convert time into 12 hour format
+        DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
+        .appendPattern("h:mm ")
+        .appendText(ChronoField.AMPM_OF_DAY, TextStyle.SHORT)
+        .toFormatter(Locale.ENGLISH)
+        .withLocale(Locale.ENGLISH);
+
+        String appointmentTime = selectedAppointmentTime.format(timeFormatter).toUpperCase();
+
+        // get pet info
+        String petInfo = pet.getName() + " (" + pet.getGender() + " - " + pet.getBreed() + ")";
+
+        // get vet title and name
+        String vetTitleName = vet.getTitle() + " " + user.getFirstName() + " " + user.getLastName();
+
+
+        model.addAttribute("clinicName", clinicName);
+        model.addAttribute("appointmentTypeName", appointmentTypeName);
+        model.addAttribute("price", price);
+        model.addAttribute("petInfo", petInfo);
+        model.addAttribute("appointmentDate", appointmentDate);
+        model.addAttribute("appointmentTime", appointmentTime);
+        model.addAttribute("vetTitleName", vetTitleName);
+
+        model.addAttribute("appointmentId", appointmentId);
+        model.addAttribute("selectedAppointmentDate", selectedAppointmentDate);
+        model.addAttribute("selectedAppointmentTime", selectedAppointmentTime);
+        model.addAttribute("selectedAppointmentTypeDuration", selectedAppointmentTypeDuration);
+
+        return "rescheduleAppointmentConfirmation";
     }
 
     @PostMapping("appointment/new/confirmation")
@@ -119,9 +181,39 @@ public class ScheduleAppointmentConfirmationController {
         // get appointment end time by adding selectedAppointmentTypeDuration
         LocalTime selectedAppointmentEndTime = selectedAppointmentTime.plusMinutes(selectedAppointmentTypeDuration);
 
+        // create new appointment entity
         Appointment appointment = new Appointment(selectedAppointmentDate, selectedAppointmentTime, selectedAppointmentEndTime, selectedVetId, selectedPetId, selectedAppointmentTypeId);
+        // save into database
         appointmentService.createAppointment(appointment);
 
         return "redirect:/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+    }
+
+    @PostMapping("appointment/reschedule/confirmation")
+    public String confirmRescheduleAppointment(
+        @RequestParam("appointmentId") int appointmentId,
+        @RequestParam("selectedAppointmentDate") LocalDate selectedAppointmentDate,
+        @RequestParam("selectedAppointmentTime") LocalTime selectedAppointmentTime,
+        @RequestParam("selectedAppointmentTypeDuration") int selectedAppointmentTypeDuration,
+        @RequestParam("userId") int userId,
+        @RequestParam("petOwnerId") int petOwnerId,
+        Model model) {
+        
+        // retrieve appointment by appointment id
+        Appointment appointment = appointmentService.getAppointmentByAppointmentID(appointmentId);
+
+        // get appointment end time by adding selectedAppointmentTypeDuration
+        LocalTime selectedAppointmentEndTime = selectedAppointmentTime.plusMinutes(selectedAppointmentTypeDuration);
+
+        // update the appointment to new date, start time and end time
+        appointment.setDate(selectedAppointmentDate);
+        appointment.setStartTime(selectedAppointmentTime);
+        appointment.setEndTime(selectedAppointmentEndTime);
+
+        // Save the updated Appointment in database
+        appointmentService.createAppointment(appointment);
+
+        return "redirect:/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+
     }
 }

@@ -113,7 +113,9 @@
         </h4>
 
         <div class="appointment-actions">
-          <button class="reschedule-btn">Reschedule</button>
+          <a th:href="@{/appointment/reschedule/select_date_time(appointmentId=${appointment.id}, vetId=${appointment.vet.id}, appointmentTypeDuration=${appointment.appointmentType.duration})}">
+            <button class="reschedule-btn">Reschedule</button>
+          </a>
           <button class="cancel-btn">Cancel</button>
         </div>
       </div>
