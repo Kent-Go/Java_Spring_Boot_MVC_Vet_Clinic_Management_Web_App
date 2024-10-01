@@ -113,12 +113,12 @@ public class VeterinarianRegisterControllerTest {
     @Test
     public void testRegisterVeterinarian_InvalidEmail() {
         // Arrange: Set up invalid email scenario
-        when(userService.getUserByEmail("invalidemail@example.com")).thenReturn(null);
+        when(userService.getUserByEmail("invalidemailexample.com")).thenReturn(null);
 
         // Act & Assert: Expect IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
             veterinarianRegisterController.registerVeterinarian(
-                    "John", "Doe", "1990-01-01", "Male", "123456789", "invalidemail@example.com", "password",
+                    "John", "Doe", "1990-01-01", "Male", "123456789", "invalidemailexample.com", "password",
                     "123 Street", "Suburb", "State", "3000", "Dr.", "English", "I am a vet", 1,
                     "Veterinary Science", "Uni of Melbourne", "Australia", "2015", model);
         });
