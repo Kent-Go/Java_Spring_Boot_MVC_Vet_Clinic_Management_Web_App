@@ -40,7 +40,7 @@ public class PetOwnerProfileController {
         }
 
         // Only call service if the ID is valid
-        PetOwner petOwner = petOwnerService.getPetOwnerByUserID(petOwnerId);
+        PetOwner petOwner = petOwnerService.getPetOwnerByPetOwnerID(petOwnerId);
 
         // If PetOwner is not found, return 404
         if (petOwner == null) {
