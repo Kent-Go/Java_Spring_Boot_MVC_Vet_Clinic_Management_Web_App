@@ -17,10 +17,9 @@
         document.querySelector(".profile-link").href = `/petOwnerProfile?petOwnerId=${petOwnerId}`;
         document.getElementById('home-link').href = `/petOwnerWelcome?userId=${userId}`;
         document.getElementById('pets-link').href = `/petList?petOwnerId=${petOwnerId}`;
+        document.getElementById('prescription-link').href = `/prescriptions?petOwnerId=${petOwnerId}`;
 
         // FIX: Change these links when the pages are implemented
-        const consultationLink = document.getElementById("consulatation-link");
-        const prescriptionLink = document.getElementById("prescription-link");
         const faqLink = document.getElementById("faq-link");
       });
     </script>
@@ -39,7 +38,6 @@
         <li><a href="/" id="home-link">Home</a></li>
         <li><a href="#pets" id="pets-link">Pets</a></li>
         <li><a href="javascript:void(0)" class="active">Articles & Videos</a></li>
-        <li><a href="#consultation" id="consulatation-link">Consultation</a></li>
         <li><a href="#prescriptions" id="prescription-link">Prescriptions</a></li>
         <li><a href="#faq" id="faq-link">FAQ</a></li>
       </ul>

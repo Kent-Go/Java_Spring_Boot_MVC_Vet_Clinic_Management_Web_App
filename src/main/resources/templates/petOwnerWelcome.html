@@ -61,7 +61,6 @@
         </li>
         <li><a th:href="@{/petList(petOwnerId=${petOwner.id})}">Pets</a></li>
         <li><a href="/trendsHome">Articles & Videos</a></li>
-        <li><a href="#consultation">Consultation</a></li>
         <li>
           <a th:href="@{/prescriptions(petOwnerId=${petOwner.id})}"
             >Prescriptions</a
@@ -99,7 +98,7 @@
         <h4>
           Clinic:
           <span th:text="${appointment.vet.clinic.name}"></span>
-        </h4>   
+        </h4>
         <h4>
           Appointment Type:
           <span th:text="${appointment.appointmentType.name}"></span>
@@ -128,7 +127,9 @@
         </h4>
 
         <div class="appointment-actions">
-          <a th:href="@{/appointment/reschedule/select_date_time(appointmentId=${appointment.id}, vetId=${appointment.vet.id}, appointmentTypeDuration=${appointment.appointmentType.duration})}">
+          <a
+            th:href="@{/appointment/reschedule/select_date_time(appointmentId=${appointment.id}, vetId=${appointment.vet.id}, appointmentTypeDuration=${appointment.appointmentType.duration})}"
+          >
             <button class="reschedule-btn">Reschedule</button>
           </a>
           <a th:href="@{/appointment/cancel(appointmentId=${appointment.id})}">
