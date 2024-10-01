@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pet Owner Welcome Page</title>
-        <link rel="stylesheet" href="/css/ownerWelcome.css" />
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Fetch the userId from the URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const urlUserID = urlParams.get("userId");
-                const urlPetOwnerID = urlParams.get("petOwnerId");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Owner Welcome Page</title>
+    <link rel="stylesheet" href="/css/ownerWelcome.css" />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the userId from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUserID = urlParams.get("userId");
+        const urlPetOwnerID = urlParams.get("petOwnerId");
 
-                // Check if userId is not already stored
-                if (urlUserID && !localStorage.getItem("userId")) {
-                    localStorage.setItem("userId", urlUserID);
-                }
+        // Check if userId is not already stored
+        if (urlUserID && !localStorage.getItem("userId")) {
+          localStorage.setItem("userId", urlUserID);
+        }
 
-                // Check if petOwnerId is not already stored
-                if (urlPetOwnerID && !localStorage.getItem("petOwnerId")) {
-                    localStorage.setItem("petOwnerId", urlPetOwnerID);
-                }
+        // Check if petOwnerId is not already stored
+        if (urlPetOwnerID && !localStorage.getItem("petOwnerId")) {
+          localStorage.setItem("petOwnerId", urlPetOwnerID);
+        }
 
-                // Schedule new appointment button logic
-                document.querySelector('.new-schedule-btn').addEventListener('click', function () {
-                    const petOwnerID = localStorage.getItem("petOwnerId");
-                    // redirect to select pet page
-                    window.location.href = `appointment/new/select_pet?petOwnerId=${petOwnerID}`;
-                });
-            });
-        </script>
-    </head>
-<body>
+        // Schedule new appointment button logic
+        document
+          .querySelector(".new-schedule-btn")
+          .addEventListener("click", function () {
+            const petOwnerID = localStorage.getItem("petOwnerId");
+            // redirect to select pet page
+            window.location.href = `appointment/new/select_pet?petOwnerId=${petOwnerID}`;
+          });
+      });
+    </script>
+  </head>
+  <body>
     <div class="header">
-      <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" id="logo-link">
+      <a
+        th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}"
+        id="logo-link"
+      >
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a
@@ -48,28 +53,38 @@
     <div class="navbar">
       <ul>
         <li>
-          <a th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}" class="active"
+          <a
+            th:href="@{/petOwnerWelcome(userId=${petOwner.user.id})}"
+            class="active"
             >Home</a
           >
         </li>
         <li><a th:href="@{/petList(petOwnerId=${petOwner.id})}">Pets</a></li>
         <li><a href="/trendsHome">Articles & Videos</a></li>
         <li><a href="#consultation">Consultation</a></li>
-        <li><a th:href="@{/prescriptions(petOwnerId=${petOwner.id})}">Prescriptions</a></li>
+        <li>
+          <a th:href="@{/prescriptions(petOwnerId=${petOwner.id})}"
+            >Prescriptions</a
+          >
+        </li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
     </div>
 
-    <div class="welcome-text-container">
+    <div class="welcome-text-container"></div>
 
-    </div>
-    
     <div class="welcome-text">
-        <h1>Welcome John Johnny Jr.</h1>
-        <div class="appointment-header">
-            <h2>Upcoming Appointment</h2>
-            <button type="button" class="new-schedule-btn">Schedule New Appointment</button>
-        </div>
+      <h1>
+        Welcome,
+        <span th:text="${petOwner.user.firstName}"></span>
+        <span th:text="${petOwner.user.lastName}"></span>
+      </h1>
+      <div class="appointment-header">
+        <h2>Upcoming Appointment</h2>
+        <button type="button" class="new-schedule-btn">
+          Schedule New Appointment
+        </button>
+      </div>
     </div>
 
     <div
@@ -126,7 +141,7 @@
     <div
       th:if="${upcomingAppointments == null || upcomingAppointments.isEmpty()}"
       class="no-appointments"
-      style="margin-left: 15rem;"
+      style="margin-left: 15rem"
     >
       <p>No upcoming appointments.</p>
     </div>
