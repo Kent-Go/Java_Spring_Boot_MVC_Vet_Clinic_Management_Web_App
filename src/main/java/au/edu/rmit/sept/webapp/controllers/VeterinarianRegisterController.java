@@ -92,6 +92,12 @@ public class VeterinarianRegisterController {
             throw new IllegalArgumentException("Year awarded cannot be in the past beyond a certain threshold");
         }
 
+        // Validate email is unique
+        if (userService.getUserByEmail(email) != null) {
+            model.addAttribute("errorMessage", "Email already exists. Please use a different email.");
+            return "veterinarianRegister"; // Reload the registration page
+        }
+
         // Create user entity
         User user = new User(firstName, lastName, LocalDate.parse(birthDate, DateTimeFormatter.ISO_LOCAL_DATE), gender,
                 phoneNumber, email, password);
