@@ -60,6 +60,12 @@ public class PetOwnerRegisterController {
             @RequestParam("password") String password,
             Model model) {
 
+        // Check if the email already exists
+        if (userService.getUserByEmail(email) != null) {
+            model.addAttribute("errorMessage", "Email already exists. Please use a different email.");
+            return "petOwnerRegister"; // Reload the registration page
+        }
+
         // Create a new user
         User user = new User();
         user.setFirstName(firstName);
