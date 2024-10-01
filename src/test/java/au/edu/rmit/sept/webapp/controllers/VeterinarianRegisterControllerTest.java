@@ -21,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
-
 
 public class VeterinarianRegisterControllerTest {
 
@@ -55,15 +53,21 @@ public class VeterinarianRegisterControllerTest {
     @Test
     public void testRegisterVeterinarian_Success() {
         // Arrange: mock the valid inputs and responses
-        User mockUser = new User("John", "Doe", LocalDate.of(1980, 1, 1), "Male", "1234567890", "john@example.com", "password123");
+        User mockUser = new User("John", "Doe", LocalDate.of(1980, 1, 1), "Male", "1234567890", "john@example.com",
+                "password123");
+
+        // Simulate that the user does not exist initially (on the first check)
+        when(userService.getUserByEmail("john@example.com")).thenReturn(null).thenReturn(mockUser);
+
+        // Simulate that the user is created successfully
         when(userService.createUser(any(User.class))).thenReturn(mockUser);
-        when(userService.getUserByEmail("john@example.com")).thenReturn(mockUser);
 
         Vet mockVet = new Vet("Dr.", "English", "Specializes in surgery", mockUser.getId(), 1);
         when(vetService.createVet(any(Vet.class))).thenReturn(mockVet);
         when(vetService.getVetByUserID(mockUser.getId())).thenReturn(mockVet);
 
-        Qualification mockQualification = new Qualification("Veterinary Medicine", "Harvard", "USA", 2005, mockVet.getId());
+        Qualification mockQualification = new Qualification("Veterinary Medicine", "Harvard", "USA", 2005,
+                mockVet.getId());
         when(qualificationService.createQualification(any(Qualification.class))).thenReturn(mockQualification);
 
         Address mockAddress = new Address("123 Main St", "Suburbia", "Stateville", "12345", mockUser.getId());
@@ -75,8 +79,9 @@ public class VeterinarianRegisterControllerTest {
                 "123 Main St", "Suburbia", "Stateville", "12345", "Dr.", "English", "Specializes in surgery", 1,
                 "Veterinary Medicine", "Harvard", "USA", "2005", model);
 
-        // Assert: check that all services were called and the expected view was returned
-        verify(userService, times(1)).createUser(any(User.class));
+        // Assert: check that all services were called and the expected view was
+        // returned
+        verify(userService, times(1)).createUser(any(User.class));  // Ensure createUser is called once
         verify(addressService, times(1)).createAddress(any(Address.class));
         verify(vetService, times(1)).createVet(any(Vet.class));
         verify(qualificationService, times(1)).createQualification(any(Qualification.class));
@@ -89,7 +94,8 @@ public class VeterinarianRegisterControllerTest {
      */
     @Test
     public void testRegisterVeterinarian_MissingRequiredFields() {
-        // Act & Assert: Expect IllegalArgumentException due to missing first and last name
+        // Act & Assert: Expect IllegalArgumentException due to missing first and last
+        // name
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             veterinarianRegisterController.registerVeterinarian(
                     "", "", "1990-01-01", "Male", "123456789", "john@example.com", "password",
@@ -128,7 +134,8 @@ public class VeterinarianRegisterControllerTest {
             veterinarianRegisterController.registerVeterinarian(
                     "John", "Doe", "1980-01-01", "Male", "1234567890", "john@example.com", "password123",
                     "123 Main St", "Suburbia", "Stateville", "12345", "Dr.", "English", "Specializes in surgery", 1,
-                    "Veterinary Medicine", "Harvard", "USA", String.valueOf(LocalDate.now().getYear() + 1), model); // Future year
+                    "Veterinary Medicine", "Harvard", "USA", String.valueOf(LocalDate.now().getYear() + 1), model); // Future
+                                                                                                                    // year
         });
 
         assertEquals("Year awarded cannot be in the future", exception.getMessage());
@@ -139,7 +146,8 @@ public class VeterinarianRegisterControllerTest {
      */
     @Test
     public void testRegisterVeterinarian_YearBoundary_Min() {
-        // Act & Assert: Call the method with the minimum valid year (modify as per business rules)
+        // Act & Assert: Call the method with the minimum valid year (modify as per
+        // business rules)
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             veterinarianRegisterController.registerVeterinarian(
                     "John", "Doe", "1980-01-01", "Male", "1234567890", "john@example.com", "password123",

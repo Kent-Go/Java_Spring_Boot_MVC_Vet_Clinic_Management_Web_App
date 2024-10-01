@@ -103,14 +103,8 @@ public class VeterinarianRegisterController {
                 phoneNumber, email, password);
         userService.createUser(user);
 
-        // Get the user_id by email and handle null case
-        User existingUser = userService.getUserByEmail(email);
-        if (existingUser == null) {
-            throw new IllegalArgumentException("User with email " + email + " does not exist.");
-        }
-
         // Get the user_id by email
-        int userID = existingUser.getId();
+        int userID = user.getId();
 
         // Create address entity
         Address address = new Address(street, suburb, state, postcode, userID);
