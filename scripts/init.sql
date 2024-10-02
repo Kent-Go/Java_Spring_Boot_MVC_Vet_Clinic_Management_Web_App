@@ -4,7 +4,34 @@
 -- Create database
 -- CREATE DATABASE IF NOT EXISTS VetCare;
 
--- Create Tables -- 
+---------------- Create Tables ----------------
+-- Clinic Address --
+CREATE TABLE IF NOT EXISTS clinic_address (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	street VARCHAR(255) NOT NULL,
+	suburb VARCHAR(50) NOT NULL,
+	state VARCHAR(30) NOT NULL,
+	postcode CHAR(4) NOT NULL 
+);
+INSERT INTO clinic_address VALUES 
+(1, '1 Boundary Rd', 'North Melbourne', 'Victoria', '3051'),
+(2, '109 Bay St', 'Port Melbourne', 'Victoria', '3207'),
+(3, '210 Lygon St', 'Brunswick East', 'Victoria', '3055');
+
+-- Clinic --
+CREATE TABLE IF NOT EXISTS clinic (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	password TEXT NOT NULL,
+	clinic_address_id INTEGER NOT NULL,
+	FOREIGN KEY (clinic_address_id) REFERENCES clinic_address(id) ON DELETE CASCADE
+);
+INSERT INTO clinic VALUES 
+(1, 'Frank Samways Veterinary Clinic', 'vetclinic@franksamsways.com', 'franksamwaysclinic', 1),
+(2, 'Port Melbourne Veterinary Clinic', 'appointment@portmelbournevet.com', 'portmelbournevet', 2),
+(3, 'Brunswick Central Vet Clinic', 'reception@brunswickcentralvet.com.au', 'brunswickcentralvet', 3);
+
 -- User --
 CREATE TABLE IF NOT EXISTS user(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +43,13 @@ CREATE TABLE IF NOT EXISTS user(
 	email VARCHAR(255) NOT NULL UNIQUE,
 	password TEXT NOT NULL
 );
-INSERT INTO user VALUES (1, 'John', 'Johnny Jr.', '2005-02-10', 'Male', '0126741127', 'littlejohn@gmail.com', 'galvanisedSquareSteel(hashed)'), (2, 'Jude', 'Bellingham', '1980-12-10', 'Male', '0782937410', 'j_bellingham@gmail.com', 'unknownHollowFeathers(hashed)'), (3, 'Susan', 'Smith', '1990-01-17', 'Female', '0453297849', 'ssmith@yahoo.com', 'hashed'), (4, 'Sarah', 'Thompson', '1979-04-20', 'Female', '0295783902', 'thompsonS@yahoo.com', 'hashedpassword');
+INSERT INTO user VALUES 
+(1, 'John', 'Johnny Jr.', '2005-02-10', 'Male', '0126741127', 'littlejohn@gmail.com', 'galvanisedSquareSteel(hashed)'), 
+(2, 'Jude', 'Bellingham', '1980-12-10', 'Male', '0782937410', 'j_bellingham@gmail.com', 'unknownHollowFeathers(hashed)'), 
+(3, 'Susan', 'Smith', '1990-01-17', 'Female', '0453297849', 'ssmith@yahoo.com', 'hashed'), 
+(4, 'Sarah', 'Thompson', '1979-04-20', 'Female', '0295783902', 'thompsonS@yahoo.com', 'hashedpassword'),
+(5, 'Jordan', 'Jackson', '1980-01-01', 'Male', '0109283905', 'jordanS@gmail.com', 'hashedpassword'),
+(6, 'Jeremy', 'John', '1985-10-15', 'Male', '019278920', 'jeremyJ@gmail.com', 'hashedpassword');
 
 -- Address --
 CREATE TABLE IF NOT EXISTS address(
@@ -28,7 +61,13 @@ CREATE TABLE IF NOT EXISTS address(
 	user_id INT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-INSERT INTO address VALUES (1, '1 Little John Court', 'Werribee', 'Victoria', '3030', 1), (2, '19 Arras Parade', 'Ryde', 'New South Wales', '2112', 2), (3, '2 Neath Street', 'Surrey Hills', 'Victoria', '3127', 3), (4, '186 Strong Avenue', 'Graceville', 'Queensland', '4075', 4);
+INSERT INTO address VALUES 
+(1, '1 Little John Court', 'Werribee', 'Victoria', '3030', 1), 
+(2, '19 Arras Parade', 'Ryde', 'New South Wales', '2112', 2), 
+(3, '2 Neath Street', 'Surrey Hills', 'Victoria', '3127', 3), 
+(4, '186 Strong Avenue', 'Graceville', 'Queensland', '4075', 4),
+(5, '196 Nice Avenue', 'Sdyney', 'New South Wales', '3075', 5),
+(6, '1 Drive Street', 'Carlton', 'Victoria', '3053', 6);
 
 -- Pet Owner --
 CREATE TABLE IF NOT EXISTS pet_owner(
@@ -96,9 +135,15 @@ CREATE TABLE IF NOT EXISTS vet(
 	self_description TEXT NOT NULL,
 	profile_picture MEDIUMBLOB NOT NULL,
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+	clinic_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY (clinic_id) REFERENCES clinic(id) ON DELETE CASCADE
 );
-INSERT INTO vet VALUES (1, 'Dr.', 'English, Russian, Italian', "Basic description for a vet... uh... I'm very good at taking care of dogs and cats??", 'profilePicLink', 2), (2, 'Surgeon', 'English, Spanish', "I have very steady hands and is skillful with knifes on the operating room", 'profilePicLink', 4);
+INSERT INTO vet VALUES 
+(1, 'Dr.', 'English, Russian, Italian', "Basic description for a vet... uh... I'm very good at taking care of dogs and cats??", 'profilePicLink', 2, 1), 
+(2, 'Surgeon', 'English, Spanish', "I have very steady hands and is skillful with knifes on the operating room", 'profilePicLink', 4, 2),
+(3, 'Dr', 'English, Italian', "Jordan is an internationally recognized expert in animal neurophysiology and the diagnosis of neuromuscular disorders.", 'profilePicLink', 5, 2),
+(4, 'Dr', 'English, Chinese, Malay', "I am dedicated to providing comprehensive and compassionate care to pets of all ages, ensuring their overall well-being and health.", 'profilePicLink', 6, 3);
 
 -- Qualification --
 CREATE TABLE IF NOT EXISTS qualification(
@@ -110,7 +155,8 @@ CREATE TABLE IF NOT EXISTS qualification(
 	vet_id INT NOT NULL,
 	FOREIGN KEY (vet_id) REFERENCES vet(id) ON DELETE CASCADE
 );
-INSERT INTO qualification VALUES (1, 'Bachelor of Veterinary Science (BVSc)', 'University of Melbourne', 'Australia', 1997, 1), (2, 'Master of Veterinary Science (MVSc)', 'University of Melbourne', 'Australia', 2002, 1);
+INSERT INTO qualification VALUES 
+(1, 'Bachelor of Veterinary Science (BVSc)', 'University of Melbourne', 'Australia', 1997, 1), (2, 'Master of Veterinary Science (MVSc)', 'University of Melbourne', 'Australia', 2002, 1);
 
 -- Availability --
 CREATE TABLE IF NOT EXISTS availability (
@@ -138,7 +184,7 @@ CREATE TABLE IF NOT EXISTS medicine (
 	quantity INTEGER NOT NULL,
     price DOUBLE NOT NULL
 );
-INSERT INTO medicine VALUES (1, 'Antinol Plus EAB-277 For Dogs', 1000, 0.25), (2, 'Vetmedin 1.25mg Flavoured Chewable Tablets For Dogs', 2500, 0.1), (3, 'Clomicalm 80mg Tablets For Dogs and Cats', 3000, 1.2);
+INSERT INTO medicine VALUES (1, 'Antinol Plus EAB-277 For Dogs', 1000, 1.5), (2, 'Vetmedin 1ss.25mg Flavoured Chewable Tablets For Dogs', 1500, 0.85), (3, 'Clomicalm 80mg Tablets For Dogs and Cats', 2000, 1.35);
 
 -- Appointment Type --
 CREATE TABLE IF NOT EXISTS appointment_type (
@@ -148,6 +194,20 @@ CREATE TABLE IF NOT EXISTS appointment_type (
 	description TEXT NOT NULL
 );
 INSERT INTO appointment_type VALUES (1, 'General Clinical Consultation', 30, 'This service involves a comprehensive assessment of your pet’s overall health. The veterinarian will discuss any concerns you have, review your pet’s medical history, and provide recommendations for preventive care or treatment.'), (2, 'Physical Examination', 45, 'During a physical examination, the veterinarian will thoroughly check your pet’s body, including the eyes, ears, mouth, skin, and coat. This helps in identifying any signs of illness or abnormalities early on.'), (3, 'Dental Care', 30, 'Dental care services focus on maintaining your pet’s oral health. This includes teeth cleaning, polishing, and addressing any dental issues such as plaque buildup, gum disease, or tooth extractions if necessary.'), (4, 'Surgery', 90, 'Veterinary surgery encompasses a wide range of procedures, from routine spaying and neutering to more complex surgeries like tumor removal or orthopedic operations. These procedures are performed under anesthesia to ensure your pet’s comfort and safety.'), (5, 'Diet and Nutrition', 60, 'This service involves creating a balanced and nutritious diet plan tailored to your pet’s specific needs. The veterinarian will provide guidance on the best types of food, portion sizes, and any necessary supplements to ensure your pet’s optimal health.');
+
+-- Clinic Appointment Type Price --
+CREATE TABLE IF NOT EXISTS clinic_appointment_type_price (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    clinic_id INT NOT NULL,
+    appointment_type_id INT NOT NULL,
+    price DOUBLE NOT NULL,
+	FOREIGN KEY (clinic_id) REFERENCES clinic(id) ON DELETE CASCADE,
+    FOREIGN KEY (appointment_type_id) REFERENCES appointment_type(id)
+);
+INSERT INTO clinic_appointment_type_price VALUES 
+(1, 1, 1, 80.00), (2, 1, 2, 105.00), (3, 1, 3, 150.00), (4, 1, 4, 2500.00), (5, 1, 5, 70.00),
+(6, 2, 1, 100.00), (7, 2, 2, 120.00), (8, 2, 3, 130.00), (9, 2, 4, 3000.00), (10, 2, 5, 75.00),
+(11, 3, 1, 90.00), (12, 3, 2, 130.00), (13, 3, 3, 125.00), (14, 3, 4, 2750.00), (15, 3, 5, 65.00);
 
 -- Appointment --
 CREATE TABLE IF NOT EXISTS appointment (
@@ -172,7 +232,7 @@ CREATE TABLE IF NOT EXISTS vet_appointment_type_offered(
     FOREIGN KEY (vet_id) REFERENCES vet(id) ON DELETE CASCADE,
     FOREIGN KEY (appointment_type_id) REFERENCES appointment_type(id) ON DELETE CASCADE
 );
-INSERT INTO vet_appointment_type_offered VALUES (1, 1, 1), (2,1,2), (3,1,3), (4,1,5), (5,2,1), (6,2,3), (7,2,4), (8,2,5);
+INSERT INTO vet_appointment_type_offered VALUES (1, 1, 1), (2,1,2), (3,1,3), (4,1,5), (5,2,1), (6,2,3), (7,2,4), (8,2,5), (9, 3, 1), (10, 3, 3), (11, 3, 4), (12, 3, 5), (13, 4, 1), (14, 4, 2), (15, 4, 3), (16, 4, 5);
 
 -- Order --
 CREATE TABLE IF NOT EXISTS orders (
