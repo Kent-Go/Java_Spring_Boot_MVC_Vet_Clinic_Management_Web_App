@@ -27,9 +27,6 @@ public class Vet {
     @Column(name = "self_description")
     private String selfDescription;
 
-    @Column(name = "profile_picture")
-    private byte[] profilePicture;
-
     @Column(name = "user_id")
     private int userID;
 
@@ -67,14 +64,6 @@ public class Vet {
 
     public void setLanguagesSpoken(String languagesSpoken) {
         this.languagesSpoken = languagesSpoken;
-    }
-
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public int getUserID() {
