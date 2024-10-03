@@ -71,17 +71,17 @@ CREATE TABLE IF NOT EXISTS pet_owner(
 );
 INSERT INTO pet_owner VALUES (1, 1), (2, 3);
 
--- Pet Owner Payment Details --
-CREATE TABLE IF NOT EXISTS payment_details (
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(255) NOT NULL,
-	card_number VARCHAR(19) NOT NULL,
-	expiration_date VARCHAR(5) NOT NULL, -- Format: MM/YY
-	hashed_cvv VARCHAR(255) NOT NULL,
-	pet_owner_id INTEGER NOT NULL,
-	FOREIGN KEY (pet_owner_id) REFERENCES pet_owner(id) ON DELETE CASCADE
-);
-INSERT INTO payment_details VALUES (1, 'John Doe', '1234 5678 1234 5678', '12/25', 'hashedCVV1', 1), (2, 'Jane Smith', '8765 4321 8765 4321', '01/26', 'hashedCVV2', 2);
+-- -- Pet Owner Payment Details --
+-- CREATE TABLE IF NOT EXISTS payment_details (
+-- 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+-- 	name VARCHAR(255) NOT NULL,
+-- 	card_number VARCHAR(19) NOT NULL,
+-- 	expiration_date VARCHAR(5) NOT NULL, -- Format: MM/YY
+-- 	hashed_cvv VARCHAR(255) NOT NULL,
+-- 	pet_owner_id INTEGER NOT NULL,
+-- 	FOREIGN KEY (pet_owner_id) REFERENCES pet_owner(id) ON DELETE CASCADE
+-- );
+-- INSERT INTO payment_details VALUES (1, 'John Doe', '1234 5678 1234 5678', '12/25', 'hashedCVV1', 1), (2, 'Jane Smith', '8765 4321 8765 4321', '01/26', 'hashedCVV2', 2);
 
 -- Pet --
 CREATE TABLE IF NOT EXISTS pet (
@@ -168,7 +168,6 @@ INSERT INTO availability VALUES
 (2, '2024-11-02', '10:00', '17:30'), 
 (3, '2024-11-03', '09:30', '16:30'),
 (4, '2024-11-04', '10:30', '16:00'),
-(5, '2024-11-05', '09:00', '19:30'),
 (5, '2024-11-06', '09:30', '17:30'),
 (6, '2024-11-07', '09:00', '16:00'),
 (7, '2024-11-08', '10:00', '17:00'),
@@ -279,10 +278,10 @@ CREATE TABLE IF NOT EXISTS appointment (
 	FOREIGN KEY (pet_id) REFERENCES pet(id) ON DELETE CASCADE,
 	FOREIGN KEY (appointment_type_id) REFERENCES appointment_type(id)
 );
-INSERT INTO appointment VALUES 
-(1, '2024-11-01', '13:00', '13:30', 1, 1, 1), 
-(2, '2024-11-02', '10:00', '11:30', 1, 2, 2), 
-(3, '2024-11-01', '15:00', '14:00', 1, 1, 1);
+-- INSERT INTO appointment VALUES 
+-- (1, '2024-11-01', '13:00', '13:30', 1, 1, 1), 
+-- (2, '2024-11-02', '10:00', '11:30', 1, 2, 2), 
+-- (3, '2024-11-01', '15:00', '14:00', 1, 1, 1);
 
 -- Vet Appointment Type Offered --
 CREATE TABLE IF NOT EXISTS vet_appointment_type_offered(
@@ -298,11 +297,12 @@ INSERT INTO vet_appointment_type_offered VALUES (1, 1, 1), (2,1,2), (3,1,3), (4,
 CREATE TABLE IF NOT EXISTS orders (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	date DATE NOT NULL,
-	status VARCHAR(255) NOT NULL,
-	payment_details_id INTEGER NOT NULL,
-	FOREIGN KEY (payment_details_id) REFERENCES payment_details(id)
+	status VARCHAR(255) NOT NULL
+
 );
-INSERT INTO orders VALUES (1, '2024-09-01', 'Delivered', 1), (2, '2024-09-02', 'Waiting for pickup', 1), (3, '2024-09-03', 'Packing order', 2);
+	-- payment_details_id INTEGER NOT NULL,
+	-- FOREIGN KEY (payment_details_id) REFERENCES payment_details(id)
+-- INSERT INTO orders VALUES (1, '2024-09-01', 'Delivered', 1), (2, '2024-09-02', 'Waiting for pickup', 1), (3, '2024-09-03', 'Packing order', 2);
 
 -- Prescribed Medication --
 CREATE TABLE IF NOT EXISTS prescribed_medication (
@@ -318,12 +318,12 @@ CREATE TABLE IF NOT EXISTS prescribed_medication (
 	FOREIGN KEY (order_id) REFERENCES orders(id),
 	FOREIGN KEY (appointment_id) REFERENCES appointment(id)
 );
-INSERT INTO prescribed_medication VALUES (1, 1, 3, 14, 'Feed during breakfast, lunch and dinner', 1, 2, 1), (2, 1, 2, 11, 'Swallow the pill along water. Feed during breakfast, and dinner', 2, 1, 1), (3, 1, 2, 14, 'Swallow the pill along food. Feed during breakfast, and dinner', 2, 1, 2);
+-- INSERT INTO prescribed_medication VALUES (1, 1, 3, 14, 'Feed during breakfast, lunch and dinner', 1, 2, 1), (2, 1, 2, 11, 'Swallow the pill along water. Feed during breakfast, and dinner', 2, 1, 1), (3, 1, 2, 14, 'Swallow the pill along food. Feed during breakfast, and dinner', 2, 1, 2);
 
 -- Educational Videos --
-CREATE TABLE IF NOT EXISTS educational_video (
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	title VARCHAR(255) NOT NULL,
-	video_url VARCHAR(255) NOT NULL UNIQUE
-);
-INSERT INTO educational_video VALUES (1, 'Pets for Kids', 'https://www.youtube.com/watch?v=TmXGL4BorBw'), (2, 'Teaching Kids to Care for Pets | Videos for Toddlers', 'https://www.youtube.com/watch?v=pKosbOawGSY'), (3, 'A Day In The Life Of A Vet | If You See It, You Can Be It', 'https://www.youtube.com/watch?v=5XrzUiCLw3A');
+-- CREATE TABLE IF NOT EXISTS educational_video (
+-- 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+-- 	title VARCHAR(255) NOT NULL,
+-- 	video_url VARCHAR(255) NOT NULL UNIQUE
+-- );
+-- INSERT INTO educational_video VALUES (1, 'Pets for Kids', 'https://www.youtube.com/watch?v=TmXGL4BorBw'), (2, 'Teaching Kids to Care for Pets | Videos for Toddlers', 'https://www.youtube.com/watch?v=pKosbOawGSY'), (3, 'A Day In The Life Of A Vet | If You See It, You Can Be It', 'https://www.youtube.com/watch?v=5XrzUiCLw3A');
