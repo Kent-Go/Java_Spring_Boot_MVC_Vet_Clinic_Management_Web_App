@@ -1,8 +1,5 @@
 package au.edu.rmit.sept.webapp.models;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;

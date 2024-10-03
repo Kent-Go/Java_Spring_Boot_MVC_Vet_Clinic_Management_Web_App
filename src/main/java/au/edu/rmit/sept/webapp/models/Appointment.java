@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.GeneratedValue;
@@ -50,6 +51,7 @@ public class Appointment {
     @JoinColumn(name = "appointment_type_id", insertable = false, updatable = false)
     private AppointmentType appointmentType;
 
+    @Transient // This field is not persisted in the database but is calculated and used in the application
     private String dayOfWeek;
 
     // Getters and Setters
