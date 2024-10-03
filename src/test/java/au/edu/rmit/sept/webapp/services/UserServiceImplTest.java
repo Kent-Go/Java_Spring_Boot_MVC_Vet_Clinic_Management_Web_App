@@ -3,20 +3,18 @@ package au.edu.rmit.sept.webapp.services;
 import au.edu.rmit.sept.webapp.models.User;
 import au.edu.rmit.sept.webapp.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class UserServiceImplTest {
+class UserServiceImplTest {
 
     @MockBean
     private UserRepository userRepository;
@@ -26,9 +24,10 @@ public class UserServiceImplTest {
 
     // Positive Test: Test getUserByUserID with valid user ID
     @Test
-    public void testGetUserByUserID_ValidID() {
+    void testGetUserByUserID_ValidID() {
         int userID = 1;
-        User mockUser = new User("John", "Doe", LocalDate.of(1990, 1, 1), "Male", "123456789", "john.doe@example.com", "password123");
+        User mockUser = new User("John", "Doe", LocalDate.of(1990, 1, 1), "Male", "123456789", "john.doe@example.com",
+                "password123");
 
         when(userRepository.findById(userID)).thenReturn(Optional.of(mockUser));
 
@@ -41,7 +40,7 @@ public class UserServiceImplTest {
 
     // Negative Test: Test getUserByUserID with invalid user ID
     @Test
-    public void testGetUserByUserID_InvalidID() {
+    void testGetUserByUserID_InvalidID() {
         int userID = 999;
 
         when(userRepository.findById(userID)).thenReturn(Optional.empty());
@@ -56,9 +55,10 @@ public class UserServiceImplTest {
 
     // Boundary Test: Test getUserByUserID with boundary value
     @Test
-    public void testGetUserByUserID_BoundaryID() {
+    void testGetUserByUserID_BoundaryID() {
         int userID = Integer.MAX_VALUE;
-        User mockUser = new User("Jane", "Doe", LocalDate.of(1990, 1, 1), "Female", "123456789", "jane.doe@example.com", "password123");
+        User mockUser = new User("Jane", "Doe", LocalDate.of(1990, 1, 1), "Female", "123456789", "jane.doe@example.com",
+                "password123");
 
         when(userRepository.findById(userID)).thenReturn(Optional.of(mockUser));
 
@@ -71,8 +71,9 @@ public class UserServiceImplTest {
 
     // Positive Test: Test createUser
     @Test
-    public void testCreateUser() {
-        User newUser = new User("Alice", "Smith", LocalDate.of(1992, 2, 2), "Female", "987654321", "alice.smith@example.com", "securePass");
+    void testCreateUser() {
+        User newUser = new User("Alice", "Smith", LocalDate.of(1992, 2, 2), "Female", "987654321",
+                "alice.smith@example.com", "securePass");
 
         when(userRepository.save(newUser)).thenReturn(newUser);
 
@@ -85,7 +86,7 @@ public class UserServiceImplTest {
 
     // Negative Test: Test createUser with null user
     @Test
-    public void testCreateUser_NullUser() {
+    void testCreateUser_NullUser() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.createUser(null);
         });
@@ -96,7 +97,7 @@ public class UserServiceImplTest {
 
     // Positive Test: Test getUserByEmail with valid email
     @Test
-    public void testGetUserByEmail_Valid() {
+    void testGetUserByEmail_Valid() {
         String email = "test.email@example.com";
         User mockUser = new User("Test", "User", LocalDate.of(1991, 1, 1), "Male", "999999999", email, "password");
 
@@ -111,7 +112,7 @@ public class UserServiceImplTest {
 
     // Negative Test: Test getUserByEmail with non-existent email
     @Test
-    public void testGetUserByEmail_NonExistentEmail() {
+    void testGetUserByEmail_NonExistentEmail() {
         String email = "non.existent@example.com";
 
         when(userRepository.findByEmail(email)).thenReturn(null);
@@ -124,7 +125,7 @@ public class UserServiceImplTest {
 
     // Positive Test: Test deleteUserByUserID with valid ID
     @Test
-    public void testDeleteUserByUserID_ValidID() {
+    void testDeleteUserByUserID_ValidID() {
         int userID = 1;
 
         doNothing().when(userRepository).deleteById(userID);
@@ -136,7 +137,7 @@ public class UserServiceImplTest {
 
     // Negative Test: Test deleteUserByUserID with invalid ID
     @Test
-    public void testDeleteUserByUserID_InvalidID() {
+    void testDeleteUserByUserID_InvalidID() {
         int userID = 999;
 
         doThrow(new RuntimeException("User not found")).when(userRepository).deleteById(userID);
