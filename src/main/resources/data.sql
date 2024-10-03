@@ -150,7 +150,11 @@ CREATE TABLE IF NOT EXISTS qualification(
 	FOREIGN KEY (vet_id) REFERENCES vet(id) ON DELETE CASCADE
 );
 INSERT INTO qualification VALUES 
-(1, 'Bachelor of Veterinary Science (BVSc)', 'University of Melbourne', 'Australia', 1997, 1), (2, 'Master of Veterinary Science (MVSc)', 'University of Melbourne', 'Australia', 2002, 1);
+(1, 'Bachelor of Veterinary Science (BVSc)', 'University of Melbourne', 'Australia', 1997, 1), 
+(2, 'Master of Veterinary Science (MVSc)', 'University of Melbourne', 'Australia', 2002, 1),
+(3, 'Bachelor of Veterinary Science (MVSc)', 'RMIT University', 'Australia', 1990, 2),
+(4, 'Bachelor of Veterinary Science (MVSc)', 'University of Sdyney', 'Australia', 1998, 3),
+(5, 'Master of Veterinary Science (MVSc)', 'University of New South Wales', 'Australia', 2003, 4);
 
 -- Availability --
 CREATE TABLE IF NOT EXISTS availability (
@@ -159,7 +163,37 @@ CREATE TABLE IF NOT EXISTS availability (
 	start_time TIME(0) NOT NULL,
 	end_time TIME(0) NOT NULL
 );
-INSERT INTO availability VALUES (1, '2024-08-31', '13:00', '17:00'), (2, '2024-09-01', '10:00', '14:30'), (3, '2024-09-01', '09:30', '16:30');
+INSERT INTO availability VALUES 
+(1, '2024-11-01', '10:00', '17:00'), 
+(2, '2024-11-02', '10:00', '17:30'), 
+(3, '2024-11-03', '09:30', '16:30'),
+(4, '2024-11-04', '10:30', '16:00'),
+(5, '2024-11-05', '09:00', '19:30'),
+(5, '2024-11-06', '09:30', '17:30'),
+(6, '2024-11-07', '09:00', '16:00'),
+(7, '2024-11-08', '10:00', '17:00'),
+(8, '2024-11-09', '11:00', '18:00'),
+(9, '2024-11-10', '12:00', '19:00'),
+(10, '2024-11-11', '09:30', '16:30'),
+(11, '2024-11-12', '10:30', '17:30'),
+(12, '2024-11-13', '11:30', '18:30'),
+(13, '2024-11-14', '09:00', '16:00'),
+(14, '2024-11-15', '10:00', '17:00'),
+(15, '2024-11-16', '11:00', '18:00'),
+(16, '2024-11-17', '12:00', '19:00'),
+(17, '2024-11-18', '09:30', '16:30'),
+(18, '2024-11-19', '10:30', '17:30'),
+(19, '2024-11-20', '11:30', '18:30'),
+(20, '2024-11-21', '09:00', '16:00'),
+(21, '2024-11-22', '10:00', '17:00'),
+(22, '2024-11-23', '11:00', '18:00'),
+(23, '2024-11-24', '12:00', '19:00'),
+(24, '2024-11-25', '09:30', '16:30'),
+(25, '2024-11-26', '10:30', '17:30'),
+(26, '2024-11-27', '11:30', '18:30'),
+(27, '2024-11-28', '09:00', '16:00'),
+(28, '2024-11-29', '10:00', '17:00'),
+(29, '2024-11-30', '11:00', '18:00');
 
 -- Vet Availability --
 CREATE TABLE IF NOT EXISTS vet_availability (
@@ -169,7 +203,36 @@ CREATE TABLE IF NOT EXISTS vet_availability (
   FOREIGN KEY (vet_id) REFERENCES vet(id) ON DELETE CASCADE,
   FOREIGN KEY (availability_id) REFERENCES availability(id)
 );
-INSERT INTO vet_availability VALUES (1, 1, 1), (2, 1, 2), (3, 2, 2);
+INSERT INTO vet_availability VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 1, 5),
+(6, 2, 6),
+(7, 3, 7),
+(8, 4, 8),
+(9, 1, 9),
+(10, 2, 10),
+(11, 3, 11),
+(12, 4, 12),
+(13, 1, 13),
+(14, 2, 14),
+(15, 3, 15),
+(16, 4, 16),
+(17, 1, 17),
+(18, 2, 18),
+(19, 3, 19),
+(20, 4, 20),
+(21, 1, 21),
+(22, 2, 22),
+(23, 3, 23),
+(24, 4, 24),
+(25, 1, 25),
+(26, 2, 26),
+(27, 3, 27),
+(28, 4, 28),
+(29, 1, 29);
 
 -- Medicine --
 CREATE TABLE IF NOT EXISTS medicine (
@@ -216,7 +279,10 @@ CREATE TABLE IF NOT EXISTS appointment (
 	FOREIGN KEY (pet_id) REFERENCES pet(id) ON DELETE CASCADE,
 	FOREIGN KEY (appointment_type_id) REFERENCES appointment_type(id)
 );
-INSERT INTO appointment VALUES (1, '2024-08-31', '13:00', '13:30', 1, 1, 1), (2, '2024-08-31', '11:00', '11:30', 1, 1, 1), (3, '2024-09-01', '15:00', '14:00', 2, 2, 2);
+INSERT INTO appointment VALUES 
+(1, '2024-11-01', '13:00', '13:30', 1, 1, 1), 
+(2, '2024-11-02', '10:00', '11:30', 1, 2, 2), 
+(3, '2024-11-01', '15:00', '14:00', 1, 1, 1);
 
 -- Vet Appointment Type Offered --
 CREATE TABLE IF NOT EXISTS vet_appointment_type_offered(
