@@ -10,13 +10,21 @@
         const userId = localStorage.getItem("userId");
         const petOwnerId = localStorage.getItem("petOwnerId");
 
-        // Set the links for the logo and profile icon
-        document.getElementById(
-          "logo-link"
-        ).href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
-        document.getElementById(
-          "profile-link"
-        ).href = `/petOwnerProfile?petOwnerId=${petOwnerId}`;
+        // Set the links for the logo and profile icon using class selectors
+        const logoLink = document.querySelector(".logo-link");
+        const profileLink = document.querySelector(".profile-link");
+
+        if (logoLink && userId && petOwnerId) {
+          logoLink.href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
+        } else {
+          console.error("logo-link not found or userId/petOwnerId is missing.");
+        }
+
+        if (profileLink && petOwnerId) {
+          profileLink.href = `/petOwnerProfile?petOwnerId=${petOwnerId}`;
+        } else {
+          console.error("profile-link not found or petOwnerId is missing.");
+        }
 
         document
           .querySelector(".back-button")
@@ -80,7 +88,7 @@
   </head>
   <body>
     <div class="header">
-      <a href="/" class="logo-link">
+      <a href="#" class="logo-link">
         <img src="/images/logo.png" alt="Logo" class="logo" />
       </a>
       <a href="login" class="profile-link">
