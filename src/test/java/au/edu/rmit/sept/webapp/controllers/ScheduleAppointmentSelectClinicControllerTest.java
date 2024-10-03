@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,7 +32,7 @@ import java.util.Iterator;
 import static org.hamcrest.Matchers.containsString;
 
 @WebMvcTest(controllers = ScheduleAppointmentSelectClinicController.class)
-public class ScheduleAppointmentSelectClinicControllerTest {
+class ScheduleAppointmentSelectClinicControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,7 +53,7 @@ public class ScheduleAppointmentSelectClinicControllerTest {
     private ClinicAddressService clinicAddressService;
 
     @Test
-    public void testShowClinic() throws Exception {
+    void testShowClinic() throws Exception {
         // Mock test data
         Integer appointmentTypeId = 1;
 
