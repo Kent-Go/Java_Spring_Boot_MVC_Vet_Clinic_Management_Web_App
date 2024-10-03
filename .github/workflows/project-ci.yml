@@ -1,68 +1,13 @@
-# name: Team Group-P08-03 CI tasks
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     services:
-#       mysql:
-#         image: mysql:8.0
-#         ports:
-#           - 3307:3306
-#         env:
-#           MYSQL_ROOT_PASSWORD: password123
-#           MYSQL_DATABASE: VetCare
-
-#     steps:
-#       - uses: actions/checkout@v4
-
-#       # Check MySQL container logs
-#       - name: Check MySQL container logs
-#         run: |
-#           docker logs $(docker ps -qf "ancestor=mysql:8.0")
-
-#       # Wait for MySQL to be ready
-#       - name: Wait for MySQL to be ready
-#         run: |
-#           echo "Waiting for MySQL to start..."
-#           for i in {1..30}; do
-#             if mysqladmin ping -h"127.0.0.1" -P3307 --silent; then
-#               echo "MySQL is up!"
-#               break
-#             fi
-#             echo "Waiting for database connection... ($i/30)"
-#             sleep 10
-#           done
-
-#       # Populate the database with an SQL script
-#       - name: Populate Database with SQL Script
-#         run: |
-#           mysql -h 127.0.0.1 -P3307 -u root -ppassword123 VetCare < scripts/init.sql
-
-#       # Set up JDK 17
-#       - name: Set up JDK 17
-#         uses: actions/setup-java@v4
-#         with:
-#           java-version: '17'
-#           distribution: 'temurin'
-
-#       # Build the backend with Maven
-#       - name: Build with Maven
-#         run: ./mvnw --batch-mode --update-snapshots package
-#         env:
-#           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/VetCare
-#           SPRING_DATASOURCE_USERNAME: root
-#           SPRING_DATASOURCE_PASSWORD: password123
-
 name: Team Group-P08-03 CI tasks
 on:
+  # Execute the workflow when a commit is pushed to the main branch
   push:
     branches:
       - main
-      - migratingToDocker
+  # Execute the workflow when a pull request is opened or updated
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -76,8 +21,8 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
 
       # Build the backend with Maven and run tests
       - name: Build and Test with Maven
