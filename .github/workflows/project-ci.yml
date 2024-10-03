@@ -79,13 +79,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Initialize H2 database with the init SQL script
-      - name: Initialize H2 Database
-        run: |
-          echo "Running H2 initialization script"
-          java -cp h2.jar org.h2.tools.RunScript -url jdbc:h2:file:/tmp/VetCare -user sa -password password -script scripts/h2-init.sql
-
-      # Build the backend with Maven
+      # Build the backend with Maven and run tests
       - name: Build and Test with Maven
         run: ./mvnw --batch-mode --update-snapshots package
         env:
