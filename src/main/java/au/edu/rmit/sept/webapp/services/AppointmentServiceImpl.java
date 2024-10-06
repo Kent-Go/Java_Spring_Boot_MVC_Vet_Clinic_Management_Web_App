@@ -3,6 +3,9 @@ package au.edu.rmit.sept.webapp.services;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import au.edu.rmit.sept.webapp.repositories.AppointmentRepository;
 public class AppointmentServiceImpl implements AppointmentService {
 
   private AppointmentRepository appointmentRepository;
+  @Autowired
+  private ReminderScheduler reminderScheduler;
 
   @Autowired
   public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
@@ -54,6 +59,7 @@ public class AppointmentServiceImpl implements AppointmentService {
   // create a new appointment
   @Override
   public Appointment createAppointment(Appointment appointment) {
+
     return appointmentRepository.save(appointment);
   }
 
