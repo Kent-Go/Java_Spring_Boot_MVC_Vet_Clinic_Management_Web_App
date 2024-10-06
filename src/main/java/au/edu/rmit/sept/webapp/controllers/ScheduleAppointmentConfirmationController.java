@@ -14,6 +14,7 @@ import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.ClinicService;
 import au.edu.rmit.sept.webapp.services.ClinicAppointmentTypePriceService;
+import au.edu.rmit.sept.webapp.services.ReminderScheduler;
 
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.Vet;
@@ -53,6 +54,9 @@ public class ScheduleAppointmentConfirmationController {
 
     @Autowired
     private ClinicAppointmentTypePriceService clinicAppointmentTypePriceService;
+
+    @Autowired
+    private ReminderScheduler reminderScheduler;
 
     @GetMapping("appointment/new/confirmation")
     public String displayAppointment(
