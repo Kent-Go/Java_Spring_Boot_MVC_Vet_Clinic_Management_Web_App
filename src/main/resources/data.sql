@@ -27,7 +27,7 @@ INSERT INTO clinic VALUES
 (3, 'Brunswick Central Vet Clinic', 'reception@brunswickcentralvet.com.au', 'brunswickcentralvet', 3);
 
 -- User --
-CREATE TABLE IF NOT EXISTS "USER"(
+CREATE TABLE IF NOT EXISTS users(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS "USER"(
 	email VARCHAR(255) NOT NULL UNIQUE,
 	password TEXT NOT NULL
 );
-INSERT INTO "USER" (first_name, last_name, birth_date, gender, phone_number, email, password) VALUES
+INSERT INTO users (first_name, last_name, birth_date, gender, phone_number, email, password) VALUES
 ('John', 'Johnny Jr.', '2005-02-10', 'Male', '0126741127', 'littlejohn@gmail.com', 'galvanisedSquareSteel(hashed)'), 
 ('Jude', 'Bellingham', '1980-12-10', 'Male', '0782937410', 'j_bellingham@gmail.com', 'unknownHollowFeathers(hashed)'), 
 ('Susan', 'Smith', '1990-01-17', 'Female', '0453297849', 'ssmith@yahoo.com', 'hashed'), 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS "ADDRESS"(
 	state VARCHAR(30) NOT NULL,
 	postcode CHAR(4) NOT NULL,
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES "USER"(id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 INSERT INTO address (street, suburb, state, postcode, user_id) VALUES
 ('1 Little John Court', 'Werribee', 'Victoria', '3030', 1), 
@@ -67,7 +67,7 @@ INSERT INTO address (street, suburb, state, postcode, user_id) VALUES
 CREATE TABLE IF NOT EXISTS pet_owner(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES "USER"(id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 INSERT INTO pet_owner (user_id) VALUES (1), (3);
 
@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS vet (
     self_description TEXT NOT NULL,
     user_id INT NOT NULL,
     clinic_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES "USER"(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (clinic_id) REFERENCES clinic(id) ON DELETE CASCADE
 );
 

@@ -35,7 +35,7 @@ INSERT INTO clinic VALUES
 (3, 'Brunswick Central Vet Clinic', 'reception@brunswickcentralvet.com.au', 'brunswickcentralvet', 3);
 
 -- User
-CREATE TABLE IF NOT EXISTS user(
+CREATE TABLE IF NOT EXISTS users(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS user(
 	email VARCHAR(255) NOT NULL UNIQUE,
 	password TEXT NOT NULL
 );
-INSERT INTO user VALUES 
+INSERT INTO users VALUES 
 (1, 'John', 'Johnny Jr.', '2005-02-10', 'Male', '0126741127', 'littlejohn@gmail.com', 'galvanisedSquareSteel(hashed)'), 
 (2, 'Jude', 'Bellingham', '1980-12-10', 'Male', '0782937410', 'j_bellingham@gmail.com', 'unknownHollowFeathers(hashed)'), 
 (3, 'Susan', 'Smith', '1990-01-17', 'Female', '0453297849', 'ssmith@yahoo.com', 'hashed'), 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS address(
 	state VARCHAR(30) NOT NULL,
 	postcode CHAR(4) NOT NULL,
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 INSERT INTO address VALUES 
 (1, '1 Little John Court', 'Werribee', 'Victoria', '3030', 1), 
@@ -75,7 +75,7 @@ INSERT INTO address VALUES
 CREATE TABLE IF NOT EXISTS pet_owner(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 INSERT INTO pet_owner VALUES (1, 1), (2, 3);
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS vet(
 	profile_picture MEDIUMBLOB NOT NULL,
 	user_id INT NOT NULL,
 	clinic_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 	FOREIGN KEY (clinic_id) REFERENCES clinic(id) ON DELETE CASCADE
 );
 INSERT INTO vet VALUES 
