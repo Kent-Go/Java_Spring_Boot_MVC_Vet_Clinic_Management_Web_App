@@ -293,7 +293,7 @@ INSERT INTO vet_appointment_type_offered VALUES (1, 1, 1), (2,1,2), (3,1,3), (4,
 CREATE TABLE IF NOT EXISTS orders (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	date DATE NOT NULL,
-	status VARCHAR(255) NOT NULL,
+	status VARCHAR(255) NOT NULL
 );
 INSERT INTO orders VALUES (1, '2024-09-01', 'Delivered'), (2, '2024-09-02', 'Waiting for pickup'), (3, '2024-09-03', 'Packing order');
 
