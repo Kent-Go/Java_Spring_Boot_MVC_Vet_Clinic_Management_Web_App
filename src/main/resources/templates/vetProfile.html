@@ -87,13 +87,6 @@
   <h1>Profile Details</h1>
   <div class="profile-card">
     <div id="viewMode">
-      <div class="profile-picture">
-        <img
-                id="profile-picture"
-                src="/images/profile-placeholder.png"
-                alt="Profile Picture"
-        />
-      </div>
       <div class="profile-info">
         <p><strong>Title:</strong> <span th:text="${vet.title}"></span></p>
         <p>
@@ -176,20 +169,6 @@
               enctype="multipart/form-data"
               th:action="@{/vetProfile}" method="post"
       >
-        <div class="profile-picture">
-          <img
-                  id="edit-profilePicturePreview"
-                  src="/images/profile-placeholder.png"
-                  alt="Profile Picture"
-          />
-          <input
-                  type="file"
-                  id="edit-profilePicture"
-                  name="profilePicture"
-                  accept="image/*"
-          />
-          <label id="edit-profilePicturePlaceholder">No file chosen</label>
-        </div>
         <div class="profile-info">
           <p>
             <strong>Title:</strong>

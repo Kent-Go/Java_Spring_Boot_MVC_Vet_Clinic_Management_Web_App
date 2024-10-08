@@ -26,7 +26,7 @@ public class Qualification {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "year")
+    @Column(name = "`year`")  // Escaping the column name using backticks in the annotation
     private int year;
 
     @Column(name = "vet_id")

@@ -70,7 +70,7 @@ public class PetOwnerWelcomeController {
         // For each pet, get the upcoming appointments and set the appointment type
         Collection<Appointment> upcomingAppointments = null;
         for (Pet pet : pets) {
-            Collection<Appointment> petAppointments = appointmentService.getAppointmentsByPetIDAndDateAfter(pet.getId(), LocalDate.now());
+            Collection<Appointment> petAppointments = appointmentService.getAppointmentsByPetIDAndDateAfter(pet.getId(), LocalDate.now().minusDays(1));
 
             // Get the appointment type and vet based on the appointmentTypeID in each appointment
             for (Appointment appointment : petAppointments) {
