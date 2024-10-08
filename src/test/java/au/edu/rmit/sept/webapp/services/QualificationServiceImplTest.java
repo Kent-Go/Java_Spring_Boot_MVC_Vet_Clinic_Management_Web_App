@@ -9,13 +9,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class QualificationServiceImplTest {
+class QualificationServiceImplTest {
 
     @Mock
     private QualificationRepository qualificationRepository;
@@ -29,11 +28,12 @@ public class QualificationServiceImplTest {
 
     // Positive Test - Get qualifications by valid vetID
     @Test
-    public void testGetQualificationsByVetID() {
+    void testGetQualificationsByVetID() {
         int validVetID = 1;
 
         // Create a mock qualification list for the given vet ID
-        Qualification qualification = new Qualification("Veterinary Science", "University A", "Country X", 2020, validVetID);
+        Qualification qualification = new Qualification("Veterinary Science", "University A", "Country X", 2020,
+                validVetID);
         List<Qualification> mockQualifications = List.of(qualification);
 
         // Mock the repository to return the qualifications
@@ -53,7 +53,7 @@ public class QualificationServiceImplTest {
 
     // Negative Test - Get qualifications by invalid vetID (empty list expected)
     @Test
-    public void testGetQualificationsByInvalidVetID() {
+    void testGetQualificationsByInvalidVetID() {
         int invalidVetID = 999;
 
         // Mock the repository to return an empty list
@@ -72,9 +72,10 @@ public class QualificationServiceImplTest {
 
     // Positive Test - Create a valid qualification
     @Test
-    public void testCreateQualification() {
+    void testCreateQualification() {
         int vetID = 1;
-        Qualification qualification = new Qualification("Veterinary Medicine", "University B", "Country Y", 2021, vetID);
+        Qualification qualification = new Qualification("Veterinary Medicine", "University B", "Country Y", 2021,
+                vetID);
 
         // Mock the repository to save the qualification
         when(qualificationRepository.save(qualification)).thenReturn(qualification);
@@ -91,9 +92,10 @@ public class QualificationServiceImplTest {
         verify(qualificationRepository, times(1)).save(qualification);
     }
 
-    // Negative Test - Try to create a qualification with missing data (invalid input)
+    // Negative Test - Try to create a qualification with missing data (invalid
+    // input)
     @Test
-    public void testCreateQualificationWithMissingData() {
+    void testCreateQualificationWithMissingData() {
         int vetID = 1;
         Qualification invalidQualification = new Qualification("", "University B", "Country Y", 2021, vetID);
 
@@ -112,9 +114,10 @@ public class QualificationServiceImplTest {
         verify(qualificationRepository, never()).save(invalidQualification);
     }
 
-    // Boundary Test - Year for qualification (assume we have a boundary for the year)
+    // Boundary Test - Year for qualification (assume we have a boundary for the
+    // year)
     @Test
-    public void testCreateQualificationBoundaryYear() {
+    void testCreateQualificationBoundaryYear() {
         int vetID = 1;
         Qualification qualification = new Qualification("Veterinary Surgery", "University C", "Country Z", 1900, vetID);
 

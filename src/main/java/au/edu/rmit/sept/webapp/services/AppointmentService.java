@@ -2,7 +2,6 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Optional;
 
 import au.edu.rmit.sept.webapp.models.Appointment;
 

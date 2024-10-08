@@ -79,18 +79,6 @@ CREATE TABLE IF NOT EXISTS pet_owner(
 );
 INSERT INTO pet_owner VALUES (1, 1), (2, 3);
 
--- Pet Owner Payment Details
-CREATE TABLE IF NOT EXISTS payment_details (
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(255) NOT NULL,
-	card_number VARCHAR(19) NOT NULL,
-	expiration_date VARCHAR(5) NOT NULL, -- Format: MM/YY
-	hashed_cvv VARCHAR(255) NOT NULL,
-	pet_owner_id INTEGER NOT NULL,
-	FOREIGN KEY (pet_owner_id) REFERENCES pet_owner(id) ON DELETE CASCADE
-);
-INSERT INTO payment_details VALUES (1, 'John Doe', '1234 5678 1234 5678', '12/25', 'hashedCVV1', 1), (2, 'Jane Smith', '8765 4321 8765 4321', '01/26', 'hashedCVV2', 2);
-
 -- Pet
 CREATE TABLE IF NOT EXISTS pet (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -306,10 +294,8 @@ CREATE TABLE IF NOT EXISTS orders (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	date DATE NOT NULL,
 	status VARCHAR(255) NOT NULL,
-	payment_details_id INTEGER NOT NULL,
-	FOREIGN KEY (payment_details_id) REFERENCES payment_details(id)
 );
-INSERT INTO orders VALUES (1, '2024-09-01', 'Delivered', 1), (2, '2024-09-02', 'Waiting for pickup', 1), (3, '2024-09-03', 'Packing order', 2);
+INSERT INTO orders VALUES (1, '2024-09-01', 'Delivered'), (2, '2024-09-02', 'Waiting for pickup'), (3, '2024-09-03', 'Packing order');
 
 -- Prescribed Medication --
 CREATE TABLE IF NOT EXISTS prescribed_medication (
@@ -322,15 +308,7 @@ CREATE TABLE IF NOT EXISTS prescribed_medication (
 	order_id INTEGER NOT NULL, 
 	appointment_id INTEGER NOT NULL,
 	FOREIGN KEY (medicine_id) REFERENCES medicine(id),
-	FOREIGN KEY (order_id) REFERENCES orders(id),
-	FOREIGN KEY (appointment_id) REFERENCES appointment(id)
+	FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+	FOREIGN KEY (appointment_id) REFERENCES appointment(id) ON DELETE CASCADE
 );
 INSERT INTO prescribed_medication VALUES (1, 1, 3, 14, 'Feed during breakfast, lunch and dinner', 1, 2, 1), (2, 1, 2, 11, 'Swallow the pill along water. Feed during breakfast, and dinner', 2, 1, 1), (3, 1, 2, 14, 'Swallow the pill along food. Feed during breakfast, and dinner', 2, 1, 2);
-
--- Educational Videos --
-CREATE TABLE IF NOT EXISTS educational_video (
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	title VARCHAR(255) NOT NULL,
-	video_url VARCHAR(255) NOT NULL UNIQUE
-);
-INSERT INTO educational_video VALUES (1, 'Pets for Kids', 'https://www.youtube.com/watch?v=TmXGL4BorBw'), (2, 'Teaching Kids to Care for Pets | Videos for Toddlers', 'https://www.youtube.com/watch?v=pKosbOawGSY'), (3, 'A Day In The Life Of A Vet | If You See It, You Can Be It', 'https://www.youtube.com/watch?v=5XrzUiCLw3A');
