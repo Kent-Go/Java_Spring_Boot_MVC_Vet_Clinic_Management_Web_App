@@ -3,39 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Article 1</title>
+    <title>FAQ</title>
     <link rel="stylesheet" href="/css/faqPage.css" />
   </head>
   <script>
     // Function to go back to the previous page when the back button is clicked
     document.addEventListener("DOMContentLoaded", function () {
-      // Get the userId and petOwnerId from local storage
-      const userId = localStorage.getItem("userId");
-      const petOwnerId = localStorage.getItem("petOwnerId");
+        // Get the userId and petOwnerId from local storage
+        const userId = localStorage.getItem("userId");
+        const petOwnerId = localStorage.getItem("petOwnerId");
 
-      const backButton = document.getElementById("backButton");
+        const backButton = document.getElementById("backButton");
 
-      backButton.addEventListener("click", function () {
-        window.history.back();
-      });
-
-      const profileLink = document.getElementById("profileLink");
-      const logoLink = document.getElementById("logoLink");
-
-      if (profileLink) {
-        profileLink.addEventListener("click", function () {
-          window.location.href = "/petOwnerProfile?petOwnerId=" + petOwnerId;
+        backButton.addEventListener("click", function () {
+            window.history.back();
         });
-      }
 
-      if (logoLink) {
-        logoLink.addEventListener("click", function () {
-          window.location.href =
-            "/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+        const profileLink = document.getElementById("profileLink");
+        const logoLink = document.getElementById("logoLink");
+
+        if (profileLink) {
+            profileLink.addEventListener("click", function () {
+            window.location.href = "/petOwnerProfile?petOwnerId=" + petOwnerId;
+            });
+        }
+
+        if (logoLink) {
+            logoLink.addEventListener("click", function () {
+            window.location.href =
+                "/petOwnerWelcome?userId=" + userId + "&petOwnerId=" + petOwnerId;
+            });
+        }
+        
+        const questions = document.querySelectorAll(".question");
+
+        questions.forEach(function (question) {
+            question.addEventListener("click", function () {
+                // Toggle active class
+                question.classList.toggle("active");
+            });
         });
-      }
     });
   </script>
+
   <body>
     <div class="header">
       <a id="logoLink">
@@ -45,7 +55,46 @@
         <img src="/images/profile.png" alt="Profile" class="profile-icon" />
       </a>
     </div>
-      
+
+    <!-- Main section -->
+    <div class="main-content">
+        
+        <div class="hero-image">
+            <img src="/images/faqHero.jpg" alt="Hero Image">
+            <div class="hero-text">
+              <h1>FAQ</h1>
+            </div>
+        </div>
+        
+        <h1 class="">Frequently Asked Questions</h1>
+
+        <div class="faq-item">
+            <h2 class="question">Q1</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q2</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q3</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q4</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q5</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q6</h2>
+            <p class="answer">answer</p>
+
+            <h2 class="question">Q7</h2>
+            <p class="answer">answer</p>
+
+        </div>
+        
+
+    </div>
+
     <!-- Back button to go to the previous page -->
     <button class="back-button" id="backButton">Back</button>
   </body>
