@@ -63,20 +63,23 @@
                 <!-- Remove $ from price and format as number -->
                 <p th:text="${selectedPrescription.medicine.name} + ' ' + selectedPrescription.medicine.quantity + ' - Bottle'"></p>
                 <p th:text="${selectedPrescription.medicine.price}"></p>
+                <hr />
+                <!-- Display the total price -->
+                <h3>Total: <span th:text="${selectedPrescription.medicine.price}"></span></h3>
+                
+            <form action="/payment" method="get">
+                <input type="hidden" name="prescriptionId" th:value="${selectedPrescription.id}" />
+                <button class="next-btn" type="submit">Proceed to payment details</button>
+            </form>
+
             </div>
             <div th:if="${errorMessage != null}">
                 <p th:text="${errorMessage}"></p>
             </div>
-            <hr />
-            <!-- Display the total price -->
-            <h3>Total: <span th:text="${selectedPrescription.medicine.price}"></span></h3>
         </div>
     </div>
 
-    <form action="/payment" method="get">
-        <input type="hidden" name="prescriptionId" th:value="${selectedPrescription.id}" />
-        <button class="next-btn" type="submit">Proceed to payment details</button>
-    </form>
+    
 
 </div>
 </body>
