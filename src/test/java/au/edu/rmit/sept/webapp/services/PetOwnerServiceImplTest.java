@@ -3,7 +3,6 @@ package au.edu.rmit.sept.webapp.services;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class PetOwnerServiceImplTest {
+class PetOwnerServiceImplTest {
 
     @Autowired
     private PetOwnerServiceImpl petOwnerService;
@@ -46,7 +45,7 @@ public class PetOwnerServiceImplTest {
 
     // Positive Test: Test retrieving all pet owners
     @Test
-    public void testGetAllPetOwners() {
+    void testGetAllPetOwners() {
         List<PetOwner> petOwners = Arrays.asList(petOwner1, petOwner2);
 
         // Mock the repository to return the list of pet owners
@@ -63,7 +62,7 @@ public class PetOwnerServiceImplTest {
 
     // Positive Test: Test getting a pet owner by PetOwner ID
     @Test
-    public void testGetPetOwnerByPetOwnerID_ValidID() {
+    void testGetPetOwnerByPetOwnerID_ValidID() {
         // Mock the repository to return petOwner1
         when(petOwnerRepository.findById(1)).thenReturn(Optional.of(petOwner1));
 
@@ -77,7 +76,7 @@ public class PetOwnerServiceImplTest {
 
     // Negative Test: Test getting a pet owner with an invalid PetOwner ID
     @Test
-    public void testGetPetOwnerByPetOwnerID_InvalidID() {
+    void testGetPetOwnerByPetOwnerID_InvalidID() {
         // Mock the repository to return empty when an invalid ID is provided
         when(petOwnerRepository.findById(999)).thenReturn(Optional.empty());
 
@@ -90,23 +89,9 @@ public class PetOwnerServiceImplTest {
         assertEquals("Pet Owner not found", exception.getMessage());
     }
 
-    // Boundary Test: Test retrieving a pet owner with the minimum possible PetOwner ID
-    @Test
-    public void testGetPetOwnerByPetOwnerID_Boundary() {
-        // Mock the repository to return petOwner1
-        when(petOwnerRepository.findById(1)).thenReturn(Optional.of(petOwner1));
-
-        PetOwner result = petOwnerService.getPetOwnerByPetOwnerID(1);
-
-        // Assert that the returned pet owner is correct
-        assertNotNull(result);
-        assertEquals(1, result.getId());
-        assertEquals(101, result.getUserID());
-    }
-
     // Positive Test: Test getting a pet owner by User ID
     @Test
-    public void testGetPetOwnerByUserID_ValidUserID() {
+    void testGetPetOwnerByUserID_ValidUserID() {
         // Mock the repository to return petOwner2 for userID 102
         when(petOwnerRepository.findByUserID(102)).thenReturn(Optional.of(petOwner2));
 
@@ -120,7 +105,7 @@ public class PetOwnerServiceImplTest {
 
     // Negative Test: Test getting a pet owner with an invalid User ID
     @Test
-    public void testGetPetOwnerByUserID_InvalidUserID() {
+    void testGetPetOwnerByUserID_InvalidUserID() {
         // Mock the repository to return empty when an invalid User ID is provided
         when(petOwnerRepository.findByUserID(999)).thenReturn(Optional.empty());
 
@@ -135,7 +120,7 @@ public class PetOwnerServiceImplTest {
 
     // Boundary Test: Test getting a pet owner by the minimum possible User ID
     @Test
-    public void testGetPetOwnerByUserID_Boundary() {
+    void testGetPetOwnerByUserID_Boundary() {
         // Mock the repository to return petOwner1 for userID 101
         when(petOwnerRepository.findByUserID(101)).thenReturn(Optional.of(petOwner1));
 
@@ -149,7 +134,7 @@ public class PetOwnerServiceImplTest {
 
     // Positive Test: Test creating a new pet owner
     @Test
-    public void testCreatePetOwner_ValidPetOwner() {
+    void testCreatePetOwner_ValidPetOwner() {
         // Mock the repository to save the pet owner
         when(petOwnerRepository.save(petOwner1)).thenReturn(petOwner1);
 
@@ -160,9 +145,10 @@ public class PetOwnerServiceImplTest {
         assertEquals(petOwner1.getId(), result.getId());
     }
 
-    // Negative Test: Test creating a pet owner with missing data (e.g., null userID)
+    // Negative Test: Test creating a pet owner with missing data (e.g., null
+    // userID)
     @Test
-    public void testCreatePetOwner_NullUserID() {
+    void testCreatePetOwner_NullUserID() {
         PetOwner petOwner = new PetOwner();
         petOwner.setUserID(0); // Invalid user ID
 
@@ -171,5 +157,4 @@ public class PetOwnerServiceImplTest {
             petOwnerService.createPetOwner(petOwner);
         }, "Expected IllegalArgumentException for null or zero user ID");
     }
-
 }

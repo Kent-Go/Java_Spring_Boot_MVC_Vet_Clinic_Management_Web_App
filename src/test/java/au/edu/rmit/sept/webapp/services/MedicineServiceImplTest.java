@@ -4,20 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import au.edu.rmit.sept.webapp.models.Medicine;
 import au.edu.rmit.sept.webapp.repositories.MedicineRepository;
 
 @SpringBootTest
-public class MedicineServiceImplTest {
+class MedicineServiceImplTest {
 
     @Autowired
     private MedicineServiceImpl medicineService;
@@ -27,12 +25,11 @@ public class MedicineServiceImplTest {
 
     // Positive Test: Get all medicines successfully
     @Test
-    public void testGetAllMedicines_Success() {
+    void testGetAllMedicines_Success() {
         // Setup mock data
         List<Medicine> mockMedicines = Arrays.asList(
                 new Medicine(1, "Medicine A", "10mg", "20.00"),
-                new Medicine(2, "Medicine B", "20mg", "25.00")
-        );
+                new Medicine(2, "Medicine B", "20mg", "25.00"));
 
         when(medicineRepository.findAll()).thenReturn(mockMedicines);
 
@@ -51,7 +48,7 @@ public class MedicineServiceImplTest {
 
     // Negative Test: No medicines found
     @Test
-    public void testGetAllMedicines_NoMedicinesFound() {
+    void testGetAllMedicines_NoMedicinesFound() {
         when(medicineRepository.findAll()).thenReturn(List.of());
 
         List<Medicine> medicines = (List<Medicine>) medicineService.getAllMedicines();
@@ -66,7 +63,7 @@ public class MedicineServiceImplTest {
 
     // Positive Test: Get medicine by name successfully
     @Test
-    public void testGetMedicineByName_Success() {
+    void testGetMedicineByName_Success() {
         Medicine mockMedicine = new Medicine(1, "Medicine A", "10mg", "20.00");
 
         when(medicineRepository.findByName("Medicine A")).thenReturn(mockMedicine);
@@ -85,7 +82,7 @@ public class MedicineServiceImplTest {
 
     // Negative Test: Medicine by name not found
     @Test
-    public void testGetMedicineByName_NotFound() {
+    void testGetMedicineByName_NotFound() {
         when(medicineRepository.findByName("NonExistentMedicine")).thenReturn(null);
 
         // Execute service method
@@ -100,7 +97,7 @@ public class MedicineServiceImplTest {
 
     // Boundary Test: Get medicine by empty name
     @Test
-    public void testGetMedicineByEmptyName() {
+    void testGetMedicineByEmptyName() {
         when(medicineRepository.findByName("")).thenReturn(null);
 
         // Execute service method
@@ -115,7 +112,7 @@ public class MedicineServiceImplTest {
 
     // Positive Test: Create new medicine
     @Test
-    public void testCreateMedicine_Success() {
+    void testCreateMedicine_Success() {
         Medicine newMedicine = new Medicine(0, "New Medicine", "15mg", "30.00");
 
         when(medicineRepository.save(any(Medicine.class))).thenReturn(newMedicine);
@@ -134,7 +131,7 @@ public class MedicineServiceImplTest {
 
     // Negative Test: Create medicine with missing name
     @Test
-    public void testCreateMedicine_MissingName() {
+    void testCreateMedicine_MissingName() {
         Medicine incompleteMedicine = new Medicine();
         incompleteMedicine.setQuantity("10");
         incompleteMedicine.setPrice("100");
@@ -147,7 +144,7 @@ public class MedicineServiceImplTest {
 
     // Negative Test: Create medicine with missing quantity
     @Test
-    public void testCreateMedicine_MissingQuantity() {
+    void testCreateMedicine_MissingQuantity() {
         Medicine incompleteMedicine = new Medicine();
         incompleteMedicine.setName("Paracetamol");
         incompleteMedicine.setPrice("100");
@@ -160,7 +157,7 @@ public class MedicineServiceImplTest {
 
     // Negative Test: Create medicine with missing price
     @Test
-    public void testCreateMedicine_MissingPrice() {
+    void testCreateMedicine_MissingPrice() {
         Medicine incompleteMedicine = new Medicine();
         incompleteMedicine.setName("Paracetamol");
         incompleteMedicine.setQuantity("10");
@@ -173,7 +170,7 @@ public class MedicineServiceImplTest {
 
     // Boundary Test: Create medicine with invalid quantity
     @Test
-    public void testCreateMedicine_InvalidQuantity() {
+    void testCreateMedicine_InvalidQuantity() {
         // Creating a medicine object with an empty quantity
         Medicine invalidMedicine = new Medicine();
         invalidMedicine.setName("Paracetamol");

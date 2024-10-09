@@ -2,6 +2,10 @@ package au.edu.rmit.sept.webapp.services;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +17,18 @@ import au.edu.rmit.sept.webapp.repositories.AppointmentRepository;
 public class AppointmentServiceImpl implements AppointmentService {
 
   private AppointmentRepository appointmentRepository;
+  @Autowired
+  private ReminderScheduler reminderScheduler;
 
   @Autowired
   public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
     this.appointmentRepository = appointmentRepository;
+  }
+
+  // Get an appointment by appointment id
+  @Override
+  public Appointment getAppointmentByAppointmentID(int appointmentID) {
+    return appointmentRepository.findById(appointmentID).orElseThrow(() -> new RuntimeException("Appointment not found"));
   }
 
   // Get all the appointments
@@ -47,6 +59,7 @@ public class AppointmentServiceImpl implements AppointmentService {
   // create a new appointment
   @Override
   public Appointment createAppointment(Appointment appointment) {
+
     return appointmentRepository.save(appointment);
   }
 
@@ -61,4 +74,11 @@ public class AppointmentServiceImpl implements AppointmentService {
   public Collection<Appointment> getAppointmentsByPetIDAndDateAfter(int petID, LocalDate date) {
     return appointmentRepository.findByPetIDAndDateAfterOrderByDateAscStartTimeAsc(petID, date);
   }
+
+  // delete appointments by their appointment id
+  @Override
+  public void cancelAppointment(int appointmentId) {
+      // delete appointment
+      appointmentRepository.deleteById(appointmentId);
+}
 }

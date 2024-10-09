@@ -22,7 +22,7 @@ public class AppointmentType {
     @Column(name = "duration")
     private int duration;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     // Getters and Setters

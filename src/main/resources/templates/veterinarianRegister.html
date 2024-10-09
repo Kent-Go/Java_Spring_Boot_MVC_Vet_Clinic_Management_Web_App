@@ -68,6 +68,13 @@
     <div class="registration-form">
       <h1>Veterinarian Registration</h1>
 
+      <!-- Error Messages if Exists -->
+      <div th:if="${errorMessage != null}">
+        <script th:inline="javascript">
+          alert('[[${errorMessage}]]');
+        </script>
+      </div>
+
       <form
         id="vetForm"
         enctype="multipart/form-data"
@@ -121,14 +128,6 @@
           >Language Spoken<span style="color: red">*</span></label
         >
         <input type="text" id="language" name="language" required />
-
-        <label for="profilePicture">Profile Picture</label>
-        <input
-          type="file"
-          id="profilePicture"
-          name="profilePicture"
-          accept="image/*"
-        />
 
         <label for="description"
           >Description About Yourself<span style="color: red">*</span></label

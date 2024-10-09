@@ -1,9 +1,5 @@
 package au.edu.rmit.sept.webapp.controllers;
 
-import au.edu.rmit.sept.webapp.models.Address;
-import au.edu.rmit.sept.webapp.models.Qualification;
-import au.edu.rmit.sept.webapp.models.User;
-import au.edu.rmit.sept.webapp.models.Vet;
 import au.edu.rmit.sept.webapp.services.AddressService;
 import au.edu.rmit.sept.webapp.services.QualificationService;
 import au.edu.rmit.sept.webapp.services.UserService;
@@ -11,21 +7,19 @@ import au.edu.rmit.sept.webapp.services.VetService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.springframework.util.LinkedMultiValueMap;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class VetProfileControllerTest {
+class VetProfileControllerTest {
 
     @Mock
     private UserService userService;
@@ -53,7 +47,7 @@ public class VetProfileControllerTest {
     
     // Negative Test: Vet not found
     @Test
-    public void testShowProfilePage_VetNotFound() throws Exception {
+    void testShowProfilePage_VetNotFound() throws Exception {
         int vetId = 1;
 
         // Define mock behavior
@@ -70,7 +64,7 @@ public class VetProfileControllerTest {
 
     // Boundary Test: Invalid vet ID (negative number)
     @Test
-    public void testShowProfilePage_InvalidVetId() throws Exception {
+    void testShowProfilePage_InvalidVetId() throws Exception {
         int vetId = -1;
 
         // Perform GET request and expect 400 Bad Request
@@ -84,7 +78,7 @@ public class VetProfileControllerTest {
 
     // Negative Test: Missing required fields in update
     @Test
-    public void testUpdateProfile_MissingFields() throws Exception {
+    void testUpdateProfile_MissingFields() throws Exception {
         // Empty form data (simulating missing fields)
         Map<String, String> formData = new HashMap<>();
 
@@ -107,7 +101,7 @@ public class VetProfileControllerTest {
 
     // Negative Test: Invalid date format
     @Test
-    public void testUpdateProfile_InvalidDateFormat() throws Exception {
+    void testUpdateProfile_InvalidDateFormat() throws Exception {
         // Mock data with an invalid date format
         Map<String, String> formData = new HashMap<>();
         formData.put("vetId", "1");

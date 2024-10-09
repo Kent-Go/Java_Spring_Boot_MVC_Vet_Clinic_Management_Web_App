@@ -6,6 +6,9 @@ import java.util.Collection;
 import au.edu.rmit.sept.webapp.models.Appointment;
 
 public interface AppointmentService {
+  // Get an appointment by appointment id
+  public Appointment getAppointmentByAppointmentID(int appointmentID);
+
   // Get all the appointments
   public Collection<Appointment> getAllAppointments();
 
@@ -27,4 +30,7 @@ public interface AppointmentService {
 
   // Get appointments by petID after a certain date
   public Collection<Appointment> getAppointmentsByPetIDAndDateAfter(int petID, LocalDate date);
+
+  // delete appointments by their appointment id
+  public void cancelAppointment(int appointmentId);
 }

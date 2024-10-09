@@ -21,16 +21,14 @@ import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import static org.mockito.Mockito.mock;
 import static org.mockito.ArgumentMatchers.eq;
 
-
 @ExtendWith(MockitoExtension.class)
-public class PetListControllerTest {
+class PetListControllerTest {
 
     @Mock
     private PetService petService;
@@ -66,7 +64,7 @@ public class PetListControllerTest {
 
     // Positive Test: Display pets (valid petOwnerId)
     @Test
-    public void testDisplayPets_ValidPetOwnerId() {
+    void testDisplayPets_ValidPetOwnerId() {
         // Mock pet service to return pets
         when(petService.getPetsByPetOwnerID(validPetOwnerId)).thenReturn(List.of(pet1, pet2));
 
@@ -89,7 +87,7 @@ public class PetListControllerTest {
 
     // Negative Test: Invalid petOwnerId (no pets found)
     @Test
-    public void testDisplayPets_InvalidPetOwnerId() {
+    void testDisplayPets_InvalidPetOwnerId() {
         // Mock the PetOwnerService to return null for an invalid petOwnerId
         when(petOwnerService.getPetOwnerByPetOwnerID(invalidPetOwnerId)).thenReturn(null);
 
@@ -106,7 +104,7 @@ public class PetListControllerTest {
 
     // Boundary Test: Pet owner with only one pet
     @Test
-    public void testDisplayPets_OnePet() {
+    void testDisplayPets_OnePet() {
         // Mock pet service to return one pet
         when(petService.getPetsByPetOwnerID(validPetOwnerId)).thenReturn(List.of(pet1));
 
@@ -129,7 +127,7 @@ public class PetListControllerTest {
 
     // Test: Delete a pet successfully
     @Test
-    public void testDeletePet_Success() {
+    void testDeletePet_Success() {
         // Mock the RedirectAttributes
         RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
 

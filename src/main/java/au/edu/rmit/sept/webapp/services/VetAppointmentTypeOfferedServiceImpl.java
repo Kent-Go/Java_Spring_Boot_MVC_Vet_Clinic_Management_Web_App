@@ -1,6 +1,7 @@
 package au.edu.rmit.sept.webapp.services;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,11 @@ public class VetAppointmentTypeOfferedServiceImpl implements VetAppointmentTypeO
   @Override
   public Collection<VetAppointmentTypeOffered> getVetAppointmentTypeOfferedByAppointmentTypeID(int appointmentTypeId) {
     return vetAppointmentTypeOfferedRepository.findByAppointmentTypeID(appointmentTypeId);
+  }
+
+  // Get appointment types by vet id and appointmentTypeId
+  @Override
+  public Optional<VetAppointmentTypeOffered> getVetAppointmentTypeOfferedByVetIDAndAppointmentTypeID(int vetId, int appointmentTypeId) {
+    return vetAppointmentTypeOfferedRepository.findByVetIDAndAppointmentTypeID(vetId, appointmentTypeId);
   }
 }

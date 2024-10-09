@@ -1,6 +1,5 @@
 package au.edu.rmit.sept.webapp.models;
 
-import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -65,6 +64,14 @@ public class Clinic {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getClinicAddressID() {
+        return clinicAddressID;
+    }
+
+    public void setClinicAddressID(int clinicAddressID) {
+        this.clinicAddressID = clinicAddressID;
     }
 
     public ClinicAddress getClinicAddress() {

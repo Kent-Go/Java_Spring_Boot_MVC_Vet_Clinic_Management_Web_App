@@ -83,6 +83,13 @@
     <div class="registration-form">
       <h1>Pet Owner Registration</h1>
 
+      <!-- Error Messages if Exists -->
+      <div th:if="${errorMessage != null}">
+        <script th:inline="javascript">
+          alert('[[${errorMessage}]]');
+        </script>
+      </div>
+
       <form
         id="petOwnerForm"
         th:action="@{/petOwnerRegister}"

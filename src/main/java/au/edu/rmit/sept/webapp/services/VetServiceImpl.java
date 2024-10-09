@@ -48,4 +48,9 @@ public class VetServiceImpl implements VetService {
 
     return vetRepository.save(vet);
   }
+
+  @Override
+  public Collection<Vet> getVetsByClinicID(int clinicID) {
+    return vetRepository.findByClinicId(clinicID);
+  }
 }

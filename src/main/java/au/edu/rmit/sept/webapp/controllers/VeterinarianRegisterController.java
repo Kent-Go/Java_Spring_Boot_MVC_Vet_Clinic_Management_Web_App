@@ -23,6 +23,7 @@ import au.edu.rmit.sept.webapp.services.VetService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+
 @Controller
 public class VeterinarianRegisterController {
 
@@ -88,8 +89,19 @@ public class VeterinarianRegisterController {
         int currentYear = LocalDate.now().getYear();
         if (awardedYear > currentYear) {
             throw new IllegalArgumentException("Year awarded cannot be in the future");
-        } else if (awardedYear < 1900) {  // Example minimum year validation
+        } else if (awardedYear < 1900) { // Example minimum year validation
             throw new IllegalArgumentException("Year awarded cannot be in the past beyond a certain threshold");
+        }
+
+        // Validate email format
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("Invalid email format.");
+        }
+
+        // Validate email is unique
+        if (userService.getUserByEmail(email) != null) {
+            model.addAttribute("errorMessage", "Email already exists. Please use a different email.");
+            return "veterinarianRegister"; // Reload the registration page
         }
 
         // Create user entity
@@ -97,14 +109,8 @@ public class VeterinarianRegisterController {
                 phoneNumber, email, password);
         userService.createUser(user);
 
-        // Get the user_id by email and handle null case
-        User existingUser = userService.getUserByEmail(email);
-        if (existingUser == null) {
-            throw new IllegalArgumentException("User with email " + email + " does not exist.");
-        }
-
         // Get the user_id by email
-        int userID = existingUser.getId();
+        int userID = user.getId();
 
         // Create address entity
         Address address = new Address(street, suburb, state, postcode, userID);
@@ -124,7 +130,7 @@ public class VeterinarianRegisterController {
         // redirect to vet dashboard
         User userLogin = userService.getUserByEmail(email);
         Vet vetLogin = vetService.getVetByUserID(user.getId());
-       
+
         return "redirect:/vetDashboard?userId=" + userLogin.getId() + "&vetId=" + vetLogin.getId();
     }
 
