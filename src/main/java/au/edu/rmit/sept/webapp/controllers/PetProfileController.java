@@ -176,7 +176,8 @@ public class PetProfileController {
         return "redirect:/petProfile?petId=" + petId;
     }
 
-    // Method to handle form submission for updating the pet's prescribed medications
+    // Method to handle form submission for updating the pet's prescribed
+    // medications
     @PostMapping("/updateMedication")
     public String updateMedication(
             @RequestParam("petId") int petId,
@@ -187,7 +188,8 @@ public class PetProfileController {
             @RequestParam("duration") String duration,
             @RequestParam("instruction") String instruction) {
 
-        // Handle multiple medications based on presence of "|", because "|" shows how many medications need to be processed
+        // Handle multiple medications based on presence of "|", because "|" shows how
+        // many medications need to be processed
         if (medicationId == null) {
             if (hasMultipleMedications(name)) {
                 return handleMultipleMedications(petId, name, dosage, frequency, duration, instruction);
@@ -404,13 +406,14 @@ public class PetProfileController {
     @PostMapping("/updateImmunisationHistory")
     public RedirectView updateImmunisationHistory(
             @RequestParam("petId") int petId,
-            @RequestParam("immunisationId") String immunisationId,
+            @RequestParam(value = "immunisationId", required = false) String immunisationId,
             @RequestParam("immunisationDate") String immunisationDate,
             @RequestParam("immunisationName") String immunisationName,
             @RequestParam("immunisationNotes") String immunisationNotes) {
 
         // Split the input strings by ',' to get the individual values
-        String[] immunisationIDSplit = immunisationId.split(",");
+        String[] immunisationIDSplit = immunisationId != null ? immunisationId.split(",") : new String[0]; // Handle
+                                                                                                           // empty IDs
         String[] immunisationDateSplit = immunisationDate.split(",");
 
         // Split name and notes using '|'
@@ -507,13 +510,13 @@ public class PetProfileController {
     @PostMapping("/updateSurgeryHistory")
     public RedirectView updateSurgeryHistory(
             @RequestParam("petId") int petId,
-            @RequestParam("surgeryId") String surgeryId,
+            @RequestParam(value = "surgeryId", required = false) String surgeryId,
             @RequestParam("surgeryDate") String surgeryDate,
             @RequestParam("surgeryName") String surgeryName,
             @RequestParam("surgeryNotes") String surgeryNotes) {
 
         // Split the input strings by ',' to get the individual values
-        String[] surgeryIDSplit = surgeryId.split(",");
+        String[] surgeryIDSplit = surgeryId != null ? surgeryId.split(",") : new String[0]; // Handle empty IDs
         String[] surgeryDateSplit = surgeryDate.split(",");
 
         // Split name and notes using '|'
