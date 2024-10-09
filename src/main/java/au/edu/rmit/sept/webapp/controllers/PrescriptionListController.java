@@ -4,6 +4,7 @@ import org.springframework.ui.Model;
 import au.edu.rmit.sept.webapp.models.Pet;
 import au.edu.rmit.sept.webapp.models.PetOwner;
 import au.edu.rmit.sept.webapp.models.Medicine;
+import au.edu.rmit.sept.webapp.models.Order;
 import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.PrescribedMedication;
 
@@ -20,6 +21,7 @@ import au.edu.rmit.sept.webapp.services.PetService;
 import au.edu.rmit.sept.webapp.services.UserService;
 import au.edu.rmit.sept.webapp.services.PetOwnerService;
 import au.edu.rmit.sept.webapp.services.MedicineService;
+import au.edu.rmit.sept.webapp.services.OrderService;
 import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
@@ -39,6 +41,9 @@ public class PrescriptionListController {
 
     @Autowired
     private MedicineService medicineService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private PrescribedMedicationService prescribedMedicationService;
@@ -65,6 +70,8 @@ public class PrescriptionListController {
                     prescribedMedication.setMedicine(medicine);
                     prescribedMedication.setAppointment(appointment);
                     prescribedMedication.getAppointment().setPet(pet);
+                    Order order = orderService.getOrderByID(prescribedMedication.getOrderID());
+                    prescribedMedication.setOrder(order);
                 });
                 prescriptions.addAll(prescribedMedications);
             });

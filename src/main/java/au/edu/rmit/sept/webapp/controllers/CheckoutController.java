@@ -1,35 +1,74 @@
 package au.edu.rmit.sept.webapp.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import au.edu.rmit.sept.webapp.models.Appointment;
+import au.edu.rmit.sept.webapp.models.Order;
+import au.edu.rmit.sept.webapp.models.Pet;
+import au.edu.rmit.sept.webapp.models.PetOwner;
+import au.edu.rmit.sept.webapp.models.PrescribedMedication;
+import au.edu.rmit.sept.webapp.services.OrderService;
+import au.edu.rmit.sept.webapp.services.PetOwnerService;
+import au.edu.rmit.sept.webapp.services.PetService;
+import au.edu.rmit.sept.webapp.services.PrescribedMedicationService;
 
 @Controller
 public class CheckoutController {
 
+    @Autowired
+    private PrescribedMedicationService prescriptionService;
+
+    @Autowired
+    private PetService petService;
+
+    @Autowired
+    private PetOwnerService ownerService;
+
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/checkout")
-    public String showCheckoutPage(@RequestParam("prescriptionId") Long prescriptionId, Model model) {
+    public String showCheckoutPage(@RequestParam("prescriptionId") int prescriptionId, Model model) {
 
-        // Dummy data for prescription details
-        model.addAttribute("prescriptionName", "Frusemide 20mg");
-        model.addAttribute("quantity", 1);
-        model.addAttribute("price", 20);
+        PrescribedMedication selectedPrescription = prescriptionService.getPrescribedMedicationByID(prescriptionId);
+    
+        // Add the selected prescription to the model if found
+        if (selectedPrescription != null) {
+            Appointment appointment = selectedPrescription.getAppointment();
+            int petID = appointment.getPetID();
+            Pet pet = petService.getPetByPetID(petID);
+            PetOwner owner = pet.getPetOwner();
 
-        model.addAttribute("additionalItemName", "Medicine 2 20mg");
-        model.addAttribute("additionalQuantity", 2);
-        model.addAttribute("additionalPrice", 30);
+            model.addAttribute("selectedPrescription", selectedPrescription);
+            model.addAttribute("owner", owner);
 
-        // Dummy payment method
-        model.addAttribute("paymentMethod", "MasterCard ending in **34");
-
-        // Dummy shipping address
-        String shippingAddress = "123 Main St, Melbourne, VIC 3000, Australia";
-        model.addAttribute("shippingAddress", shippingAddress);
-
-        // Total price calculation
-        model.addAttribute("totalPrice", 50);
+        } else {
+            model.addAttribute("errorMessage", "Prescription not found");
+        }
 
         return "checkout";
+    }
+
+
+    @PostMapping("/checkout")
+    public String processCheckout(
+        @RequestParam("prescriptionId") int prescriptionId,
+        @RequestParam("ownerId") int ownerId,
+        Model model
+    ){
+        PrescribedMedication selectedPrescription = prescriptionService.getPrescribedMedicationByID(prescriptionId);
+        Order order = selectedPrescription.getOrder();
+        
+        order.setStatus("Packing order");
+        orderService.createOrder(order);//Yes I'm using the createMethod but it achieves the same functionality
+
+        PetOwner owner = ownerService.getPetOwnerByPetOwnerID(ownerId);
+
+        return "redirect:/petOwnerWelcome?userId=" + owner.getUserID() + "&petOwnerId=" + ownerId;
     }
 }

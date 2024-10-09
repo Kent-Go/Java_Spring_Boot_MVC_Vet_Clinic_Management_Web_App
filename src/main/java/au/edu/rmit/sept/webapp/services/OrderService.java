@@ -5,4 +5,6 @@ import au.edu.rmit.sept.webapp.models.Order;
 public interface OrderService {
   // Create a new order
   public Order createOrder(Order order);
+
+  public Order getOrderByID(int id);
 }

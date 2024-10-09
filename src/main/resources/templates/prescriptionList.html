@@ -58,13 +58,23 @@
           <p>For: <span th:text="${prescription.appointment.pet.name}"></span></p>
 
           <!-- Refill Button, sending prescriptionId as parameter -->
-          <a
-            th:href="@{/refillPrescription(prescriptionId=${prescription.id})}"
-            class="request-refill-btn"
-          >
-            <img src="/images/shopping-cart.png" alt="Cart" class="cart-icon" />
-            Request refill
-          </a>
+          <p th:switch="${prescription.order.status}">
+
+            <span th:case="'Delivered'">This prescription has been delivered.</span>
+
+            <span th:case="'Waiting for pickup'">This prescription is ready to be collected. Check with your post office!</span>
+
+            <span th:case="'Pending'">
+              <a
+                th:href="@{/refillPrescription(prescriptionId=${prescription.id})}"
+                class="request-refill-btn"
+              ><img src="/images/shopping-cart.png" alt="Cart" class="cart-icon" />
+                Request refill
+              </a>
+            </span>
+            
+            <span th:case="*">This order is being processed.</span>
+          </p>
         </div>
       </div>
     </div>

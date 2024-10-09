@@ -46,6 +46,10 @@ public class PrescribedMedication {
     // Foreign key - Order ID
     @Column(name = "order_id")
     private int orderID;
+    
+    @ManyToOne
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    private Order order;
 
     // Foreign key - Appointment ID
     @Column(name = "appointment_id")
@@ -118,6 +122,15 @@ public class PrescribedMedication {
 
     public void setOrderID(int orderID) {
         this.orderID = orderID;
+    }
+
+    // Order
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     // Appointment ID
