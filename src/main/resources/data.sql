@@ -144,11 +144,11 @@ CREATE TABLE IF NOT EXISTS qualification(
 	name VARCHAR(255) NOT NULL,
 	university VARCHAR(255) NOT NULL,
 	country VARCHAR(255) NOT NULL,
-	`year` INT NOT NULL,
+	years INT NOT NULL,
 	vet_id INT NOT NULL,
 	FOREIGN KEY (vet_id) REFERENCES vet(id) ON DELETE CASCADE
 );
-INSERT INTO qualification (name, university, country, `year`, vet_id) VALUES 
+INSERT INTO qualification (name, university, country, years, vet_id) VALUES 
 ('Bachelor of Veterinary Science (BVSc)', 'University of Melbourne', 'Australia', 1997, 1), 
 ('Master of Veterinary Science (MVSc)', 'University of Melbourne', 'Australia', 2002, 1),
 ('Bachelor of Veterinary Science (MVSc)', 'RMIT University', 'Australia', 1990, 2),
