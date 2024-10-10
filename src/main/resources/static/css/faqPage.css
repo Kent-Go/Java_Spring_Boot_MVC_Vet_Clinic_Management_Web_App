@@ -176,4 +176,28 @@ body {
     padding: 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: For better readability */
   }
+
+  .nav-bar {
+    background-color: #d3edf8;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-bar a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .nav-bar a:hover,
+  .nav-bar a.active {
+    background-color: #007bff;
+    color: white;
+  }
   
