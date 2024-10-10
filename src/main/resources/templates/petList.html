@@ -78,6 +78,13 @@
               </div>
             </a>
 
+            <!-- View  Pet Button -->
+            <a
+              th:href="@{/petProfile(petId=${pet.id})}"
+              class="view-pet-button"
+              style="text-decoration: none;"
+              >View Pet</a>
+
             <!-- Delete Pet Button (Inside the card but outside the link) -->
             <form
               th:action="@{/pets/delete(petId=${pet.id}, petOwnerId=${petOwner.id})}"
