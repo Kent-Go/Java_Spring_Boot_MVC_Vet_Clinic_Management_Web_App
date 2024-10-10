@@ -5,9 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import au.edu.rmit.sept.webapp.services.UserService;
 
 @Controller
 public class ResetPasswordController {
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/resetPassword")
     public String showResetPasswordPage(Model model) {
@@ -17,44 +23,26 @@ public class ResetPasswordController {
     @PostMapping("/resetPassword")
     public String processResetPassword(
             @RequestParam("email") String email,
-            @RequestParam("phone") String phone,
             @RequestParam("newPassword") String newPassword,
             @RequestParam("confirmNewPassword") String confirmNewPassword,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         if (!newPassword.equals(confirmNewPassword)) {
-            model.addAttribute("error", "Passwords do not match.");
+            redirectAttributes.addFlashAttribute("error", "Passwords do not match.");
             return "resetPassword";
         }
 
-        // Verify email and phone number
-        boolean isVerified = verifyEmailAndPhone(email, phone);
-
-        if (!isVerified) {
-            model.addAttribute("error", "Email or phone number does not match our records.");
+        // Check if email exists in the database
+        // If email does not exist, return an error message
+        if (userService.getUserByEmail(email) == null) {
+            redirectAttributes.addFlashAttribute("error", "Email does not exist.");
             return "resetPassword";
         }
 
-        // Here you would typically look up the user by their email address, validate the request, and then update their password.
-        boolean isReset = resetPasswordForUser(email, newPassword);
+        // Update the password
+        userService.updatePassword(email, newPassword);
+        redirectAttributes.addFlashAttribute("success", "Password updated successfully.");
 
-        if (isReset) {
-            // Redirect to login page after successful reset
-            return "redirect:/login";
-        } else {
-            model.addAttribute("error", "Failed to reset password. Please try again.");
-            return "resetPassword";
-        }
-    }
-
-    private boolean verifyEmailAndPhone(String email, String phone) {
-        // Replace this with actual logic to verify the email and phone number against your database
-        return "user@example.com".equals(email) && "1234567890".equals(phone);
-    }
-
-    private boolean resetPasswordForUser(String email, String newPassword) {
-        // Implement the actual password reset logic here, interacting with your database or user service
-        // For now, we'll simulate success.
-        return true; // Simulate a successful password reset
+        return "redirect:/login";
     }
 }
