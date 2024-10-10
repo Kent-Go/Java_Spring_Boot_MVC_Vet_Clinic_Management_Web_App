@@ -113,6 +113,10 @@ h1 {
   margin-bottom: 10px;
 }
 
+.pet-info {
+  margin-bottom: 20px;
+}
+
 .pet-info h2 {
   font-size: 18px;
   color: #333;
@@ -123,6 +127,20 @@ h1 {
   color: #666;
 }
 
+.view-pet-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 23px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-pet-button:hover {
+  background-color: #0056b3;
+}
+
 .delete-pet-button {
   background-color: #ff4d4d;
   color: white;
@@ -130,6 +148,7 @@ h1 {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .delete-pet-button:hover {

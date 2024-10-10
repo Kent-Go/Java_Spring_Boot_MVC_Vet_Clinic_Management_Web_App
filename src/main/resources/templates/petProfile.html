@@ -356,6 +356,9 @@
       document.addEventListener("DOMContentLoaded", function () {
         const backButton = document.getElementById("backButton"); // Referencing the button by its Id
 
+        // Print if back button exists
+        console.log("Back button exists: " + backButton);
+
         // Retrieve the previous page from localStorage
         let originalPreviousPage = localStorage.getItem("originalPreviousPage");
 
@@ -385,6 +388,7 @@
 
         // If vetId is in local storage, set the back button to redirect to the vet dashboard
         if (localStorage.getItem("vetId")) {
+          console.log("Vet ID is in local storage");
           if (backButton) {
             // If previous page is the vet dashboard
             if (
@@ -414,6 +418,8 @@
 
         // If petOwnerId is in local storage, set the back button to redirect to the pet owner welcome page
         if (localStorage.getItem("petOwnerId")) {
+          console.log("Pet Owner ID is in local storage");
+
           if (backButton) {
             // If the previous page is the pet list, redirect the back button to the pet list page
             if (
@@ -431,6 +437,8 @@
               });
             }
           }
+          // Print back button link
+          console.log("Back button link: " + backButton.href);
         }
 
         // Function to get query parameters from the URL
@@ -457,6 +465,12 @@
 
         var editMedicationForm = document.getElementById("editMedicationForm");
         if (editMedicationForm) {
+          // If the pet owner ID is in local storage, the add medication button should not be visible
+          if (localStorage.getItem("petOwnerId")) {
+            document.getElementById("addMedicationButton").style.display =
+              "none";
+          }
+
           editMedicationForm.addEventListener("submit", function (event) {
             updateHiddenFields("medication");
             if (!validateEditMedication()) {
@@ -718,7 +732,7 @@
               <div class="pet-info-header">
                 Edit Medications
                 <!-- Add Medication Button -->
-                <button type="button" onclick="addNewMedicationFields()">
+                <button type="button" id="addMedicationButton" onclick="addNewMedicationFields()">
                   Add Medication
                 </button>
               </div>

@@ -19,4 +19,7 @@ public interface UserService {
 
   // Delete a user by their ID
   public void deleteUserByUserID(int userID);
+
+  // Update the password
+  public void updatePassword(String email, String newPassword);
 }

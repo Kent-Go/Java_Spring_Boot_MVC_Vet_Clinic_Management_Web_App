@@ -45,4 +45,11 @@ public class UserServiceImpl implements UserService {
   public void deleteUserByUserID(int userID) {
     userRepository.deleteById(userID);
   }
+
+  @Override
+  public void updatePassword(String email, String newPassword) {
+    User user = userRepository.findByEmail(email);
+    user.setPassword(newPassword);
+    userRepository.save(user);
+  }
 }

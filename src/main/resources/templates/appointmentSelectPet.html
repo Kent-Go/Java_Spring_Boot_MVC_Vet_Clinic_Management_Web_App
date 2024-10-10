@@ -11,8 +11,12 @@
         const petOwnerId = localStorage.getItem("petOwnerId");
 
         // Set the links for the logo and profile icon
-        document.querySelector(".logo-link").href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
-        document.querySelector(".profile-link").href = `/petOwnerProfile?petOwnerId=${petOwnerId}`;
+        document.querySelector(
+          ".logo-link"
+        ).href = `/petOwnerWelcome?userId=${userId}&petOwnerId=${petOwnerId}`;
+        document.querySelector(
+          ".profile-link"
+        ).href = `/petOwnerProfile?petOwnerId=${petOwnerId}`;
 
         // Add click event listener for pet card selection
         petCards.forEach((card) => {
@@ -86,14 +90,24 @@
 
     <div class="container">
       <h1>New Appointment Scheduling</h1>
-      <h3>Select Your Pet:</h3>
-      <div class="pet-selection">
-        <div
-          th:each="pet : ${pets}"
-          class="pet-card"
-          th:data-pet-id="${pet.id}"
-        >
-          <!-- <img th:src="${pet.species == 'dog' ? '/images/dog.png' :
+      <!-- Check if there are pets -->
+      <th:block th:if="${#lists.isEmpty(pets)}">
+        <h3>You have no pet. Please register pet through this <a>
+          <a href="/petRegister">link</a>
+        </a></h3>
+      </th:block>
+
+      <!-- If pets exist, show the pet selection -->
+      <th:block th:unless="${#lists.isEmpty(pets)}">
+        <h3>Select Your Pet:</h3>
+        <div class="pet-selection">
+          <div
+            th:each="pet : ${pets}"
+            class="pet-card"
+            th:data-pet-id="${pet.id}"
+          >
+            <img
+              th:src="${pet.species == 'dog' ? '/images/dog.png' :
                           pet.species == 'cat' ? '/images/cat.png' :
                           pet.species == 'bird' ? '/images/bird.png' :
                           pet.species == 'bunny' ? '/images/bunny.png' :
@@ -101,14 +115,18 @@
                           pet.species == 'fish' ? '/images/fish.png' :
                           pet.species == 'horse' ? '/images/horse.png' :
                           pet.species == 'turtle' ? '/images/turtle.png' :
-                          pet.species == 'chicken' ? '/images/chicken.png' : '/images/pet-placeholder.png'}" -->
-          <img alt="Pet Image" class="pet-image" />
+                          pet.species == 'chicken' ? '/images/chicken.png' : '/images/pet-placeholder.png'}"
+              alt="Pet Image"
+              class="pet-image"
+            />
+            <!-- <img alt="Pet Image" class="pet-image" /> -->
 
-          <div class="pet-info">
-            <h2 th:text="${pet.name}">Pet Name</h2>
+            <div class="pet-info">
+              <h2 th:text="${pet.name}">Pet Name</h2>
+            </div>
           </div>
         </div>
-      </div>
+      </th:block>
     </div>
 
     <div class="buttons">
