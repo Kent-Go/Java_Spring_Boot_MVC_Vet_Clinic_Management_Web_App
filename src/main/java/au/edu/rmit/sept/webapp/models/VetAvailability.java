@@ -48,7 +48,7 @@ public class VetAvailability {
         this.vetID = vetID;
     }
 
-    public int getPetID() {
+    public int getAvailabilityID() {
         return availabilityID;
     }
 

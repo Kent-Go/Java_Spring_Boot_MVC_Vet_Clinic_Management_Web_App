@@ -27,6 +27,7 @@ public class Availability {
     @Column(name = "end_time")
     private LocalTime endTime;
 
+
     // Getters and Setters
     public Integer getId() {
         return id;

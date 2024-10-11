@@ -23,7 +23,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     // Find appointments within a specific date range and order by date and
     // startTime
     public Collection<Appointment> findByVetIDAndDateBetweenOrderByDateAscStartTimeAsc(int vetID, LocalDate startDate,
-            LocalDate endDate);
+                                                                                       LocalDate endDate);
 
     // Find appointments after current date and order by date and startTime based on
     // a petID
