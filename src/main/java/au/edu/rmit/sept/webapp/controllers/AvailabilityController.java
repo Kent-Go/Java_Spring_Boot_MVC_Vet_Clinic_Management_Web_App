@@ -52,6 +52,12 @@ public class AvailabilityController {
             @RequestParam("endTime") LocalTime endTime,
             RedirectAttributes redirectAttributes) {
 
+        // Check if the date is missing
+        if (date == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Date is required.");
+            return "redirect:/availability?vetId=" + vetId;
+        }
+
         // Find if there's already an availability for the vet on the given date
         VetAvailability existingVetAvailability = vetAvailabilityService.findByVetIdAndDate(vetId, date);
 
@@ -66,6 +72,12 @@ public class AvailabilityController {
             // Create a new availability if it does not exist
             Availability newAvailability = new Availability(date, startTime, endTime);
             Availability savedAvailability = availabilityService.saveAvailability(newAvailability);
+
+            if (savedAvailability == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Failed to save availability.");
+                return "redirect:/availability?vetId=" + vetId;
+            }
+
             // Link the vet to the new availability
             vetAvailabilityService.saveOrUpdateVetAvailability(vetId, savedAvailability.getId(), date);
             redirectAttributes.addFlashAttribute("successMessage", "Availability created successfully.");
@@ -73,6 +85,7 @@ public class AvailabilityController {
 
         return "redirect:/availability?vetId=" + vetId;
     }
+
     @GetMapping("/availability/delete")
     public String deleteAvailability(
             @RequestParam("vetId") int vetId,
