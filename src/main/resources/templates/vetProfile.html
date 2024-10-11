@@ -17,6 +17,7 @@
           const logoLink = document.querySelector("#logo-link");
           const profileLink = document.querySelector("#profile-link");
           const patientsLink = document.querySelector("#patients-link");
+          const availabilityLink = document.querySelector("#availability-link");
 
           if (vetDashboardLink) {
             vetDashboardLink.href = `/vetDashboard?userId=${userID}&vetId=${vetID}`;
@@ -29,6 +30,9 @@
           }
           if (patientsLink) {
             patientsLink.href = `/patients?vetId=${vetID}`;
+          }
+          if (availabilityLink) {
+            availabilityLink.href = `/availability?vetId=${vetID}`;
           }
         } else {
           console.log("vetId or userId is missing from localStorage.");
@@ -79,6 +83,7 @@
       <a href="#" id="vet-dashboard-link">Home</a>
       <a href="patients" id="patients-link">Patients</a>
       <a href="#" id="schedule-link">Schedule</a>
+      <a href="#" id="availability-link">Availability</a>
       <a href="/faqPage">FAQ</a>
     </div>
 
