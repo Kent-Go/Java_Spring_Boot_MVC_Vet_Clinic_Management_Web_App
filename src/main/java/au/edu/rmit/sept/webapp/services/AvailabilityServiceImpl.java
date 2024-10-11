@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Service
-public class AvailabilityServiceImpl {
+public class AvailabilityServiceImpl implements AvailabilityService {
 
     @Autowired
     private AvailabilityRepository availabilityRepository;
