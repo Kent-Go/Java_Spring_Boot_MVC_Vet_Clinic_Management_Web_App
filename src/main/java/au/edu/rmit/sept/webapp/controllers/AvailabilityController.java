@@ -34,13 +34,19 @@ public class AvailabilityController {
         // Retrieve all availabilities for the given vetId
         List<VetAvailability> availabilities = vetAvailabilityService.findAvailabilitiesByVetId(vetId);
 
-        // Add the list of availabilities and vetId to the model
+        // Calculate the current week's start date (Monday)
+        LocalDate today = LocalDate.now();
+        LocalDate weekStart = today.with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
+
+        // Add the list of availabilities, vetId, and weekStart to the model
         model.addAttribute("availabilities", availabilities);
         model.addAttribute("vetId", vetId);
+        model.addAttribute("weekStart", weekStart);  // Ensure this is added
 
         // Return the view name for displaying the availability list
         return "availability";
     }
+
 
     @PostMapping("/availability")
     public String saveAvailability(
