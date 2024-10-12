@@ -2,6 +2,7 @@ package au.edu.rmit.sept.webapp.controllers;
 
 import au.edu.rmit.sept.webapp.models.Availability;
 import au.edu.rmit.sept.webapp.models.VetAvailability;
+import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.AvailabilityService;
 import au.edu.rmit.sept.webapp.services.VetAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.time.temporal.TemporalAdjusters;
-import java.time.DayOfWeek;
 
 @Controller
 public class AvailabilityController {
@@ -27,18 +26,17 @@ public class AvailabilityController {
     @Autowired
     private VetAvailabilityService vetAvailabilityService;
 
+    @Autowired
+    private AppointmentService appointmentService;
+
     @GetMapping("/availability")
     public String getAvailability(@RequestParam("vetId") int vetId, Model model) {
         // Retrieve all availabilities for the given vetId
         List<VetAvailability> availabilities = vetAvailabilityService.findAvailabilitiesByVetId(vetId);
-        // Calculate the current week's start date (Monday)
-        LocalDate today = LocalDate.now();
-        LocalDate weekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-        // Add the list of availabilities, vetId, and weekStart to the model
+        // Add the list of availabilities and vetId to the model
         model.addAttribute("availabilities", availabilities);
         model.addAttribute("vetId", vetId);
-        model.addAttribute("weekStart", weekStart);
 
         // Return the view name for displaying the availability list
         return "availability";
@@ -60,6 +58,12 @@ public class AvailabilityController {
 
         // Find if there's already an availability for the vet on the given date
         VetAvailability existingVetAvailability = vetAvailabilityService.findByVetIdAndDate(vetId, date);
+
+        // Check for existing appointments
+        if (appointmentService.existsByVetIdAndDate(vetId, date)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot update availability as there are appointments scheduled.");
+            return "redirect:/availability?vetId=" + vetId;
+        }
 
         if (existingVetAvailability != null) {
             // Update the existing availability
@@ -91,6 +95,12 @@ public class AvailabilityController {
             @RequestParam("vetId") int vetId,
             @RequestParam("date") LocalDate date,
             RedirectAttributes redirectAttributes) {
+
+        // Check for existing appointments before deletion
+        if (appointmentService.existsByVetIdAndDate(vetId, date)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Cannot delete availability as there are appointments scheduled.");
+            return "redirect:/availability?vetId=" + vetId;
+        }
 
         // Find the availability for the vet on the given date
         VetAvailability existingVetAvailability = vetAvailabilityService.findByVetIdAndDate(vetId, date);

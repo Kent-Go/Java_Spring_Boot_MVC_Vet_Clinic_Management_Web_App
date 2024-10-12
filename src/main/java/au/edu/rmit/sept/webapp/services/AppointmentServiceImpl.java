@@ -16,6 +16,7 @@ import au.edu.rmit.sept.webapp.repositories.AppointmentRepository;
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
+  @Autowired
   private AppointmentRepository appointmentRepository;
   @Autowired
   private ReminderScheduler reminderScheduler;
@@ -24,7 +25,10 @@ public class AppointmentServiceImpl implements AppointmentService {
   public AppointmentServiceImpl(AppointmentRepository appointmentRepository) {
     this.appointmentRepository = appointmentRepository;
   }
-
+  @Override
+  public boolean existsByVetIdAndDate(int vetId, LocalDate date) {
+    return appointmentRepository.existsByVetIdAndDate(vetId, date);
+  }
   // Get an appointment by appointment id
   @Override
   public Appointment getAppointmentByAppointmentID(int appointmentID) {

@@ -15,6 +15,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     private AvailabilityRepository availabilityRepository;
 
     // Save or update availability
+    @Override
     public Availability saveAvailability(Availability availability) {
         if (availability == null) {
             return null;
@@ -23,6 +24,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     // Find availability by date and time
+    @Override
     public Availability findAvailabilityByDateAndTime(LocalDate date, LocalTime startTime, LocalTime endTime) {
         return availabilityRepository.findByDateAndStartTimeAndEndTime(date, startTime, endTime).orElse(null);
     }
