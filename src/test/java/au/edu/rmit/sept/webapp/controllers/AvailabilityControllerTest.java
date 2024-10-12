@@ -1,8 +1,10 @@
 package au.edu.rmit.sept.webapp.controllers;
 
+import au.edu.rmit.sept.webapp.models.Appointment;
 import au.edu.rmit.sept.webapp.models.Availability;
 import au.edu.rmit.sept.webapp.models.VetAvailability;
 import au.edu.rmit.sept.webapp.services.AvailabilityService;
+import au.edu.rmit.sept.webapp.services.AppointmentService;
 import au.edu.rmit.sept.webapp.services.VetAvailabilityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +18,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.mockito.Mockito.mockStatic;
+import java.time.temporal.TemporalAdjusters;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.time.DayOfWeek;
+import org.mockito.MockedStatic;
+
 
 public class AvailabilityControllerTest {
 
@@ -27,6 +36,9 @@ public class AvailabilityControllerTest {
 
     @Mock
     private VetAvailabilityService vetAvailabilityService;
+
+    @Mock
+    private AppointmentService appointmentService;
 
     @Mock
     private Model model;
@@ -47,16 +59,23 @@ public class AvailabilityControllerTest {
     public void testGetAvailability_Success() {
         int vetId = 1;
         List<VetAvailability> availabilities = new ArrayList<>();
-        LocalDate weekStart = LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY));
 
-        when(vetAvailabilityService.findAvailabilitiesByVetId(vetId)).thenReturn(availabilities);
+        // Set a fixed date for the test to control weekStart calculation
+        LocalDate fixedToday = LocalDate.of(2024, 10, 12); // Set to the desired date
+        LocalDate expectedWeekStart = fixedToday.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-        String viewName = availabilityController.getAvailability(vetId, model);
+        try (MockedStatic<LocalDate> mockedLocalDate = mockStatic(LocalDate.class, CALLS_REAL_METHODS)) {
+            mockedLocalDate.when(LocalDate::now).thenReturn(fixedToday);
 
-        verify(model).addAttribute("availabilities", availabilities);
-        verify(model).addAttribute("vetId", vetId);
-        verify(model).addAttribute("weekStart", weekStart);
-        assertEquals("availability", viewName);
+            when(vetAvailabilityService.findAvailabilitiesByVetId(vetId)).thenReturn(availabilities);
+
+            String viewName = availabilityController.getAvailability(vetId, model);
+
+            verify(model).addAttribute("availabilities", availabilities);
+            verify(model).addAttribute("vetId", vetId);
+            verify(model).addAttribute("weekStart", expectedWeekStart); // Mocked weekStart
+            assertEquals("availability", viewName);
+        }
     }
 
     // Negative Test Case: getAvailability with non-existent vetId
@@ -111,6 +130,7 @@ public class AvailabilityControllerTest {
 
         when(vetAvailabilityService.findByVetIdAndDate(vetId, date)).thenReturn(null);
         when(availabilityService.saveAvailability(any(Availability.class))).thenReturn(mockAvailability);
+        when(appointmentService.existsByVetIdAndDate(vetId, date)).thenReturn(false); // No appointments
 
         String result = availabilityController.saveAvailability(vetId, date, startTime, endTime, redirectAttributes);
 
@@ -120,6 +140,24 @@ public class AvailabilityControllerTest {
         assertEquals("redirect:/availability?vetId=" + vetId, result);
     }
 
+    // Negative Test Case: saveAvailability when there are appointments
+    @Test
+    public void testSaveAvailability_WithAppointments() {
+        int vetId = 1;
+        LocalDate date = LocalDate.now();
+        LocalTime startTime = LocalTime.of(9, 0);
+        LocalTime endTime = LocalTime.of(17, 0);
+
+        // Mock the appointmentService to return that there are existing appointments on the given date
+        when(appointmentService.existsByVetIdAndDate(vetId, date)).thenReturn(true);
+
+        String result = availabilityController.saveAvailability(vetId, date, startTime, endTime, redirectAttributes);
+
+        // Verify that saveAvailability on availabilityService was never called
+        verify(availabilityService, never()).saveAvailability(any(Availability.class));
+        verify(redirectAttributes).addFlashAttribute("errorMessage", "Cannot update availability as there are appointments scheduled.");
+        assertEquals("redirect:/availability?vetId=" + vetId, result);
+    }
 
     // Positive Test Case: deleteAvailability deletes an existing availability
     @Test
@@ -129,11 +167,29 @@ public class AvailabilityControllerTest {
         VetAvailability vetAvailability = new VetAvailability();
 
         when(vetAvailabilityService.findByVetIdAndDate(vetId, date)).thenReturn(vetAvailability);
+        when(appointmentService.existsByVetIdAndDate(vetId, date)).thenReturn(false); // No appointments
 
         String result = availabilityController.deleteAvailability(vetId, date, redirectAttributes);
 
         verify(vetAvailabilityService, times(1)).deleteVetAvailability(vetAvailability);
         verify(redirectAttributes).addFlashAttribute("successMessage", "Availability deleted successfully.");
+        assertEquals("redirect:/availability?vetId=" + vetId, result);
+    }
+
+    // Negative Test Case: deleteAvailability when there are appointments
+    @Test
+    public void testDeleteAvailability_WithAppointments() {
+        int vetId = 1;
+        LocalDate date = LocalDate.now();
+
+        // Mock that there are existing appointments on the date
+        when(appointmentService.existsByVetIdAndDate(vetId, date)).thenReturn(true);
+
+        String result = availabilityController.deleteAvailability(vetId, date, redirectAttributes);
+
+        // Verify that deleteVetAvailability was never called
+        verify(vetAvailabilityService, never()).deleteVetAvailability(any(VetAvailability.class));
+        verify(redirectAttributes).addFlashAttribute("errorMessage", "Cannot delete availability as there are appointments scheduled.");
         assertEquals("redirect:/availability?vetId=" + vetId, result);
     }
 
