@@ -6,6 +6,8 @@ import java.util.Collection;
 import au.edu.rmit.sept.webapp.models.Appointment;
 
 public interface AppointmentService {
+
+  public boolean existsByVetIdAndDate(int vetId, LocalDate date);
   // Get an appointment by appointment id
   public Appointment getAppointmentByAppointmentID(int appointmentID);
 

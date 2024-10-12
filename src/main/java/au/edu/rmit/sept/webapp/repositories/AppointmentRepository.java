@@ -10,6 +10,8 @@ import au.edu.rmit.sept.webapp.models.Appointment;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
+
+    boolean existsByVetIdAndDate(int vetId, LocalDate date);
     public Collection<Appointment> findByVetID(int vetID);
 
     public Collection<Appointment> findByPetID(int petID);
